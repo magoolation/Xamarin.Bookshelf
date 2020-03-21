@@ -1,19 +1,16 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Mobile.Views;
 
 namespace Xamarin.Bookshelf.Mobile
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 
