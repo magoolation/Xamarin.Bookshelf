@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29827.131
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{966B258F-7CC8-43CD-87E9-61D1AE10B4CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{906BD555-D82E-4F83-ADF4-82DAD50B4446}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DEVOPS", "DEVOPS", "{5D19E64D-5E46-4B3F-B78B-2ACB19B4FE00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Functions", "Functions\Xamarin.Bookshelf.Functions\Xamarin.Bookshelf.Functions.csproj", "{6BF5BAE3-8D9B-4E75-94B4-5721A0ACC622}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{D52CDA26-F69D-4C4C-9357-52EC05E8815E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Shared", "Shared\Xamarin.Bookshelf.Shared\Xamarin.Bookshelf.Shared.csproj", "{010E2794-7333-400B-9D21-B77D0D718668}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BF5BAE3-8D9B-4E75-94B4-5721A0ACC622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BF5BAE3-8D9B-4E75-94B4-5721A0ACC622}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BF5BAE3-8D9B-4E75-94B4-5721A0ACC622}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BF5BAE3-8D9B-4E75-94B4-5721A0ACC622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{010E2794-7333-400B-9D21-B77D0D718668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{010E2794-7333-400B-9D21-B77D0D718668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{010E2794-7333-400B-9D21-B77D0D718668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{010E2794-7333-400B-9D21-B77D0D718668}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BF5BAE3-8D9B-4E75-94B4-5721A0ACC622} = {966B258F-7CC8-43CD-87E9-61D1AE10B4CB}
+		{010E2794-7333-400B-9D21-B77D0D718668} = {D52CDA26-F69D-4C4C-9357-52EC05E8815E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE0C389B-921F-438A-B2B8-64385B92DCE8}
+	EndGlobalSection
+EndGlobal
