@@ -2,9 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
+             xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Xamarin.Bookshelf.Mobile.Views.BookshelvesPage">
+             x:Class="Xamarin.Bookshelf.Mobile.Views.BookshelvesPage"
+             BindingContext="{Binding BookshelvesPageViewModel, Source={StaticResource vmLocator}}"
+             x:DataType="vm:BookshelvesPageViewModel">
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to Xamarin.Forms!"

@@ -3,13 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
+             xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
              mc:Ignorable="d"
-             x:Class="Xamarin.Bookshelf.Mobile.Views.BookSearchPage">
+             x:Class="Xamarin.Bookshelf.Mobile.Views.BookSearchPage"
+             BindingContext="{Binding BookSearchPageViewModel, Source={StaticResource vmLocator}}"
+             x:DataType="vm:BookSearchPageViewModel">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Entry Text="{Binding SearchText, Mode=TwoWay}" ReturnType="Search" ReturnCommand="{Binding SearchCommand}" Grid.Row="0" />
+            <CollectionView ItemsSource="{Binding Books}" Grid.Row="1">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Book">
+                        <Frame>
+                            <Image Source="{Binding SmallUrl}" />
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
