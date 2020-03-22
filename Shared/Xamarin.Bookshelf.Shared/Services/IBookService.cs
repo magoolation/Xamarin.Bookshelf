@@ -6,7 +6,7 @@ using ABookshelf = Xamarin.Bookshelf.Shared.Models.Bookshelf;
 
 namespace Xamarin.Bookshelf.Shared.Services
 {
-    [Headers("x-functions-key: YlQpARa4UL1VGG2Jem8f4jvuxaBXhP0sSNFdTRED08yvbrOXqN2aXA==")]
+    [Headers("x-functions-key: jTLTHtsS7iWfDUqXpPfVVfRHdwKUoUnUDyV6UCUcbb7e/658sGkz3Q==")]
     public interface IBookService
     {
         [Get("/v1/books?title={title}")]
