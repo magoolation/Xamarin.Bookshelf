@@ -74,7 +74,7 @@ namespace Xamarin.Bookshelf.Functions
                 PageCount = volume.volumeInfo.pageCount,
                 Price = (decimal?)volume.saleInfo.listPrice?.amount,
                 Rating = volume.volumeInfo.averageRating,
-                RatingCount = volume.volumeInfo.ratingCount,
+                RatingCount = volume.volumeInfo.ratingsCount,
                 ThumbnailUrl = volume.volumeInfo.imageLinks?.thumbnail,
                 SmallThumbnailUrl = volume.volumeInfo.imageLinks?.smallThumbnail,
                 SmallUrl   = volume.volumeInfo.imageLinks?.small,

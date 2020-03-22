@@ -53,9 +53,9 @@
         public string infoLink { get; set; }
         public string canonicalVolumeLink { get; set; }
         public string subtitle { get; set; }
-        public double averageRating { get; internal set; }
-        public int ratingCount { get; internal set; }
-        public string mainCategory { get; internal set; }
+        public double averageRating { get; set; }
+        public int ratingsCount { get; set; }
+        public string mainCategory { get; set; }
     }
 
     public class Readingmodes
