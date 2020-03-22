@@ -22,5 +22,10 @@ namespace Xamarin.Bookshelf.Mobile.Views
             base.OnAppearing();
             ((BookDetailsPageViewModel)BindingContext).OnAppearing();
         }
+
+        protected override void OnDisappearing()
+        {
+            ((BaseViewModel)BindingContext).OnDisappearing();
+        }
     }
 }

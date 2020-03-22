@@ -34,6 +34,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             await GetBookDetailsAsync();
         }
 
+        public override void OnDisappearing()
+        {
+            Book = null;
+        }
+
         private async Task GetBookDetailsAsync()
         {
             try
