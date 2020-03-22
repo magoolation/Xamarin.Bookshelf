@@ -30,11 +30,18 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         }
 
         public ICommand SearchCommand { get; }
+        public ICommand DetailsCommand { get; }
 
         public BookSearchPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
             SearchCommand = new Command(SearchBooks, CanSearchBooks);
+            DetailsCommand = new Command<string>(ViewDetails);
+        }
+
+        private async void ViewDetails(string bookId)
+        {
+            await Shell.Current.GoToAsync($"//SearchBooks/Details?bookId={bookId}");
         }
 
         private async void SearchBooks(object arg)

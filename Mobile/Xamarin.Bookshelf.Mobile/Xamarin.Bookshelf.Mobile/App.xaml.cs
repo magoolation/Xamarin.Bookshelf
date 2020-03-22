@@ -1,7 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using Xamarin.Bookshelf.Mobile.Views;
+﻿using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile
 {
@@ -10,7 +7,7 @@ namespace Xamarin.Bookshelf.Mobile
         public App()
         {
             InitializeComponent();
-
+            
             MainPage = new AppShell();
         }
 

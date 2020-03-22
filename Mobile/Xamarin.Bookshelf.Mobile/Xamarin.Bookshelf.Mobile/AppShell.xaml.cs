@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Xamarin.Bookshelf.Mobile.Views;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile
@@ -10,6 +10,9 @@ namespace Xamarin.Bookshelf.Mobile
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute("MyBooks/Details", typeof(BookDetailsPage));
+            Routing.RegisterRoute("SearchBooks/Details", typeof(BookDetailsPage));
         }
     }
 }

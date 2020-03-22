@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"             
+             x:Class="Xamarin.Bookshelf.Mobile.Views.BookDetailsPage"
+             BindingContext="{Binding BookDetailsPageViewModel, Source={x:StaticResource vmLocator}}"
+             x:DataType="{x:Type vm:BookDetailsPageViewModel}">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+                
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Source="{Binding Book.LargeUrl}" Aspect="AspectFit" Grid.Column="1" />
+                <StackLayout Grid.Column="2">
+                    <Label Text="{Binding Book.Title}" />
+                    <Label Text="{Binding Book.SubTitle}" />
+                    <FlexLayout Direction="Row" Wrap="Wrap" BindableLayout.ItemsSource="{Binding Book.Authors}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </StackLayout>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <FlexLayout Direction="Row" Wrap="Wrap" BindableLayout.ItemsSource="{Binding Book.Categories}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                        <Label Text="{Binding .}" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </Grid>
+
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" AutomationProperties.Name="Loading ..." Grid.RowSpan="2" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

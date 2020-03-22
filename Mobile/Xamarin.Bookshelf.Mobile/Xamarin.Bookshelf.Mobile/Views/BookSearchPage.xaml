@@ -17,28 +17,25 @@
             </Grid.RowDefinitions>
 
             <Entry Text="{Binding SearchText, Mode=TwoWay}" ReturnType="Search" ReturnCommand="{Binding SearchCommand}" Grid.Row="0" />
-            <CollectionView ItemsSource="{Binding Books}" Grid.Row="1">
+            <CollectionView ItemsSource="{Binding Books}" Grid.Row="1" EmptyView="No results found">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
-                        Span="2" />
+                        Span="3" />
                 </CollectionView.ItemsLayout>
-                <CollectionView.EmptyViewTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Label Text="no results found" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.EmptyViewTemplate>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Book">
                         <Grid>
-                            <Image Source="{Binding Thumbnail}" WidthRequest="200" HeightRequest="200" AutomationProperties.Name="{Binding Title}" />
+                            <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Title}">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookSearchPageViewModel}}, Path=DetailsCommand}" CommandParameter="{Binding BookId}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Grid.RowSpan="2" />
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Grid.RowSpan="2" AutomationProperties.Name="Loading ..." />
 
         </Grid>
     </ContentPage.Content>
