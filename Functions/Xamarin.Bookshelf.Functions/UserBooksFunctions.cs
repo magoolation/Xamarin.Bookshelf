@@ -22,7 +22,7 @@ namespace Xamarin.Bookshelf.Functions
     {
         [FunctionName("ReviewBook")]
         public IActionResult ReviewBook(
-            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_SEND_BOOK_REVIEW)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_REVIEWS)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,
@@ -40,7 +40,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("RegisterBook")]
         public IActionResult RegisterBook(
-            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_REGISTER_BOOK)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_BOOKSHELVES)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,

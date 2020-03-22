@@ -27,7 +27,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("SearchBook")]
         public async Task<IActionResult> SearchBooks(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = ApiRoutes.API_SEARCH_BOOKS)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = ApiRoutes.API_BOOKS)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -36,12 +36,18 @@ namespace Xamarin.Bookshelf.Functions
             if (req.Query.TryGetValue("title", out var titles))
             {
                 var volumes = await googleBooksApi.Endpoint.SearchBookByTitleAsync(titles.First(), apiKey);
-                books = volumes.items.Select(ConvertToBook);
+                if (volumes != null && volumes.totalItems > 0)
+                {
+                    books = volumes.items.Select(ConvertToBook);
+                }
             }
             else if (req.Query.TryGetValue("author", out var authors))
             {
                 var volumes = await googleBooksApi.Endpoint.SearchBookByAuthorAsync(authors.First(), apiKey);
-                books = volumes.items.Select(ConvertToBook);
+                if (volumes != null && volumes.totalItems > 0)
+                {
+                    books = volumes.items.Select(ConvertToBook); 
+                }
             }
             else
             {
