@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Bookshelf.Shared.Models;
+using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
@@ -17,7 +20,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             set => SetProperty(ref searchText, value);
         }
 
-        private ObservableCollection<Book> books;
+        private ObservableCollection<Book> books = new ObservableCollection<Book>(Enumerable.Empty<Book>());
+        private readonly IBookService bookService;
+
         public ObservableCollection<Book> Books
         {
             get => books;
@@ -26,13 +31,39 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         public ICommand SearchCommand { get; }
 
-        public BookSearchPageViewModel()
+        public BookSearchPageViewModel(IBookService bookService)
         {
+            this.bookService = bookService;
             SearchCommand = new Command(SearchBooks, CanSearchBooks);
         }
 
-        private void SearchBooks(object arg)
-        {            
+        private async void SearchBooks(object arg)
+        {
+            await SearchBooksAsync();
+        }
+
+        private async Task SearchBooksAsync()
+        {
+            try
+            {
+                IsBusy = true;
+
+                var result = await bookService.SearchBookByTitleAsync(SearchText).ConfigureAwait(false);
+                if (result == null)
+                {
+                    result = Enumerable.Empty<Book>();
+                }
+
+                Books = new ObservableCollection<Book>(result);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private bool CanSearchBooks(object arg)
