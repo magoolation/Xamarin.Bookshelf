@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using ABookshelf = Xamarin.Bookshelf.Shared.Models.Bookshelf;
 
@@ -21,7 +22,7 @@ namespace Xamarin.Bookshelf.Functions
     {
         [FunctionName("ReviewBook")]
         public IActionResult ReviewBook(
-            [HttpTrigger(AuthorizationLevel.Function, "POST", "PUT", Route = "v1/reviews")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_SEND_BOOK_REVIEW)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,
@@ -39,7 +40,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("RegisterBook")]
         public IActionResult RegisterBook(
-            [HttpTrigger(AuthorizationLevel.Function, "POST", "PUT", Route = "v1/bookshelves")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_REGISTER_BOOK)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,
@@ -57,7 +58,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("GetBookshelves")]
         public IActionResult GetBookshelves(
-            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "v1/bookshelves/{userId}/")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = ApiRoutes.API_GET_USER_BOOKS)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,
@@ -74,7 +75,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("GetReviews")]
         public IActionResult GetReviews(
-            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "v1/reviews/{bookId}/")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = ApiRoutes.API_GET_BOOK_REVIEWS)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
+using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 
 namespace Xamarin.Bookshelf.Functions
@@ -26,7 +27,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("SearchBook")]
         public async Task<IActionResult> SearchBooks(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/books")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = ApiRoutes.API_SEARCH_BOOKS)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -79,7 +80,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("GetBook")]
         public async Task<IActionResult> GetBook(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "v1/books/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = ApiRoutes.API_GET_BOOK_DETAILS)] HttpRequest req,
             string id,
             ILogger log)
         {
