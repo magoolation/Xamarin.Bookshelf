@@ -55,6 +55,11 @@
                     </StackLayout>
                 </Grid>
 
+                <FlexLayout Grid.Row="2" Direction="Row">
+                    <Button Text="Add to my Library" Command="{Binding AddToLibraryCommand}" FlexLayout.Grow="1" />
+                    <Button Text="Write a Review" Command="{Binding ReviewBookCommand}" FlexLayout.Grow="1" />
+                </FlexLayout>
+
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" AutomationProperties.Name="Loading ..." Grid.RowSpan="2" />
             </Grid>
         </ScrollView>
