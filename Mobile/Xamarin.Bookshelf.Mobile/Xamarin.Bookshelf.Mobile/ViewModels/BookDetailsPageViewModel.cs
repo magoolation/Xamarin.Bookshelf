@@ -76,9 +76,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-        private void ReviewBook(object obj)
+        private async void ReviewBook(object obj)
 {
-    throw new NotImplementedException();
+            await Shell.Current.GoToAsync($"//ReviewBook?bookId={BookId}");
 }
 
 public string BookId { get; set; }

@@ -7,12 +7,14 @@
              xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
              mc:Ignorable="d"
              x:Class="Xamarin.Bookshelf.Mobile.Views.ReviewBookPage"
-             x:DataType="vm:ReviewBookPageViewModel">
+             x:DataType="vm:ReviewBookPageViewModel"
+             Shell.PresentationMode="ModalAnimated">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Slider Maximum="5" Minimum="0" Value="{Binding Rating, Mode=OneWayToSource}" />
+            <Entry Text="{Binding ReviewTitle}" />
+            <Editor Text="{Binding Review}" />
+            <Button Text="Send Review" Command="{Binding SendCommand}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

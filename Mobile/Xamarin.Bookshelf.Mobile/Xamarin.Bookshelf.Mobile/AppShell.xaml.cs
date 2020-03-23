@@ -13,6 +13,10 @@ namespace Xamarin.Bookshelf.Mobile
 
             Routing.RegisterRoute("MyBooks/Details", typeof(BookDetailsPage));
             Routing.RegisterRoute("SearchBooks/Details", typeof(BookDetailsPage));
+            Routing.RegisterRoute("SearchBooks/Details", typeof(BookDetailsPage));
+            Routing.RegisterRoute("SearchBooks/Details", typeof(BookDetailsPage));
+            Routing.RegisterRoute("MyBooks/Details/ReviewBook", typeof(BookDetailsPage));
+            Routing.RegisterRoute("SearchBooks/Details/ReviewBook", typeof(BookDetailsPage));
         }
     }
 }
