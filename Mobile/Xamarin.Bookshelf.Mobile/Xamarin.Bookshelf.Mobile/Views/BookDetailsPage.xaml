@@ -3,6 +3,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
              mc:Ignorable="d"             
              x:Class="Xamarin.Bookshelf.Mobile.Views.BookDetailsPage"
              BindingContext="{Binding BookDetailsPageViewModel, Source={x:StaticResource vmLocator}}"
@@ -56,8 +57,16 @@
                 </Grid>
 
                 <FlexLayout Grid.Row="2" Direction="Row">
-                    <Button Text="Add to my Library" Command="{Binding AddToLibraryCommand}" FlexLayout.Grow="1" />
-                    <Button Text="Write a Review" Command="{Binding ReviewBookCommand}" FlexLayout.Grow="1" />
+                    <ImageButton AutomationProperties.Name="Add to my Library" Command="{Binding AddToLibraryCommand}" FlexLayout.Grow="1">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{x:Static shared:IconFont.Star}" FontFamily="fa-regular-400" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton AutomationProperties.Name="Write a Review" Command="{Binding ReviewBookCommand}" FlexLayout.Grow="1">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{x:Static shared:IconFont.Comment}" FontFamily="fa-regular-400" />
+                        </ImageButton.Source>
+                    </ImageButton>
                 </FlexLayout>
 
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" AutomationProperties.Name="Loading ..." Grid.RowSpan="2" />

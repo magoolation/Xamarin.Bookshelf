@@ -1,5 +1,7 @@
 ﻿using Xamarin.Forms;
 
+[assembly: ExportFont("fa-regular-400.ttf")]
+
 namespace Xamarin.Bookshelf.Mobile
 {
     public partial class App : Application

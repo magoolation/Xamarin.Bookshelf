@@ -20,8 +20,8 @@ namespace Xamarin.Bookshelf.Shared.Services
             [Get("/v/1/bookshelves/{userId}")]
         Task<IEnumerable<ABookshelf>> GetUserBookShelvesAsync(string userId);
         [Post("/v1/bookshelves")]
-        Task RegisterBookAsync(ABookshelf bookshelf);
+        Task RegisterBookAsync([Body]ABookshelf bookshelf);
             [Post("/v1/reviews")]
-        Task ReviewBookAsync(BookReview review);
+        Task ReviewBookAsync([Body]BookReview review);
     }
 }

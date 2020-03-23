@@ -3,6 +3,7 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:d="http://xamarin.com/schemas/2014/forms/design"
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
        mc:Ignorable="d"
        xmlns:local="clr-namespace:Xamarin.Bookshelf.Mobile.Views"
        Title="Xamarin.Bookshelf.Mobile"
@@ -31,10 +32,16 @@
 
     <!-- Your Pages -->
     <TabBar>
-        <Tab Title="My Books" Icon="tab_feed.png" Route="MyBooks">
+        <Tab Title="My Books" Route="MyBooks">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static shared:IconFont.User}" FontFamily="fa-regular-400" />
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:BookshelvesPage}" />
         </Tab>
-        <Tab Title="Library" Icon="tab_about.png" Route="SearchBooks">
+        <Tab Title="Library" Route="SearchBooks">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static shared:IconFont.Building}" FontFamily="fa-regular-400" />
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:BookSearchPage}" />
         </Tab>
     </TabBar>
