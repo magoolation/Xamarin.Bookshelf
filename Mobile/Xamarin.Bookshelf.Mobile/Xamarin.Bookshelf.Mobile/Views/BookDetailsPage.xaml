@@ -58,14 +58,14 @@
                 </Grid>
 
                 <StackLayout Grid.Row="2" Orientation="Horizontal" HeightRequest="50" VerticalOptions="End" Margin="0,0,0,5">
-                    <ImageButton AutomationProperties.Name="Add to my Library" Command="{Binding AddToLibraryCommand}" BackgroundColor="#3DD5FF" HeightRequest="60" WidthRequest="60">
+                    <ImageButton AutomationProperties.Name="Add to my Library" Command="{Binding AddToLibraryCommand}" HeightRequest="60" WidthRequest="60">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{x:Static shared:IconFont.Star}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
+                            <FontImageSource Glyph="{x:Static shared:IconFont.Star}" FontFamily="{StaticResource FontAwesome5FreeRegular}" Color="Black"/>
                         </ImageButton.Source>
                     </ImageButton>
-                    <ImageButton AutomationProperties.Name="Write a Review" Command="{Binding ReviewBookCommand}" HorizontalOptions="EndAndExpand" BackgroundColor="#3DD5FF" HeightRequest="55" WidthRequest="55">
+                    <ImageButton AutomationProperties.Name="Write a Review" Command="{Binding ReviewBookCommand}" HorizontalOptions="EndAndExpand" HeightRequest="55" WidthRequest="55">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{x:Static shared:IconFont.Comment}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
+                            <FontImageSource Glyph="{x:Static shared:IconFont.Comment}" FontFamily="{StaticResource FontAwesome5FreeRegular}" Color="Black"/>
                         </ImageButton.Source>
                     </ImageButton>
                 </StackLayout>
