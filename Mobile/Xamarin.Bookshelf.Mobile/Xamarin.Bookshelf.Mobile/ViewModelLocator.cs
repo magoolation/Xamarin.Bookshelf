@@ -17,12 +17,14 @@ namespace Xamarin.Bookshelf.Mobile
         public BookshelvesPageViewModel BookshelvesPageViewModel { get; }
         public BookSearchPageViewModel BookSearchPageViewModel { get; }
         public BookDetailsPageViewModel BookDetailsPageViewModel { get;  }
+        public ReviewBookPageViewModel ReviewBookPageViewModel { get; }
 
         public ViewModelLocator()
         {
             BookshelvesPageViewModel = new BookshelvesPageViewModel(bookService.Value);
             BookSearchPageViewModel = new BookSearchPageViewModel(bookService.Value);
             BookDetailsPageViewModel = new BookDetailsPageViewModel(bookService.Value);
+            ReviewBookPageViewModel = new ReviewBookPageViewModel(bookService.Value);
         }
     }
 }
