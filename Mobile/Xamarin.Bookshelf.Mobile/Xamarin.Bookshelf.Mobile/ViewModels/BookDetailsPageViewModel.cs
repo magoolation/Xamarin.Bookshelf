@@ -41,7 +41,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             try
             {
                 ReadingStatus status;
-                if (selected== "I am reading")
+                if (selected == "I am reading")
                 {
                     status = ReadingStatus.Reading;
                 }
@@ -55,13 +55,13 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 }
 
                 IsBusy = true;
-            var bookshelf = new ABookshelf()
-            {
-                BookId = BookId,
-                ReadingStatus = status,
-                UserId = "magoolation@me.com",
-                CreatedAt = DateTimeOffset.Now
-        };
+                var bookshelf = new ABookshelf()
+                {
+                    BookId = BookId,
+                    ReadingStatus = status,
+                    UserId = "magoolation@me.com",
+                    CreatedAt = DateTimeOffset.Now
+                };
 
                 await bookService.RegisterBookAsync(bookshelf).ConfigureAwait(false);
                 MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Success", "Book added to your Bookshelf successfully!", "OK"));
@@ -69,7 +69,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             catch (Exception ex)
             {
                 MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
-}
+            }
             finally
             {
                 IsBusy = false;
@@ -77,47 +77,47 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         }
 
         private async void ReviewBook(object obj)
-{
-            await Shell.Current.GoToAsync($"//ReviewBook?bookId={BookId}");
-}
+        {
+            await Shell.Current.GoToAsync($"SearchBooks/Details/ReviewBook?bookId={BookId}");
+        }
 
-public string BookId { get; set; }
+        public string BookId { get; set; }
 
-private Book book;
-public Book Book
-{
-    get => book;
-    set => SetProperty(ref book, value);
-}
+        private Book book;
+        public Book Book
+        {
+            get => book;
+            set => SetProperty(ref book, value);
+        }
 
-public override async void OnAppearing()
-{
-    base.OnAppearing();
+        public override async void OnAppearing()
+        {
+            base.OnAppearing();
 
-    await GetBookDetailsAsync();
-}
+            await GetBookDetailsAsync();
+        }
 
-public override void OnDisappearing()
-{
-    Book = null;
-}
+        public override void OnDisappearing()
+        {
+            Book = null;
+        }
 
-private async Task GetBookDetailsAsync()
-{
-    try
-    {
-        IsBusy = true;
-        var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
-        Book = result;
-    }
-    catch (Exception ex)
-    {
-        await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-    }
-    finally
-    {
-        IsBusy = false;
-    }
-}
+        private async Task GetBookDetailsAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
+                Book = result;
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
     }
 }
