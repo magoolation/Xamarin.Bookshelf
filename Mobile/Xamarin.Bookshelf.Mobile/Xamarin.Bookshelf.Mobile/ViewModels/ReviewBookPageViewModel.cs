@@ -74,8 +74,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                     };
 
                     await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
-                    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK"));
-                    await Shell.Current.Navigation.PopModalAsync();
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK");
+                        await Shell.Current.Navigation.PopModalAsync();
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -84,6 +87,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-
+        public override void OnAppearing()
+        {
+            base.OnAppearing();
+            ReviewTitle = string.Empty;
+            Review = string.Empty;
+            Rating = 0;
+        }
     }
 }
