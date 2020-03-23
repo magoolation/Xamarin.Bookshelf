@@ -41,7 +41,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async void ViewDetails(string bookId)
         {
-            await Shell.Current.GoToAsync($"SearchBooks/Details?bookId={bookId}");
+            await Shell.Current.GoToAsync($"Details?bookId={bookId}");
         }
 
         private async void SearchBooks(object arg)

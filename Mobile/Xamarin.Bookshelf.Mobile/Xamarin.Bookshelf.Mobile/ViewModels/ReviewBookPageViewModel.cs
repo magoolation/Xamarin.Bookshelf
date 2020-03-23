@@ -11,7 +11,7 @@ using Xamarin.Forms;
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
     [QueryProperty("BookId", "bookId")]
-    public class ReviewBookPageViewModel: BaseViewModel
+    public class ReviewBookPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
 
@@ -38,40 +38,52 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             set => SetProperty(ref rating, value);
         }
 
-        public ICommand SendCommand { get;  }
+        public ICommand SendCommand { get; }
+        public ICommand CancelCommand { get; }
 
-        public ReviewBookPageViewModel(IBookService bookService)        
+        public ReviewBookPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
             SendCommand = new Command(SendReview);
+            CancelCommand = new Command(Cancel);
+        }
+
+        private async void Cancel(object obj)
+        {
+            await CancelAsync();
+
+            Task CancelAsync() =>
+                Shell.Current.Navigation.PopModalAsync();
         }
 
         private async void SendReview(object obj)
         {
             await SendReviewAsync();
-        }
 
-        private async Task SendReviewAsync()
-        {
-            try
+            async Task SendReviewAsync()
             {
-                var bookReview = new BookReview()
+                try
                 {
-                    BookId = BookId,
-                    UserId = "magoolation@me.com",
-                    Rating = rating,
-                    Title = reviewTitle,
-                    Review = review
-                };
+                    var bookReview = new BookReview()
+                    {
+                        BookId = BookId,
+                        UserId = "magoolation@me.com",
+                        Rating = rating,
+                        Title = reviewTitle,
+                        Review = review
+                    };
 
-                await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK"));
-                await Shell.Current.GoToAsync("//Details");
-            }
-            catch (Exception ex)
-            {
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
+                    await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
+                    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK"));
+                    await Shell.Current.Navigation.PopModalAsync();
+                }
+                catch (Exception ex)
+                {
+                    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
+                }
             }
         }
+
+
     }
 }

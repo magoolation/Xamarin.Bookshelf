@@ -8,13 +8,32 @@
              mc:Ignorable="d"
              x:Class="Xamarin.Bookshelf.Mobile.Views.ReviewBookPage"
              x:DataType="vm:ReviewBookPageViewModel"
-             Shell.PresentationMode="ModalAnimated">
+             BindingContext="{Binding ReviewBookPageViewModel, Source={x:StaticResource vmLocator}}"
+             Shell.PresentationMode="ModalAnimated"
+             Padding="60">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Close"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Slider Maximum="5" Minimum="0" Value="{Binding Rating, Mode=OneWayToSource}" />
-            <Entry Text="{Binding ReviewTitle}" />
-            <Editor Text="{Binding Review}" />
-            <Button Text="Send Review" Command="{Binding SendCommand}" />
-        </StackLayout>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout BackgroundColor="Blue">
+                <Label Text="Cancel" HorizontalOptions="Start">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CancelCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1">
+                <Slider Maximum="5" Minimum="0" Value="{Binding Rating, Mode=OneWayToSource}" />
+                <Entry Text="{Binding ReviewTitle}" />
+                <Editor Text="{Binding Review}" />
+                <Button Text="Send Review" Command="{Binding SendCommand}" />
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
