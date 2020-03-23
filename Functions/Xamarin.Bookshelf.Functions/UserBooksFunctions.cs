@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.CosmosDB;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using ABookshelf = Xamarin.Bookshelf.Shared.Models.Bookshelf;
@@ -20,6 +23,16 @@ namespace Xamarin.Bookshelf.Functions
 {
     public class UserBooksFunctions
     {
+        private const string API_KEY = "apiKey";
+        private readonly GoogleBooksApiService googleBooksApi;
+        private readonly string apiKey;
+
+        public UserBooksFunctions(GoogleBooksApiService googleBooksApi, IConfiguration configuration)
+        {
+            this.googleBooksApi = googleBooksApi;
+            this.apiKey = configuration[API_KEY];
+        }
+
         [FunctionName("ReviewBook")]
         public IActionResult ReviewBook(
             [HttpTrigger(AuthorizationLevel.Function, "POST", Route = ApiRoutes.API_REVIEWS)] HttpRequest req,
@@ -64,13 +77,38 @@ namespace Xamarin.Bookshelf.Functions
             collectionName: Constants.BOOKS_COLLECTION_NAME,
             ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
             SqlQuery = "select * from Books b where b.UserId = {userId} order by b.ReadingStatus")] IEnumerable<ABookshelf> bookshelves,
-            ILogger log)
+            ILogger log,
+            string userId)
         {
-            if (bookshelves == null || !bookshelves.Any())
+            IEnumerable<UserBookshelf> userBookshelves = Enumerable.Empty < UserBookshelf>();
+
+            if (bookshelves != null && bookshelves.Any())
             {
-                return new NotFoundResult();
+                userBookshelves = bookshelves.GroupBy(
+                    b => b.ReadingStatus,
+                b => b,
+                (status, books) => new UserBookshelf()
+                {
+                    ReadingStatus = status,
+                    UserId = userId,
+                    Count = books.Count(),
+                    Books = ConvertToBooks(books).GetAwaiter().GetResult()
+                });
             }
-            return new OkObjectResult(bookshelves);
+
+
+            return new OkObjectResult(userBookshelves);
+        }
+
+        private async Task<Book[]> ConvertToBooks(IEnumerable<ABookshelf> bookshelves)
+        {
+            var books = new List<Book>();
+            foreach(var bookshelf in bookshelves)
+            {
+                var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey);
+                books.Add(ConvertToBook(book));
+            }
+            return books.ToArray();
         }
 
         [FunctionName("GetReviews")]
@@ -88,6 +126,33 @@ namespace Xamarin.Bookshelf.Functions
                 return new NotFoundResult();
             }
             return new OkObjectResult(reviews);
+        }
+
+        private Book ConvertToBook(Volume volume)
+        {
+            return new Book()
+            {
+                BookId = volume.id,
+                Title = volume.volumeInfo.title,
+                SubTitle = volume.volumeInfo.subtitle,
+                Summary = volume.volumeInfo.description,
+                Authors = volume.volumeInfo.authors,
+                Publisher = volume.volumeInfo.publisher,
+                PublishedDate = volume.volumeInfo.publishedDate,
+                Categories = volume.volumeInfo.categories,
+                MainCategory = volume.volumeInfo.mainCategory,
+                Language = volume.volumeInfo.language,
+                PageCount = volume.volumeInfo.pageCount,
+                Price = (decimal?)volume.saleInfo.listPrice?.amount,
+                Rating = volume.volumeInfo.averageRating,
+                RatingCount = volume.volumeInfo.ratingsCount,
+                ThumbnailUrl = volume.volumeInfo.imageLinks?.thumbnail,
+                SmallThumbnailUrl = volume.volumeInfo.imageLinks?.smallThumbnail,
+                SmallUrl = volume.volumeInfo.imageLinks?.small,
+                MediumUrl = volume.volumeInfo.imageLinks?.medium,
+                LargeUrl = volume.volumeInfo.imageLinks?.large,
+                ExtraLargeUrl = volume.volumeInfo.imageLinks?.extraLarge,
+            };
         }
     }
 }
