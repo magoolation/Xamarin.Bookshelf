@@ -17,7 +17,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         public string BookId { get; set; }
 
-        private string reviewTitle;
+        private string reviewTitle; //R:18 G:140 B:250 
         public string ReviewTitle
         {
             get => reviewTitle;
