@@ -5,23 +5,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
              xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true" 
              mc:Ignorable="d"
              x:Class="Xamarin.Bookshelf.Mobile.Views.ReviewBookPage"
              x:DataType="vm:ReviewBookPageViewModel"
              BindingContext="{Binding ReviewBookPageViewModel, Source={x:StaticResource vmLocator}}"
-             Shell.PresentationMode="ModalAnimated"
-             Padding="60">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Close"/>
-    </ContentPage.ToolbarItems>
+             Shell.PresentationMode="ModalAnimated">
     <ContentPage.Content>
-        <Grid RowSpacing="0">
+        <Grid RowSpacing="30" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackLayout BackgroundColor="Blue">
-                <Label Text="Cancel" HorizontalOptions="Start">
+            <StackLayout>
+                <Label Text="Cancel" HorizontalOptions="Start" TextColor="Blue">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding CancelCommand}"/>
                     </Label.GestureRecognizers>
@@ -31,7 +29,7 @@
             <StackLayout Grid.Row="1">
                 <Slider Maximum="5" Minimum="0" Value="{Binding Rating, Mode=OneWayToSource}" />
                 <Entry Text="{Binding ReviewTitle}" />
-                <Editor Text="{Binding Review}" />
+                <Editor Text="{Binding Review}" Placeholder="Review" BackgroundColor="Azure" HeightRequest="120"/>
                 <Button Text="Send Review" Command="{Binding SendCommand}" />
             </StackLayout>
         </Grid>
