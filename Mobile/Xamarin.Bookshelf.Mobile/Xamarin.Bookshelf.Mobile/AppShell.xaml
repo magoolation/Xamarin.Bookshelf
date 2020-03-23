@@ -34,13 +34,13 @@
     <TabBar>
         <Tab Title="My Books" Route="MyBooks">
             <Tab.Icon>
-                <FontImageSource Glyph="{x:Static shared:IconFont.User}" FontFamily="fa-regular-400" />
+                <FontImageSource Glyph="{x:Static shared:IconFont.User}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:BookshelvesPage}" />
         </Tab>
         <Tab Title="Library" Route="SearchBooks">
             <Tab.Icon>
-                <FontImageSource Glyph="{x:Static shared:IconFont.Building}" FontFamily="fa-regular-400" />
+                <FontImageSource Glyph="{x:Static shared:IconFont.Building}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:BookSearchPage}" />
         </Tab>

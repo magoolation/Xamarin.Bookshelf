@@ -13,6 +13,7 @@
             <Grid RowSpacing="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
@@ -22,7 +23,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Image Source="{Binding Book.MediumUrl}" Aspect="AspectFit" Grid.Column="0" BackgroundColor="Yellow" VerticalOptions="Start"/>
+                    <Image Source="{Binding Book.MediumUrl}" Aspect="AspectFit" Grid.Column="0" VerticalOptions="Start"/>
                     <StackLayout Grid.Column="1">
                         <Label Text="{Binding Book.Title}" />
                         <Label Text="{Binding Book.SubTitle}" />
@@ -56,18 +57,18 @@
                     </StackLayout>
                 </Grid>
 
-                <FlexLayout Grid.Row="2" Direction="Row">
-                    <ImageButton AutomationProperties.Name="Add to my Library" Command="{Binding AddToLibraryCommand}" FlexLayout.Grow="1">
+                <StackLayout Grid.Row="2" Orientation="Horizontal" HeightRequest="50" VerticalOptions="End" Margin="0,0,0,5">
+                    <ImageButton AutomationProperties.Name="Add to my Library" Command="{Binding AddToLibraryCommand}" BackgroundColor="#3DD5FF" HeightRequest="60" WidthRequest="60">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{x:Static shared:IconFont.Star}" FontFamily="fa-regular-400" />
+                            <FontImageSource Glyph="{x:Static shared:IconFont.Star}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
                         </ImageButton.Source>
                     </ImageButton>
-                    <ImageButton AutomationProperties.Name="Write a Review" Command="{Binding ReviewBookCommand}" FlexLayout.Grow="1">
+                    <ImageButton AutomationProperties.Name="Write a Review" Command="{Binding ReviewBookCommand}" HorizontalOptions="EndAndExpand" BackgroundColor="#3DD5FF" HeightRequest="55" WidthRequest="55">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{x:Static shared:IconFont.Comment}" FontFamily="fa-regular-400" />
+                            <FontImageSource Glyph="{x:Static shared:IconFont.Comment}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
                         </ImageButton.Source>
                     </ImageButton>
-                </FlexLayout>
+                </StackLayout>
 
                 <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" AutomationProperties.Name="Loading ..." Grid.RowSpan="2" />
             </Grid>
