@@ -32,10 +32,12 @@ namespace Xamarin.Bookshelf.Functions
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
+            string ipAddress = req.Headers["x-forwarded-for"];
+
             IEnumerable<Book> books = Enumerable.Empty<Book>();
             if (req.Query.TryGetValue("title", out var titles))
             {
-                var volumes = await googleBooksApi.Endpoint.SearchBookByTitleAsync(titles.First(), apiKey);
+                var volumes = await googleBooksApi.Endpoint.SearchBookByTitleAsync(titles.First(), apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
                     books = volumes.items.Select(ConvertToBook);
@@ -43,7 +45,7 @@ namespace Xamarin.Bookshelf.Functions
             }
             else if (req.Query.TryGetValue("author", out var authors))
             {
-                var volumes = await googleBooksApi.Endpoint.SearchBookByAuthorAsync(authors.First(), apiKey);
+                var volumes = await googleBooksApi.Endpoint.SearchBookByAuthorAsync(authors.First(), apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
                     books = volumes.items.Select(ConvertToBook); 
@@ -91,10 +93,11 @@ namespace Xamarin.Bookshelf.Functions
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
+            string ipAddress = req.Headers["x-forwarded-for"];
 
             Book book = default(Book);
 
-            Volume volume = await googleBooksApi.Endpoint.GetBookById(id, apiKey);
+            Volume volume = await googleBooksApi.Endpoint.GetBookById(id, apiKey, ipAddress);
             if (volume != null)
             {
                 book = ConvertToBook(volume);

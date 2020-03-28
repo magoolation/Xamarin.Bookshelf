@@ -80,6 +80,7 @@ namespace Xamarin.Bookshelf.Functions
             ILogger log,
             string userId)
         {
+            string ipAddress = req.Headers["x-forwarded-for"];
             IEnumerable<UserBookshelf> userBookshelves = Enumerable.Empty < UserBookshelf>();
 
             if (bookshelves != null && bookshelves.Any())
@@ -92,7 +93,7 @@ namespace Xamarin.Bookshelf.Functions
                     ReadingStatus = status,
                     UserId = userId,
                     Count = books.Count(),
-                    Books = ConvertToBooks(books).GetAwaiter().GetResult()
+                    Books = ConvertToBooks(books, ipAddress).GetAwaiter().GetResult()
                 });
             }
 
@@ -100,12 +101,12 @@ namespace Xamarin.Bookshelf.Functions
             return new OkObjectResult(userBookshelves);
         }
 
-        private async Task<Book[]> ConvertToBooks(IEnumerable<ABookshelf> bookshelves)
+        private async Task<Book[]> ConvertToBooks(IEnumerable<ABookshelf> bookshelves, string ipAddress)
         {
             var books = new List<Book>();
             foreach(var bookshelf in bookshelves)
             {
-                var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey);
+                var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey, ipAddress);
                 books.Add(ConvertToBook(book));
             }
             return books.ToArray();
