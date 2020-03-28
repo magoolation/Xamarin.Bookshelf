@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,46 +45,38 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ReviewBookPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
-            SendCommand = new Command(SendReview);
-            CancelCommand = new Command(Cancel);
+            SendCommand = new AsyncCommand(() => SendReviewAsync());
+            CancelCommand = new AsyncCommand(() => CancelAsync());
         }
 
-        private async void Cancel(object obj)
+        private async Task CancelAsync()
         {
-            await CancelAsync();
-
-            Task CancelAsync() =>
-                Shell.Current.Navigation.PopModalAsync();
+            await Shell.Current.Navigation.PopModalAsync();
         }
 
-        private async void SendReview(object obj)
+        private async Task SendReviewAsync()
         {
-            await SendReviewAsync();
-
-            async Task SendReviewAsync()
+            try
             {
-                try
+                var bookReview = new BookReview()
                 {
-                    var bookReview = new BookReview()
-                    {
-                        BookId = BookId,
-                        UserId = "magoolation@me.com",
-                        Rating = rating,
-                        Title = reviewTitle,
-                        Review = review
-                    };
+                    BookId = BookId,
+                    UserId = "magoolation@me.com",
+                    Rating = rating,
+                    Title = reviewTitle,
+                    Review = review
+                };
 
-                    await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
-                    MainThread.BeginInvokeOnMainThread(async () =>
-                    {
-                        await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK");
-                        await Shell.Current.Navigation.PopModalAsync();
-                    });
-                }
-                catch (Exception ex)
+                await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
+                MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
-                }
+                    await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK");
+                    await Shell.Current.Navigation.PopModalAsync();
+                });
+            }
+            catch (Exception ex)
+            {
+                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
             }
         }
 

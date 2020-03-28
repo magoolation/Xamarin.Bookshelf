@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -35,20 +36,15 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public BookSearchPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
-            SearchCommand = new Command(SearchBooks, CanSearchBooks);
-            DetailsCommand = new Command<string>(ViewDetails);
+            SearchCommand = new AsyncCommand(() => SearchBooksAsync(), CanSearchBooks);
+            DetailsCommand = new AsyncCommand<string>(s => ViewDetailsAsync(s));
         }
 
-        private async void ViewDetails(string bookId)
+        private async Task ViewDetailsAsync(string bookId)
         {
             await Shell.Current.GoToAsync($"Details?bookId={bookId}");
         }
-
-        private async void SearchBooks(object arg)
-        {
-            await SearchBooksAsync();
-        }
-
+        
         private async Task SearchBooksAsync()
         {
             try

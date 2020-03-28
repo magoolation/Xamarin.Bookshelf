@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +24,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             this.bookService = bookService;
 
-            AddToLibraryCommand = new Command(AddToLibrary);
-            ReviewBookCommand = new Command(ReviewBook);
+            AddToLibraryCommand = new AsyncCommand(() => AddToLibraryAsync());
+            ReviewBookCommand = new AsyncCommand(() => ReviewBookAsync());
         }
 
-        private async void AddToLibrary(object obj)
+        private async Task AddToLibraryAsync()
         {
             string result = await Shell.Current.DisplayActionSheet("Select a Bookshelf", "Cancel", null, new string[] { "I want to read", "I'm reading", "I already read" });
             if (!string.IsNullOrWhiteSpace(result) && result != "Cancel")
@@ -76,7 +77,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-        private async void ReviewBook(object obj)
+        private async Task ReviewBookAsync()
         {
             await Shell.Current.GoToAsync($"ReviewBook?bookId={BookId}");
         }
