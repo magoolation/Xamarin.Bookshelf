@@ -24,8 +24,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             this.bookService = bookService;
 
-            AddToLibraryCommand = new AsyncCommand(() => AddToLibraryAsync());
-            ReviewBookCommand = new AsyncCommand(() => ReviewBookAsync());
+            AddToLibraryCommand = new AsyncCommand(AddToLibraryAsync);
+            ReviewBookCommand = new AsyncCommand(ReviewBookAsync);
         }
 
         private async Task AddToLibraryAsync()

@@ -18,7 +18,7 @@ namespace Xamarin.Bookshelf.Shared.Services
         [Get("/v1/reviews/{bookId}")]
         Task<IEnumerable<BookReview>> GetBookReviewsAsync(string bookId);
             [Get("/v/1/bookshelves/{userId}")]
-        Task<IEnumerable<ABookshelf>> GetUserBookShelvesAsync(string userId);
+        Task<IEnumerable<UserBookshelf>> GetUserBookShelvesAsync(string userId);
         [Post("/v1/bookshelves")]
         Task RegisterBookAsync([Body]ABookshelf bookshelf);
             [Post("/v1/reviews")]

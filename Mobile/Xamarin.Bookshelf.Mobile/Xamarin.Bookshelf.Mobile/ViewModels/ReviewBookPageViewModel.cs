@@ -45,8 +45,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ReviewBookPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
-            SendCommand = new AsyncCommand(() => SendReviewAsync());
-            CancelCommand = new AsyncCommand(() => CancelAsync());
+            SendCommand = new AsyncCommand(SendReviewAsync);
+            CancelCommand = new AsyncCommand(CancelAsync);
         }
 
         private async Task CancelAsync()
