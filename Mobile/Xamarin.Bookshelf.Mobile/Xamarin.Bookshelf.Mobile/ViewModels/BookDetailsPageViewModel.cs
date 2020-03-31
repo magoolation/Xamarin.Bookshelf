@@ -1,9 +1,11 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
@@ -30,7 +32,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task AddToLibraryAsync()
         {
-            string result = await Shell.Current.DisplayActionSheet("Select a Bookshelf", "Cancel", null, new string[] { "I want to read", "I'm reading", "I already read" });
+            string result = await Shell.Current.DisplayActionSheet("Select a Bookshelf", "Cancel", null, EnumDescriptions.ReadingStatuses.Values.ToArray() );
             if (!string.IsNullOrWhiteSpace(result) && result != "Cancel")
             {
                 await RegisterBookAsync(result);
@@ -41,21 +43,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             try
             {
-                ReadingStatus status;
-                if (selected == "I am reading")
-                {
-                    status = ReadingStatus.Reading;
-                }
-                else if (selected == "I already read")
-                {
-                    status = ReadingStatus.Read;
-                }
-                else
-                {
-                    status = ReadingStatus.WantToRead;
-                }
-
                 IsBusy = true;
+                ReadingStatus status = selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Reading]
+                    ? ReadingStatus.Reading
+                    : selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Read] ? ReadingStatus.Read : ReadingStatus.WantToRead;
                 var bookshelf = new ABookshelf()
                 {
                     BookId = BookId,
