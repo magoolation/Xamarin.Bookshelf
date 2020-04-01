@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
@@ -31,10 +32,26 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public BookshelfItem[] Read => bookshelves[ReadingStatus.Read];
 
         public ICommand ViewDetailsCommand { get; }
+        public ICommand ReadingBookkActionsCommand { get; }
+        public ICommand ReadBookActionsCommand { get; }
+
         public BookshelvesPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
+            ReadingBookkActionsCommand = new AsyncCommand(ReadingBookActionsAsync);
+            ReadBookActionsCommand = new AsyncCommand(ReadBookActionsAsync);
+        }
+
+        private async Task ReadBookActionsAsync()
+        {
+            string[] actions = new string[] { EnumDescriptions.BookActions[BookAction.WriteReview], EnumDescriptions.BookActions[BookAction.StartReading], EnumDescriptions.BookActions[BookAction.RecommendBook] };
+            await Shell.Current.DisplayActionSheet("What do you want to do?", "Cancel", null, actions);
+        }
+
+        private Task ReadingBookActionsAsync()
+        {
+            throw new NotImplementedException();
         }
 
         private async Task ViewDetailsAsync(string bookId)

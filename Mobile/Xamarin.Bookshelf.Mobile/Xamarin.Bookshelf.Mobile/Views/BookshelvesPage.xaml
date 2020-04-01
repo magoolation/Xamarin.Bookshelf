@@ -34,7 +34,7 @@
                         <Grid>
                             <Image Source="{Binding Book.ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Book.Title}">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookSearchPageViewModel}}, Path=DetailsCommand}" CommandParameter="{Binding BookId}" />
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
                                 </Image.GestureRecognizers>
                             </Image>
                         </Grid>
