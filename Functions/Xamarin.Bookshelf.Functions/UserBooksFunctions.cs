@@ -17,7 +17,7 @@ using System.Web.Http;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
-using ABookshelf = Xamarin.Bookshelf.Shared.Models.Bookshelf;
+using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 
 namespace Xamarin.Bookshelf.Functions
 {
@@ -93,7 +93,7 @@ namespace Xamarin.Bookshelf.Functions
                     ReadingStatus = status,
                     UserId = userId,
                     Count = books.Count(),
-                    Books = ConvertToBooks(books, ipAddress).GetAwaiter().GetResult()
+                    Items = ConvertToBoksehlfItems(books, ipAddress).GetAwaiter().GetResult()
                 });
             }
 
@@ -101,13 +101,14 @@ namespace Xamarin.Bookshelf.Functions
             return new OkObjectResult(userBookshelves);
         }
 
-        private async Task<Book[]> ConvertToBooks(IEnumerable<ABookshelf> bookshelves, string ipAddress)
+        private async Task<BookshelfItem[]> ConvertToBoksehlfItems(IEnumerable<ABookshelf> bookshelves, string ipAddress)
         {
-            var books = new List<Book>();
+            var books = new List<BookshelfItem>();
             foreach(var bookshelf in bookshelves)
             {
                 var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey, ipAddress);
-                books.Add(ConvertToBook(book));
+                bookshelf.Book = ConvertToBook(book);
+                books.Add(bookshelf);                   
             }
             return books.ToArray();
         }
