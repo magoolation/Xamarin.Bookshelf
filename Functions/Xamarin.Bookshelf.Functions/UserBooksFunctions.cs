@@ -17,7 +17,6 @@ using System.Web.Http;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
-using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 
 namespace Xamarin.Bookshelf.Functions
 {
@@ -62,7 +61,7 @@ namespace Xamarin.Bookshelf.Functions
             ILogger log)
         {
             var response = new StreamReader(req.Body).ReadToEnd();
-            dynamic bookshelf = JsonConvert.DeserializeObject<ABookshelf>(response);
+            dynamic bookshelf = JsonConvert.DeserializeObject<BookshelfItem>(response);
 
             document = bookshelf;
 
@@ -76,7 +75,7 @@ namespace Xamarin.Bookshelf.Functions
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,
             ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
-            SqlQuery = "select * from Books b where b.UserId = {userId} order by b.ReadingStatus")] IEnumerable<ABookshelf> bookshelves,
+            SqlQuery = "select * from Books b where b.UserId = {userId} order by b.ReadingStatus")] IEnumerable<BookshelfItem> bookshelves,
             ILogger log,
             string userId)
         {
@@ -101,14 +100,14 @@ namespace Xamarin.Bookshelf.Functions
             return new OkObjectResult(userBookshelves);
         }
 
-        private async Task<BookshelfItem[]> ConvertToBoksehlfItems(IEnumerable<ABookshelf> bookshelves, string ipAddress)
+        private async Task<BookshelfItem[]> ConvertToBoksehlfItems(IEnumerable<BookshelfItem> bookshelves, string ipAddress)
         {
             var books = new List<BookshelfItem>();
             foreach(var bookshelf in bookshelves)
             {
                 var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey, ipAddress);
                 bookshelf.Book = ConvertToBook(book);
-                books.Add(bookshelf);                   
+                books.Add(bookshelf);
             }
             return books.ToArray();
         }
@@ -120,7 +119,7 @@ namespace Xamarin.Bookshelf.Functions
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,
             ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
-            SqlQuery = "select * from Reviews r where r.BookId = {bookId} order by r.UserId")] IEnumerable<ABookshelf> reviews,
+            SqlQuery = "select * from Reviews r where r.BookId = {bookId} order by r.UserId")] IEnumerable<BookshelfItem> reviews,
             ILogger log)
         {
             if (reviews == null || !reviews.Any())
