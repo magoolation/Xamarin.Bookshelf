@@ -11,7 +11,7 @@ namespace Xamarin.Bookshelf.Shared.Models
         Read = 3
     }
 
-    public class Bookshelf
+    public class BookshelfItem
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -20,5 +20,8 @@ namespace Xamarin.Bookshelf.Shared.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public ReadingStatus ReadingStatus { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
+        public double ReadingPosition { get; set; }
+        [JsonIgnore]
+        public Book Book {get; set; }
     }
 }

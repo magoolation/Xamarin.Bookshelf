@@ -9,6 +9,6 @@ namespace Xamarin.Bookshelf.Shared.Models
         public string UserId { get; set; }
         public ReadingStatus ReadingStatus { get; set; }
         public int Count { get; set; }
-        public Book[] Books { get; set; }
+        public BookshelfItem[] Items { get; set; }
     }
 }

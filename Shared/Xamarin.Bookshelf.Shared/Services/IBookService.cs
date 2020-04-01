@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Shared.Models;
-using ABookshelf = Xamarin.Bookshelf.Shared.Models.Bookshelf;
+using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 
 namespace Xamarin.Bookshelf.Shared.Services
 {
