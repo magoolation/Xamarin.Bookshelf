@@ -22,7 +22,6 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             set
             {
                 SetProperty(ref bookshelves, value);
-                OnPropertyChanged("WantToRead");
                 OnPropertyChanged("Reading");
                 OnPropertyChanged("Read");
             }
