@@ -21,7 +21,6 @@ namespace Xamarin.Bookshelf.Shared.Models
         public ReadingStatus ReadingStatus { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public double ReadingPosition { get; set; }
-        [JsonIgnore]
         public Book Book {get; set; }
     }
 }
