@@ -15,8 +15,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     {
         private readonly IBookService bookService;
 
-        private Dictionary<ReadingStatus, Book[]> bookshelves;
-        public Dictionary<ReadingStatus, Book[]> Bookshelves
+        private Dictionary<ReadingStatus, BookshelfItem[]> bookshelves;
+        public Dictionary<ReadingStatus, BookshelfItem[]> Bookshelves
         {
             get => bookshelves;
             set
@@ -28,9 +28,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-        public Book[] WantToRead => bookshelves[ReadingStatus.WantToRead];
-        public Book[] Read => bookshelves[ReadingStatus.Read];
-        public Book[] Reading => bookshelves[ReadingStatus.Reading];
+        public BookshelfItem[] Reading => bookshelves[ReadingStatus.Reading];
+        public BookshelfItem[] Read => bookshelves[ReadingStatus.Read];
 
         public ICommand ViewDetailsCommand { get; }
         public BookshelvesPageViewModel(IBookService bookService)
@@ -48,14 +47,14 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
 
-            var serverBookshelves = new Dictionary<ReadingStatus, Book[]>();
+            var serverBookshelves = new Dictionary<ReadingStatus, BookshelfItem[]>();
 
             try
             {
                 var result = await bookService.GetUserBookShelvesAsync("magoolation@me.com").ConfigureAwait(false);
                 foreach (var bookshelf in result)
                 {
-                    serverBookshelves.Add(bookshelf.ReadingStatus, bookshelf.Books);
+                    serverBookshelves.Add(bookshelf.ReadingStatus, bookshelf.Items);
                 }
 
                 Bookshelves = serverBookshelves;

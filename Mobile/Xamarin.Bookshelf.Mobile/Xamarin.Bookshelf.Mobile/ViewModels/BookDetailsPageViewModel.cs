@@ -10,7 +10,7 @@ using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using ABookshelf = Xamarin.Bookshelf.Shared.Models.Bookshelf;
+using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {

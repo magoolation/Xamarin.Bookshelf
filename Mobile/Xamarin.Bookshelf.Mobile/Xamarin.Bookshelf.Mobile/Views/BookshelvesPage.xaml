@@ -11,24 +11,11 @@
              x:DataType="vm:BookshelvesPageViewModel">
     <ContentPage.Content>
         <FlexLayout Direction="Column" JustifyContent="SpaceBetween">
-            <CarouselView ItemsSource="{Binding WantToRead}" PeekAreaInsets="100">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Book">
-                        <Grid>
-                            <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Title}">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand }" CommandParameter="{Binding BookId}" />
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </Grid>
-                    </DataTemplate>
-                    </CarouselView.ItemTemplate>
-            </CarouselView>
             <CarouselView ItemsSource="{Binding Reading}" PeekAreaInsets="100">
                 <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Book">
+                    <DataTemplate x:DataType="models:BookshelfItem">
                         <Grid>
-                            <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Title}">
+                            <Image Source="{Binding Book.ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Book.Title}">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand }" CommandParameter="{Binding BookId}" />
                                 </Image.GestureRecognizers>
@@ -37,19 +24,23 @@
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-            <CarouselView ItemsSource="{Binding Read}" PeekAreaInsets="100">
-                <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Book">
+            <CollectionView ItemsSource="{Binding Read}" Grid.Row="1" EmptyView="No results found">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                        Span="3" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:BookshelfItem">
                         <Grid>
-                            <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Title}">
+                            <Image Source="{Binding Book.ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Book.Title}">
                                 <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand }" CommandParameter="{Binding BookId}" />
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookSearchPageViewModel}}, Path=DetailsCommand}" CommandParameter="{Binding BookId}" />
                                 </Image.GestureRecognizers>
                             </Image>
                         </Grid>
                     </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </FlexLayout>
     </ContentPage.Content>
 </ContentPage>
