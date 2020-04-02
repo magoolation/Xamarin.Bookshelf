@@ -8,19 +8,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
-    public class BookSearchPageViewModel: BaseViewModel
+    public class BookSearchPageViewModel : BaseViewModel
     {
-        private string searchText;
-        public string SearchText
-        {
-            get => searchText;
-            set => SetProperty(ref searchText, value);
-        }
-
         private ObservableCollection<Book> books = new ObservableCollection<Book>(Enumerable.Empty<Book>());
         private readonly IBookService bookService;
 
@@ -36,22 +30,22 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public BookSearchPageViewModel(IBookService bookService)
         {
             this.bookService = bookService;
-            SearchCommand = new AsyncCommand(() => SearchBooksAsync(), CanSearchBooks);
-            DetailsCommand = new AsyncCommand<string>(s => ViewDetailsAsync(s));
+            SearchCommand = new AsyncCommand<string>(SearchBooksAsync);
+            DetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
         }
 
         private async Task ViewDetailsAsync(string bookId)
         {
             await Shell.Current.GoToAsync($"Details?bookId={bookId}");
         }
-        
-        private async Task SearchBooksAsync()
+
+        private async Task SearchBooksAsync(string text)
         {
             try
             {
                 IsBusy = true;
 
-                var result = await bookService.SearchBookByTitleAsync(SearchText).ConfigureAwait(false);
+                var result = await bookService.SearchBookByTitleAsync(text).ConfigureAwait(false);
                 if (result == null)
                 {
                     result = Enumerable.Empty<Book>();
@@ -59,19 +53,14 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
                 Books = new ObservableCollection<Book>(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
             }
             finally
             {
                 IsBusy = false;
             }
-        }
-
-        private bool CanSearchBooks(object arg)
-        {
-            return !string.IsNullOrWhiteSpace(searchText);
         }
     }
 }

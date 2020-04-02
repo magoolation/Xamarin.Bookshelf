@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
-             xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
-             mc:Ignorable="d"
-             x:Class="Xamarin.Bookshelf.Mobile.Views.BookSearchPage"
-             BindingContext="{Binding BookSearchPageViewModel, Source={StaticResource vmLocator}}"
-             x:DataType="vm:BookSearchPageViewModel">
+<ContentPage
+    x:Class="Xamarin.Bookshelf.Mobile.Views.BookSearchPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
+    xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
+    x:DataType="vm:BookSearchPageViewModel"
+    BindingContext="{Binding BookSearchPageViewModel, Source={StaticResource vmLocator}}"
+    mc:Ignorable="d">
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -16,16 +17,26 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Entry Text="{Binding SearchText, Mode=TwoWay}" ReturnType="Search" ReturnCommand="{Binding SearchCommand}" Grid.Row="0" />
-            <CollectionView ItemsSource="{Binding Books}" Grid.Row="1" EmptyView="No results found">
+            <SearchBar
+                Grid.Row="0"
+                Placeholder="Search by title or author"
+                SearchCommand="{Binding SearchCommand}"
+                SearchCommandParameter="{Binding Source={x:RelativeSource Self}, Path=Text}" />
+            <CollectionView
+                Grid.Row="1"
+                EmptyView="No results found"
+                ItemsSource="{Binding Books}">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"
-                        Span="3" />
+                    <GridItemsLayout Orientation="Vertical" Span="3" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Book">
                         <Grid>
-                            <Image Source="{Binding ThumbnailUrl}" Aspect="AspectFit" HeightRequest="128" AutomationProperties.Name="{Binding Title}">
+                            <Image
+                                Aspect="AspectFit"
+                                AutomationProperties.Name="{Binding Title}"
+                                HeightRequest="128"
+                                Source="{Binding ThumbnailUrl}">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookSearchPageViewModel}}, Path=DetailsCommand}" CommandParameter="{Binding BookId}" />
                                 </Image.GestureRecognizers>
@@ -35,7 +46,11 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Grid.RowSpan="2" AutomationProperties.Name="Loading ..." />
+            <ActivityIndicator
+                Grid.RowSpan="2"
+                AutomationProperties.Name="Loading ..."
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}" />
 
         </Grid>
     </ContentPage.Content>
