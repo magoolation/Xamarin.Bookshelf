@@ -13,7 +13,7 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -27,11 +27,14 @@
                 EmptyView="No results found"
                 ItemsSource="{Binding Books}">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                    <GridItemsLayout
+                        Orientation="Vertical"
+                        Span="3"
+                        VerticalItemSpacing="10" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Book">
-                        <Grid>
+                        <StackLayout>
                             <Image
                                 Aspect="AspectFit"
                                 AutomationProperties.Name="{Binding Title}"
@@ -41,7 +44,7 @@
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookSearchPageViewModel}}, Path=DetailsCommand}" CommandParameter="{Binding BookId}" />
                                 </Image.GestureRecognizers>
                             </Image>
-                        </Grid>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

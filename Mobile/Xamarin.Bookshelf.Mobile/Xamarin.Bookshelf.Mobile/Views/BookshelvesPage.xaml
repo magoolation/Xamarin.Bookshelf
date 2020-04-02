@@ -10,77 +10,77 @@
     x:DataType="vm:BookshelvesPageViewModel"
     BindingContext="{Binding BookshelvesPageViewModel, Source={StaticResource vmLocator}}"
     mc:Ignorable="d">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TitleLabel" TargetType="Label">
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="Large" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+                <Setter Property="BackgroundColor" Value="#c0c0c0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowSpacing="10">
+        <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="200" />
+                <RowDefinition Height="140" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Label
                 Grid.Row="0"
-                Padding="10"
-                BackgroundColor="#c0c0c0"
-                FontAttributes="Bold"
-                FontSize="Large"
-                HorizontalOptions="FillAndExpand"
+                Style="{x:StaticResource TitleLabel}"
                 Text="Currently Reading" />
 
             <CarouselView
                 Grid.Row="1"
                 ItemsSource="{Binding Reading}"
-                PeekAreaInsets="100">
+                PeekAreaInsets="70">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="models:BookshelfItem">
-                        <Grid>
-                            <Image
-                                Aspect="AspectFit"
-                                AutomationProperties.Name="{Binding Book.Title}"
-                                HeightRequest="128"
-                                Source="{Binding Book.ThumbnailUrl}">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </Grid>
+                        <Image
+                            Aspect="AspectFit"
+                            AutomationProperties.Name="{Binding Book.Title}"
+                            Source="{Binding Book.ThumbnailUrl}">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
+                            </Image.GestureRecognizers>
+                        </Image>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
 
             <Label
                 Grid.Row="2"
-                Padding="10"
-                BackgroundColor="#c0c0c0"
-                FontAttributes="Bold"
-                FontSize="Large"
-                HorizontalOptions="FillAndExpand"
+                Style="{x:StaticResource TitleLabel}"
                 Text="My Library" />
 
-            <CollectionView
-                Grid.Row="3"
-                EmptyView="Your library is empty."
-                ItemsSource="{Binding Read}">
+            <CollectionView Grid.Row="3" ItemsSource="{Binding Read}">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                    <GridItemsLayout
+                        Orientation="Vertical"
+                        Span="3"
+                        VerticalItemSpacing="10" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:BookshelfItem">
-                        <Grid>
-                            <Image
-                                Aspect="AspectFit"
-                                AutomationProperties.Name="{Binding Book.Title}"
-                                HeightRequest="128"
-                                Source="{Binding Book.ThumbnailUrl}">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </Grid>
+                        <Image
+                            AutomationProperties.Name="{Binding Book.Title}"
+                            HeightRequest="128"
+                            Source="{Binding Book.ThumbnailUrl}">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
+                            </Image.GestureRecognizers>
+                        </Image>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <ActivityIndicator Grid.RowSpan="4" AutomationProperties.Name="Loading ..." />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
