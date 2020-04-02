@@ -10,9 +10,17 @@
              BindingContext="{Binding BookshelvesPageViewModel, Source={StaticResource vmLocator}}"
              x:DataType="vm:BookshelvesPageViewModel">
     <ContentPage.Content>
-        <FlexLayout Direction="Column">
-            <Label Text="Currently Reading" FontSize="Large" FontAttributes="Bold" BackgroundColor="#c0c0c0" />
-            <CarouselView ItemsSource="{Binding Reading}" PeekAreaInsets="100" FlexLayout.Basis="300">
+        <Grid RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="200" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <Label Text="Currently Reading" FontSize="Large" FontAttributes="Bold" BackgroundColor="#c0c0c0" Grid.Row="0" Padding="10" HorizontalOptions="FillAndExpand" />
+            
+            <CarouselView ItemsSource="{Binding Reading}" PeekAreaInsets="100" Grid.Row="1">
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="models:BookshelfItem">
                         <Grid>
@@ -25,8 +33,10 @@
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-            <Label Text="My Library" FontSize="Large" FontAttributes="Bold" BackgroundColor="#c0c0c0" />
-            <CollectionView ItemsSource="{Binding Read}" Grid.Row="1" EmptyView="No results found" FlexLayout.Grow="1">
+
+            <Label Text="My Library" FontSize="Large" FontAttributes="Bold" BackgroundColor="#c0c0c0" Grid.Row="2" Padding="10" HorizontalOptions="FillAndExpand" />
+
+            <CollectionView ItemsSource="{Binding Read}" Grid.Row="3" EmptyView="Your library is empty.">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
                         Span="3" />
@@ -43,6 +53,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </FlexLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
