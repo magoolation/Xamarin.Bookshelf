@@ -8,6 +8,9 @@ namespace Xamarin.Bookshelf.Mobile
         public App()
         {
             InitializeComponent();
+
+            var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL" };
+            Device.SetFlags(flags);
             
             MainPage = new AppShell();
         }
