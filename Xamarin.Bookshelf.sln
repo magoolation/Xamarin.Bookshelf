@@ -26,9 +26,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Mobile.An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Mobile.iOS", "Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.iOS\Xamarin.Bookshelf.Mobile.iOS.csproj", "{AFBE2F7C-29F7-48DA-BC24-8DFA7E07FECC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Mobile", "Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.csproj", "{474E664C-53E0-441D-897A-6E3F912D364C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Bookshelf.Mobile", "Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.csproj", "{474E664C-53E0-441D-897A-6E3F912D364C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Integration.Tests", "Tests\Xamarin.Bookshelf.Integration.Tests\Xamarin.Bookshelf.Integration.Tests.csproj", "{7476AEBF-C5FD-41A7-90B2-5824D3D4451B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Bookshelf.Integration.Tests", "Tests\Xamarin.Bookshelf.Integration.Tests\Xamarin.Bookshelf.Integration.Tests.csproj", "{7476AEBF-C5FD-41A7-90B2-5824D3D4451B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{B3F3A424-ACB2-44FF-8AA1-3E6E077F7A46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Bookshelf.Authentication", "Backend\Xamarin.Bookshelf.Authentication\Xamarin.Bookshelf.Authentication.csproj", "{497CBF15-1104-4F79-9BE9-E23CC5351BE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +121,18 @@ Global
 		{7476AEBF-C5FD-41A7-90B2-5824D3D4451B}.Release|iPhone.Build.0 = Release|Any CPU
 		{7476AEBF-C5FD-41A7-90B2-5824D3D4451B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{7476AEBF-C5FD-41A7-90B2-5824D3D4451B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Release|iPhone.Build.0 = Release|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +144,7 @@ Global
 		{AFBE2F7C-29F7-48DA-BC24-8DFA7E07FECC} = {906BD555-D82E-4F83-ADF4-82DAD50B4446}
 		{474E664C-53E0-441D-897A-6E3F912D364C} = {906BD555-D82E-4F83-ADF4-82DAD50B4446}
 		{7476AEBF-C5FD-41A7-90B2-5824D3D4451B} = {06804D21-370A-471A-A589-D5C30BAA4AE5}
+		{497CBF15-1104-4F79-9BE9-E23CC5351BE3} = {B3F3A424-ACB2-44FF-8AA1-3E6E077F7A46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE0C389B-921F-438A-B2B8-64385B92DCE8}
