@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Bookshelf.Mobile.Models;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
@@ -20,7 +21,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task LoginWithGoogleAsync()
         {
-            MainThread.BeginInvokeOnMainThread(async () =>
+            Console.WriteLine(MainThread.IsMainThread);
+            //await MainThread.InvokeOnMainThreadAsync(async () =>
+            //{
+            try
             {
                 var result = await WebAuthenticator.AuthenticateAsync(new Uri(Constants.AUTHENTICATION_URL), new Uri(Constants.DEEP_LINK_SCHEMA));
                 var token = new AuthenticationToken()
@@ -29,7 +33,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                     RefreshToken = result.RefreshToken,
                     ExpiresIn = result.ExpiresIn
                 };
-            });
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            //});
         }
-    }       
+    }
 }
