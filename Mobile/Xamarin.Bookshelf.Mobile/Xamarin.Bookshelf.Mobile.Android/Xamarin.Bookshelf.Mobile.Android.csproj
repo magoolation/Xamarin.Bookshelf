@@ -70,7 +70,6 @@
       <Version>5.1.27</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -105,6 +104,10 @@
     <AndroidResource Include="Resources\drawable\tab_feed.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\Git\XE\Essentials\Xamarin.Essentials\Xamarin.Essentials.csproj">
+      <Project>{8d87aa32-b632-4bca-b90b-35bfe75e8bb2}</Project>
+      <Name>Xamarin.Essentials</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.csproj">
       <Project>{F96095E3-137E-4D86-B324-AE3BA934D825}</Project>
       <Name>Xamarin.Bookshelf.Mobile</Name>

@@ -16,8 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.3" />
     <PackageReference Include="refit" Version="5.1.27" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,11 +24,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\Git\XE\Essentials\Xamarin.Essentials\Xamarin.Essentials.csproj" />
     <ProjectReference Include="..\..\..\Shared\Xamarin.Bookshelf.Shared\Xamarin.Bookshelf.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Assets\fa-regular-400.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\..\..\..\..\..\..\..\Git\XE\Essentials\Xamarin.Essentials\bin\Debug\netstandard2.0\Xamarin.Essentials.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
