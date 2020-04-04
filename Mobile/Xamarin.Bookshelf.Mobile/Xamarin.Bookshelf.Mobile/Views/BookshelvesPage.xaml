@@ -80,7 +80,11 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <ActivityIndicator Grid.RowSpan="4" AutomationProperties.Name="Loading ..." />
+            <ActivityIndicator
+                Grid.RowSpan="4"
+                AutomationProperties.Name="Loading ..."
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
