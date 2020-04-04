@@ -18,6 +18,8 @@ namespace Xamarin.Bookshelf.Mobile
         public BookSearchPageViewModel BookSearchPageViewModel { get; }
         public BookDetailsPageViewModel BookDetailsPageViewModel { get;  }
         public ReviewBookPageViewModel ReviewBookPageViewModel { get; }
+        public LoginPageViewModel LoginPageViewModel { get; }
+        public InitializationSegwayPageViewModel InitializationSegwayPageViewModel { get; }
 
         public ViewModelLocator()
         {
@@ -25,6 +27,8 @@ namespace Xamarin.Bookshelf.Mobile
             BookSearchPageViewModel = new BookSearchPageViewModel(bookService.Value);
             BookDetailsPageViewModel = new BookDetailsPageViewModel(bookService.Value);
             ReviewBookPageViewModel = new ReviewBookPageViewModel(bookService.Value);
+            LoginPageViewModel = new LoginPageViewModel();
+            InitializationSegwayPageViewModel = new InitializationSegwayPageViewModel();
         }
     }
 }

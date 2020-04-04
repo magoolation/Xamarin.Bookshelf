@@ -1,16 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-       xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
-       mc:Ignorable="d"
-       xmlns:local="clr-namespace:Xamarin.Bookshelf.Mobile.Views"
-       Title="Xamarin.Bookshelf.Mobile"
-       x:Class="Xamarin.Bookshelf.Mobile.AppShell">
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Xamarin.Bookshelf.Mobile.AppShell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:local="clr-namespace:Xamarin.Bookshelf.Mobile.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
+    Title="Xamarin.Bookshelf.Mobile"
+    mc:Ignorable="d">
 
-    <!-- 
-        Styles and Resources 
+    <!--
+        Styles and Resources
     -->
     <Shell.Resources>
         <ResourceDictionary>
@@ -22,31 +23,35 @@
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
                 <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="White" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarTitleColor" Value="White" />
             </Style>
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style BasedOn="{StaticResource BaseStyle}" TargetType="TabBar" />
         </ResourceDictionary>
     </Shell.Resources>
 
-    <!-- Your Pages -->
-    <TabBar>
+    <ShellContent ContentTemplate="{DataTemplate local:InitializationSegwayPage}" Route="Loading" />
+
+    <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" Route="Login" />
+
+    <!--  Your Pages  -->
+    <TabBar Route="Main">
         <Tab Title="My Books" Route="MyBooks">
             <Tab.Icon>
-                <FontImageSource Glyph="{x:Static shared:IconFont.User}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
+                <FontImageSource FontFamily="{StaticResource FontAwesome5FreeRegular}" Glyph="{x:Static shared:IconFont.User}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:BookshelvesPage}" />
         </Tab>
         <Tab Title="Library" Route="SearchBooks">
             <Tab.Icon>
-                <FontImageSource Glyph="{x:Static shared:IconFont.Building}" FontFamily="{StaticResource FontAwesome5FreeRegular}" />
+                <FontImageSource FontFamily="{StaticResource FontAwesome5FreeRegular}" Glyph="{x:Static shared:IconFont.Building}" />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:BookSearchPage}" />
         </Tab>
     </TabBar>
 
-    <!-- Optional Templates 
+    <!-- Optional Templates
     // These may be provided inline as below or as separate classes.
 
     // This header appears at the top of the Flyout.

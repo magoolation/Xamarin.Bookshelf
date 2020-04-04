@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Xamarin.Bookshelf.Mobile.Views.LoginPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
+    x:DataType="vm:LoginPageViewModel"
+    BindingContext="{Binding LoginPageViewModel, Source={StaticResource vmLocator}}"
+    Shell.PresentationMode="Animated"
+    mc:Ignorable="d">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center">
+            <Button
+                BackgroundColor="#4285f4"
+                Command="{Binding LoginWithGoogleCommand}"
+                CornerRadius="2"
+                HeightRequest="42"
+                HorizontalOptions="Center"
+                Text="Login with Google"
+                TextColor="White"
+                WidthRequest="148" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
