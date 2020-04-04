@@ -76,8 +76,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 Bookshelves = serverBookshelves;
             }
             catch (Exception ex)
-            {                
-            MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
+            {
+                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
             }
         }
     }
