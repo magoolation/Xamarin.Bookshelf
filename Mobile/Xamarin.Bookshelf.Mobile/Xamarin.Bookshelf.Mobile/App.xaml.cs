@@ -1,5 +1,4 @@
-﻿using Xamarin.Bookshelf.Mobile.Views;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 
 namespace Xamarin.Bookshelf.Mobile

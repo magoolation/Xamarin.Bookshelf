@@ -1,13 +1,11 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
