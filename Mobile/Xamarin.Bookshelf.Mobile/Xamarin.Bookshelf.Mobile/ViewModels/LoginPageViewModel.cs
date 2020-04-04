@@ -20,7 +20,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task LoginWithGoogleAsync()
         {
-            MainThread.BeginInvokeOnMainThread(async () =>
+            await MainThread.InvokeOnMainThreadAsync(async () =>
             {
                 var result = await WebAuthenticator.AuthenticateAsync(new Uri(Constants.AUTHENTICATION_URL), new Uri(Constants.DEEP_LINK_SCHEMA));
                 var token = new AuthenticationToken()
@@ -31,5 +31,5 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 };
             });
         }
-    }       
+    }
 }

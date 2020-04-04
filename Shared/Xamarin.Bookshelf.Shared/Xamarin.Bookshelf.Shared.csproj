@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="refit" Version="5.1.27" />
+    <PackageReference Include="refit" Version="5.1.54" />
   </ItemGroup>
 
 </Project>
