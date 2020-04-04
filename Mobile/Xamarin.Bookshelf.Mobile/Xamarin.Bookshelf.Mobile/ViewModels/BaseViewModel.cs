@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
@@ -32,7 +35,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             onChanged?.Invoke();
             OnPropertyChanged(propertyName);
             return true;
-        }        
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -44,7 +47,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public virtual  void OnAppearing() { }
+        public virtual void OnAppearing() { }
         public virtual void OnDisappearing() { }
+
+        protected Task DisplayAlertAsync(string title, string message, string actionButton, string cancelButton = null)
+            {
+            return MainThread.InvokeOnMainThreadAsync(async () => await Shell.Current.DisplayAlert(title, message, actionButton, cancelButton));
+            }    
     }
 }

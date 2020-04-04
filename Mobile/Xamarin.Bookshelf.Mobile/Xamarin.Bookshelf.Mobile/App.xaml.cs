@@ -12,9 +12,7 @@ namespace Xamarin.Bookshelf.Mobile
 
             var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL" };
             Device.SetFlags(flags);
-            var locator = new ViewModelLocator();
-            MainPage = new LoginPage();
-            //MainPage = new AppShell();
+            MainPage = new AppShell();
         }
 
         protected override void OnStart()

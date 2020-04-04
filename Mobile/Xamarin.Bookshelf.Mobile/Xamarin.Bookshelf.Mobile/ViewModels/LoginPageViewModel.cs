@@ -21,14 +21,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task LoginWithGoogleAsync()
         {
-<<<<<<< HEAD
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-=======
             Console.WriteLine(MainThread.IsMainThread);
             //await MainThread.InvokeOnMainThreadAsync(async () =>
             //{
             try
->>>>>>> Fix login error
             {
                 var result = await WebAuthenticator.AuthenticateAsync(new Uri(Constants.AUTHENTICATION_URL), new Uri(Constants.DEEP_LINK_SCHEMA));
                 var token = new AuthenticationToken()
