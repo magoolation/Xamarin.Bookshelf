@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
@@ -13,16 +14,19 @@ using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
     [QueryProperty("BookId", "bookId")]
+    [QueryProperty("BookshelfItemId", "bookshelfItemId")]
     public class BookDetailsPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
+        private readonly IBookRepository repository;
 
         public ICommand AddToLibraryCommand { get; }
         public ICommand ReviewBookCommand { get; }
 
-        public BookDetailsPageViewModel(IBookService bookService)
+        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository)
         {
             this.bookService = bookService;
+            this.repository = repository;
 
             AddToLibraryCommand = new AsyncCommand(AddToLibraryAsync);
             ReviewBookCommand = new AsyncCommand(ReviewBookAsync);
@@ -47,6 +51,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                     : selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Read] ? ReadingStatus.Read : ReadingStatus.WantToRead;
                 var bookshelf = new ABookshelf()
                 {
+                    Id = Guid.NewGuid().ToString(),
                     BookId = BookId,
                     ReadingStatus = status,
                     UserId = "magoolation@me.com",
@@ -54,6 +59,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 };
 
                 await bookService.RegisterBookAsync(bookshelf).ConfigureAwait(false);
+
+                bookshelf.Book = Book;
+                await repository.AddBookAsync(bookshelf);
+
+
                 MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Success", "Book added to your Bookshelf successfully!", "OK"));
             }
             catch (Exception ex)

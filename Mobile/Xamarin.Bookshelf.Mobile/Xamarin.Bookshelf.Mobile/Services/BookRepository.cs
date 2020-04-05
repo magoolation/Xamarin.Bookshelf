@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Shared.Models;
@@ -36,6 +37,16 @@ namespace Xamarin.Bookshelf.Mobile.Services
         public Task<IEnumerable<BookshelfItem>> GetAllBooksAsync(string userId)
         {
             return bookshelvesCollection.Query().Where(c => c.UserId == userId).ToListAsync();
+        }
+
+        public Task AddBookAsync(BookshelfItem bookshelfItem)
+        {
+            return bookshelvesCollection.InsertAsync(bookshelfItem);
+        }
+
+        public async Task<IEnumerable<BookshelfItem>> GetBooksByBookshelf(ReadingStatus status)
+        {
+            return bookshelvesCollection.FindAll().Where(c => c.ReadingStatus == status);
         }
     }
 }

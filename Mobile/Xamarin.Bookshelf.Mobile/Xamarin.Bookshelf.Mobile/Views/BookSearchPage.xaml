@@ -15,6 +15,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="140" />
             </Grid.RowDefinitions>
 
             <SearchBar
@@ -49,8 +50,33 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+            <CarouselView
+                Grid.Row="2"
+                ItemsSource="{Binding WantToRead}"
+                PeekAreaInsets="70">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout
+                        ItemSpacing="10"
+                        Orientation="Horizontal"
+                        SnapPointsAlignment="Start" />
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="models:BookshelfItem">
+                        <Image
+                            Aspect="AspectFit"
+                            AutomationProperties.Name="{Binding Book.Title}"
+                            Source="{Binding Book.ThumbnailUrl}"
+                            WidthRequest="105">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookSearchPageViewModel}}, Path=DetailsCommand}" CommandParameter="{Binding BookId}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
             <ActivityIndicator
-                Grid.RowSpan="2"
+                Grid.RowSpan="3"
                 AutomationProperties.Name="Loading ..."
                 IsRunning="{Binding IsBusy}"
                 IsVisible="{Binding IsBusy}" />

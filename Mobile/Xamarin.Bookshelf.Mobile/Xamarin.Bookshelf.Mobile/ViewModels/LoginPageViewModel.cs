@@ -33,7 +33,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                return;
+                await DisplayAlertAsync("Error", ex.Message, "OK");
             }
             //});
         }

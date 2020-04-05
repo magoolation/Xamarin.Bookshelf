@@ -25,8 +25,8 @@ namespace Xamarin.Bookshelf.Mobile
         public ViewModelLocator()
         {
             BookshelvesPageViewModel = new BookshelvesPageViewModel(bookService.Value, bookRepository.Value);
-            BookSearchPageViewModel = new BookSearchPageViewModel(bookService.Value);
-            BookDetailsPageViewModel = new BookDetailsPageViewModel(bookService.Value);
+            BookSearchPageViewModel = new BookSearchPageViewModel(bookService.Value, bookRepository.Value);
+            BookDetailsPageViewModel = new BookDetailsPageViewModel(bookService.Value, bookRepository.Value);
             ReviewBookPageViewModel = new ReviewBookPageViewModel(bookService.Value);
             LoginPageViewModel = new LoginPageViewModel();
             InitializationSegwayPageViewModel = new InitializationSegwayPageViewModel();

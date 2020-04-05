@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Xamarin.Bookshelf.Mobile.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Xamarin.Bookshelf.Mobile.Views
@@ -9,6 +10,12 @@ namespace Xamarin.Bookshelf.Mobile.Views
         public BookSearchPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ((BaseViewModel) BindingContext).OnAppearing();
         }
     }
 }

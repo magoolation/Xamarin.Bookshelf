@@ -1,9 +1,11 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
@@ -13,21 +15,31 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
     public class BookSearchPageViewModel : BaseViewModel
     {
-        private ObservableCollection<Book> books = new ObservableCollection<Book>(Enumerable.Empty<Book>());
         private readonly IBookService bookService;
+        private readonly IBookRepository repository;
 
+        private ObservableCollection<Book> books = new ObservableCollection<Book>(Enumerable.Empty<Book>());
         public ObservableCollection<Book> Books
         {
             get => books;
             set => SetProperty(ref books, value);
         }
 
+        private IEnumerable<BookshelfItem> wantToRead;
+        public IEnumerable<BookshelfItem>  WantToRead
+        {
+            get => wantToRead;
+            set => SetProperty(ref wantToRead, value);
+        }
+
         public ICommand SearchCommand { get; }
         public ICommand DetailsCommand { get; }
 
-        public BookSearchPageViewModel(IBookService bookService)
+        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository)
         {
             this.bookService = bookService;
+            this.repository = repository;
+
             SearchCommand = new AsyncCommand<string>(SearchBooksAsync);
             DetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
         }
@@ -53,12 +65,33 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
+                await DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {
                 IsBusy = false;
             }
         }
+
+        public override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            try
+            {
+                var items = Enumerable.Empty<BookshelfItem>();
+                var cached = await repository.GetBooksByBookshelf(ReadingStatus.WantToRead);
+                if (cached != null && cached.Any())
+                {
+                    items = cached;
+                }
+
+                WantToRead = items;
+            }
+            catch(Exception ex)
+                {
+                await DisplayAlertAsync("Error", ex.Message, "OK");
+            }
+            }
     }
 }

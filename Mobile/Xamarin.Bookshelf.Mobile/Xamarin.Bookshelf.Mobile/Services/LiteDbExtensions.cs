@@ -54,5 +54,20 @@ namespace Xamarin.Bookshelf.Mobile.Services
             }
             return tsc.Task;
         }
+
+        public static Task <bool> InsertAsync<T>(this ILiteCollection<T> collection, T item)
+        {
+            var tsc = new TaskCompletionSource<bool>();
+            try
+            {
+                collection.Insert(item);
+                tsc.SetResult(true);
+            }
+            catch(Exception ex)
+            {
+                tsc.SetException(ex);
+            }
+            return tsc.Task;
+        }
     }
 }
