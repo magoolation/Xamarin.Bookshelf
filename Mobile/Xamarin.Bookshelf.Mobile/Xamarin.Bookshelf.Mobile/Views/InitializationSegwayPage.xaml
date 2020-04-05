@@ -8,13 +8,20 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
     x:DataType="vm:InitializationSegwayPageViewModel"
+    BackgroundColor="{x:StaticResource NavigationPrimary}"
     BindingContext="{Binding InitializationSegwayPageViewModel, Source={StaticResource vmLocator}}"
     mc:Ignorable="d">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="NavigationPrimary">#2196F3</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
             <Label
                 HorizontalOptions="CenterAndExpand"
                 Text="Loading ..."
+                TextColor="White"
                 VerticalOptions="CenterAndExpand" />
         </StackLayout>
     </ContentPage.Content>

@@ -38,8 +38,16 @@
 
             <CarouselView
                 Grid.Row="1"
+                HorizontalScrollBarVisibility="Never"
                 ItemsSource="{Binding Reading}"
-                PeekAreaInsets="70">
+                PeekAreaInsets="0, 0, 120, 0">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout
+                        ItemSpacing="10"
+                        Orientation="Horizontal"
+                        SnapPointsAlignment="Start"
+                        SnapPointsType="Mandatory" />
+                </CarouselView.ItemsLayout>
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="models:BookshelfItem">
                         <Image
