@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Mobile.ViewModels;
 using Xamarin.Bookshelf.Mobile.Views;
 using Xamarin.Bookshelf.Shared;
@@ -13,6 +14,7 @@ namespace Xamarin.Bookshelf.Mobile
     public class ViewModelLocator
     {
         private readonly Lazy<IBookService> bookService = new Lazy<IBookService>(() => RestService.For<IBookService>(ApiRoutes.API_BASE_URL));
+        private readonly Lazy<IBookRepository> bookRepository = new Lazy<IBookRepository>(() => new BookRepository());
 
         public BookshelvesPageViewModel BookshelvesPageViewModel { get; }
         public BookSearchPageViewModel BookSearchPageViewModel { get; }
@@ -23,7 +25,7 @@ namespace Xamarin.Bookshelf.Mobile
 
         public ViewModelLocator()
         {
-            BookshelvesPageViewModel = new BookshelvesPageViewModel(bookService.Value);
+            BookshelvesPageViewModel = new BookshelvesPageViewModel(bookService.Value, bookRepository.Value);
             BookSearchPageViewModel = new BookSearchPageViewModel(bookService.Value);
             BookDetailsPageViewModel = new BookDetailsPageViewModel(bookService.Value);
             ReviewBookPageViewModel = new ReviewBookPageViewModel(bookService.Value);

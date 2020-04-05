@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Xamarin.Bookshelf.Shared\Xamarin.Bookshelf.Shared.csproj" />
   </ItemGroup>
 

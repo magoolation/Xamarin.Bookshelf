@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
     xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
-    x:DataType="{x:Type vm:BookDetailsPageViewModel}"
+    x:DataType="vm:BookDetailsPageViewModel"
     BindingContext="{Binding BookDetailsPageViewModel, Source={x:StaticResource vmLocator}}"
     mc:Ignorable="d">
     <ContentPage.Content>

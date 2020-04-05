@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
@@ -15,6 +17,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     public class BookshelvesPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
+        private readonly IBookRepository repository;
 
         private Dictionary<ReadingStatus, BookshelfItem[]> bookshelves;
         public Dictionary<ReadingStatus, BookshelfItem[]> Bookshelves
@@ -35,9 +38,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand ReadingBookkActionsCommand { get; }
         public ICommand ReadBookActionsCommand { get; }
 
-        public BookshelvesPageViewModel(IBookService bookService)
+        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository)
         {
             this.bookService = bookService;
+            this.repository = repository;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
             ReadingBookkActionsCommand = new AsyncCommand(ReadingBookActionsAsync);
             ReadBookActionsCommand = new AsyncCommand(ReadBookActionsAsync);
@@ -63,14 +67,58 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
 
+            if (! await LoadBooksFromCache())
+            {
+                await LoadBooksFromServer();
+            }
+        }
+
+        public async Task<bool> LoadBooksFromCache()
+        {
+            var localBookshelves = new Dictionary<ReadingStatus, BookshelfItem[]>();
+            try
+            {
+                IsBusy = true;
+                var bookItems = await repository.GetAllBooksAsync("magoolation@me.com");
+
+                var bookshelves = bookItems.GroupBy(b => b.ReadingStatus,
+                    b => b,
+                    (status, books) => new UserBookshelf()
+                    {
+                        UserId = "magoolation@me.com",
+                        ReadingStatus = status,
+                        Count = bookItems.Count(),
+                        Items = books.ToArray()
+                    });
+
+                foreach (var bookshelf in bookshelves)
+                {
+                    localBookshelves.Add(bookshelf.ReadingStatus, bookshelf.Items);
+                }
+
+                Bookshelves = localBookshelves;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            return Bookshelves?.Any() ?? false;
+        }
+            
+
+        public async Task LoadBooksFromServer()
+        {
             var serverBookshelves = new Dictionary<ReadingStatus, BookshelfItem[]>();
 
             try
             {
+                IsBusy = true;
                 var result = await bookService.GetUserBookShelvesAsync("magoolation@me.com").ConfigureAwait(false);
                 foreach (var bookshelf in result)
                 {
                     serverBookshelves.Add(bookshelf.ReadingStatus, bookshelf.Items);
+                    await repository.UpdateBookItemsAsync(bookshelf.Items);
                 }
 
                 Bookshelves = serverBookshelves;
@@ -78,6 +126,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             catch (Exception ex)
             {
                 await DisplayAlertAsync("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }
