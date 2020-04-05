@@ -1,8 +1,6 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Bookshelf.Shared;
@@ -32,7 +30,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task AddToLibraryAsync()
         {
-            string result = await Shell.Current.DisplayActionSheet("Select a Bookshelf", "Cancel", null, EnumDescriptions.ReadingStatuses.Values.ToArray() );
+            string result = await Shell.Current.DisplayActionSheet("Select a Bookshelf", "Cancel", null, EnumDescriptions.ReadingStatuses.Values.ToArray());
             if (!string.IsNullOrWhiteSpace(result) && result != "Cancel")
             {
                 await RegisterBookAsync(result);

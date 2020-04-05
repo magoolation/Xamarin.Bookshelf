@@ -9,7 +9,6 @@ using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels

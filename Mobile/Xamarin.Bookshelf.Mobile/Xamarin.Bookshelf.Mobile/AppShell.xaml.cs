@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Xamarin.Bookshelf.Mobile.Views;
+﻿using Xamarin.Bookshelf.Mobile.Views;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile

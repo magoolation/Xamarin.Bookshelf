@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Mobile.ViewModels;
-using Xamarin.Bookshelf.Mobile.Views;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Services;
 

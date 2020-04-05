@@ -51,8 +51,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public virtual void OnDisappearing() { }
 
         protected Task DisplayAlertAsync(string title, string message, string actionButton, string cancelButton = null)
-            {
+        {
             return MainThread.InvokeOnMainThreadAsync(async () => await Shell.Current.DisplayAlert(title, message, actionButton, cancelButton));
-            }    
+        }
     }
 }

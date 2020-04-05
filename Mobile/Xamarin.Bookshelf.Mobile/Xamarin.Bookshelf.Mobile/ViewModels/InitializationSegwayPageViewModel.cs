@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
-    public class InitializationSegwayPageViewModel: BaseViewModel
+    public class InitializationSegwayPageViewModel : BaseViewModel
     {
         public override async void OnAppearing()
         {
