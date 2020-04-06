@@ -23,10 +23,10 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowSpacing="0">
+        <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="140" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -38,9 +38,10 @@
 
             <CarouselView
                 Grid.Row="1"
+                HeightRequest="128"
                 HorizontalScrollBarVisibility="Never"
                 ItemsSource="{Binding Reading}"
-                PeekAreaInsets="0, 0, 120, 0">
+                PeekAreaInsets="0, 0, 128, 0">
                 <CarouselView.ItemsLayout>
                     <LinearItemsLayout
                         ItemSpacing="10"
@@ -53,7 +54,9 @@
                         <Image
                             Aspect="AspectFit"
                             AutomationProperties.Name="{Binding Book.Title}"
-                            Source="{Binding Book.ThumbnailUrl}">
+                            HeightRequest="128"
+                            Source="{Binding Book.ThumbnailUrl}"
+                            WidthRequest="128">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
                             </Image.GestureRecognizers>
@@ -79,7 +82,8 @@
                         <Image
                             AutomationProperties.Name="{Binding Book.Title}"
                             HeightRequest="128"
-                            Source="{Binding Book.ThumbnailUrl}">
+                            Source="{Binding Book.ThumbnailUrl}"
+                            WidthRequest="128">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
                             </Image.GestureRecognizers>
