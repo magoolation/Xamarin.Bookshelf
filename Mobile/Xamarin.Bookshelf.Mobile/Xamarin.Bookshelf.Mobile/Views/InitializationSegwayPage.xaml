@@ -10,6 +10,7 @@
     x:DataType="vm:InitializationSegwayPageViewModel"
     BackgroundColor="{x:StaticResource NavigationPrimary}"
     BindingContext="{Binding InitializationSegwayPageViewModel, Source={StaticResource vmLocator}}"
+    Shell.NavBarIsVisible="False"
     mc:Ignorable="d">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -17,12 +18,26 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout
+            Padding="0,75"
+            BackgroundColor="White"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="Center">
+            <Image
+                Aspect="AspectFit"
+                BackgroundColor="White"
+                HeightRequest="51"
+                HorizontalOptions="Center"
+                Source="xamarin_logo.png"
+                VerticalOptions="Center"
+                WidthRequest="220" />
             <Label
+                FontAttributes="Bold"
+                FontSize="Title"
                 HorizontalOptions="CenterAndExpand"
                 Text="Loading ..."
-                TextColor="White"
-                VerticalOptions="CenterAndExpand" />
+                TextColor="{StaticResource NavigationPrimary}"
+                VerticalOptions="Center" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
