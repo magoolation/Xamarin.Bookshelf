@@ -15,21 +15,11 @@ namespace Xamarin.Bookshelf.Mobile
         private readonly Lazy<IBookService> bookService = new Lazy<IBookService>(() => RestService.For<IBookService>(ApiRoutes.API_BASE_URL));
         private readonly Lazy<IBookRepository> bookRepository = new Lazy<IBookRepository>(() => new BookRepository());
 
-        public BookshelvesPageViewModel BookshelvesPageViewModel { get; }
-        public BookSearchPageViewModel BookSearchPageViewModel { get; }
-        public BookDetailsPageViewModel BookDetailsPageViewModel { get;  }
-        public ReviewBookPageViewModel ReviewBookPageViewModel { get; }
-        public LoginPageViewModel LoginPageViewModel { get; }
-        public InitializationSegwayPageViewModel InitializationSegwayPageViewModel { get; }
-
-        public ViewModelLocator()
-        {
-            BookshelvesPageViewModel = new BookshelvesPageViewModel(bookService.Value, bookRepository.Value);
-            BookSearchPageViewModel = new BookSearchPageViewModel(bookService.Value, bookRepository.Value);
-            BookDetailsPageViewModel = new BookDetailsPageViewModel(bookService.Value, bookRepository.Value);
-            ReviewBookPageViewModel = new ReviewBookPageViewModel(bookService.Value);
-            LoginPageViewModel = new LoginPageViewModel();
-            InitializationSegwayPageViewModel = new InitializationSegwayPageViewModel();
-        }
+        public BookshelvesPageViewModel BookshelvesPageViewModel => new BookshelvesPageViewModel(bookService.Value, bookRepository.Value);
+        public BookSearchPageViewModel BookSearchPageViewModel => new BookSearchPageViewModel(bookService.Value, bookRepository.Value);
+        public BookDetailsPageViewModel BookDetailsPageViewModel => new BookDetailsPageViewModel(bookService.Value, bookRepository.Value);
+        public ReviewBookPageViewModel ReviewBookPageViewModel => new ReviewBookPageViewModel(bookService.Value);
+        public LoginPageViewModel LoginPageViewModel => new LoginPageViewModel();
+        public InitializationSegwayPageViewModel InitializationSegwayPageViewModel => new InitializationSegwayPageViewModel();        
     }
 }

@@ -9,7 +9,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
             await Task.Delay(5000);
-            wait Shell.Current.GoToAsync("//Main");
+            await Shell.Current.GoToAsync("//Login");
         }
     }
 }

@@ -82,6 +82,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         }
 
         public string BookId { get; set; }
+        public string BookItemId { get; set; }
 
         private Book book;
         public Book Book
