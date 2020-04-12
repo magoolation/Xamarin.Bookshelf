@@ -27,7 +27,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("SearchBook")]
         public async Task<IActionResult> SearchBooks(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = ApiRoutes.API_BOOKS)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = ApiRoutes.API_BOOKS)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -88,7 +88,7 @@ namespace Xamarin.Bookshelf.Functions
 
         [FunctionName("GetBook")]
         public async Task<IActionResult> GetBook(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = ApiRoutes.API_GET_BOOK_DETAILS)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = ApiRoutes.API_GET_BOOK_DETAILS)] HttpRequest req,
             string id,
             ILogger log)
         {
