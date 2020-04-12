@@ -40,6 +40,11 @@ namespace Xamarin.Bookshelf.Authentication
 
                     options.ClientId = googleAuthNSection["ClientId"];
                     options.ClientSecret = googleAuthNSection["ClientSecret"];
+                    options.Scope.Add("https://www.googleapis.com/auth/userinfo.email");
+                    options.Scope.Add("https://www.googleapis.com/auth/userinfo.profile");
+                    options.Scope.Add("openid");
+                    options.Scope.Add("https://www.googleapis.com/auth/books");
+                    options.AccessType = "offline";
                     options.SaveTokens = true;
                 });
         }
