@@ -23,9 +23,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand AddToLibraryCommand { get; }
         public ICommand ReviewBookCommand { get; }
 
-        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository)
+        public BookDetailsPageViewModel(BookService bookService, IBookRepository repository)
         {
-            this.bookService = bookService;
+            this.bookService = bookService.Endpoint;
             this.repository = repository;
 
             AddToLibraryCommand = new AsyncCommand(AddToLibraryAsync);

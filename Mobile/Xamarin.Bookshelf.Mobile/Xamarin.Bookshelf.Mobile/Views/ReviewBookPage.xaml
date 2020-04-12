@@ -1,41 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
-             xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
-             xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
-             ios:Page.UseSafeArea="true" 
-             mc:Ignorable="d"
-             x:Class="Xamarin.Bookshelf.Mobile.Views.ReviewBookPage"
-             x:DataType="vm:ReviewBookPageViewModel"
-             BindingContext="{Binding ReviewBookPageViewModel, Source={x:StaticResource vmLocator}}"
-             Shell.PresentationMode="ModalAnimated">
+<ContentPage
+    x:Class="Xamarin.Bookshelf.Mobile.Views.ReviewBookPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
+    xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
+    xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
+    ios:Page.UseSafeArea="true"
+    x:DataType="vm:ReviewBookPageViewModel"
+    BindingContext="{Binding ReviewBookPageViewModel, Source={x:StaticResource vmLocator}}"
+    Shell.PresentationMode="ModalAnimated"
+    mc:Ignorable="d">
     <ContentPage.Content>
-        <Grid RowSpacing="60" Margin="5">
+        <Grid Margin="5" RowSpacing="60">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackLayout>
-                <Label Text="Cancel" HorizontalOptions="Start" TextColor="#128efa">
+                <Label
+                    HorizontalOptions="Start"
+                    Text="Cancel"
+                    TextColor="#128efa">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding CancelCommand}"/>
+                        <TapGestureRecognizer Command="{Binding CancelCommand}" />
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>
 
-            <StackLayout Grid.Row="1" Margin="10" Spacing="40">
+            <StackLayout
+                Grid.Row="1"
+                Margin="10"
+                Spacing="40">
                 <StackLayout Orientation="Horizontal" Spacing="0">
-                    <Label Text="{x:Static shared:IconFont.ThumbsUp}" HorizontalOptions="Start" FontFamily="{StaticResource FontAwesome5FreeRegular}"/>
-                    <Slider Maximum="5" Minimum="0" Value="{Binding Rating, Mode=OneWayToSource}" HorizontalOptions="FillAndExpand" />
-                    <Label Text="{x:Static shared:IconFont.ThumbsDown}" HorizontalOptions="End" FontFamily="{StaticResource FontAwesome5FreeRegular}"/>
+                    <Label
+                        FontFamily="{StaticResource FontAwesome5FreeRegular}"
+                        HorizontalOptions="Start"
+                        Text="{x:Static shared:IconFont.ThumbsDown}" />
+                    <Slider
+                        AutomationProperties.Name="Rating"
+                        HorizontalOptions="FillAndExpand"
+                        Maximum="5"
+                        Minimum="0"
+                        Value="{Binding Rating, Mode=OneWayToSource}" />
+                    <Label
+                        FontFamily="{StaticResource FontAwesome5FreeRegular}"
+                        HorizontalOptions="End"
+                        Text="{x:Static shared:IconFont.ThumbsUp}" />
                 </StackLayout>
-                <Entry Text="{Binding ReviewTitle}" />
-                <Editor Text="{Binding Review}" Placeholder="Review" BackgroundColor="#E0E0E0" HeightRequest="200"/>
-                <Button Text="Send Review" Command="{Binding SendCommand}" />
+                <Entry Placeholder="Enter a title for your review" Text="{Binding ReviewTitle}" />
+                <Editor
+                    BackgroundColor="#E0E0E0"
+                    HeightRequest="200"
+                    Placeholder="What you liked and What you like and what you disliked about the book"
+                    Text="{Binding Review}" />
+                <Button Command="{Binding SendCommand}" Text="Send Review" />
             </StackLayout>
         </Grid>
     </ContentPage.Content>

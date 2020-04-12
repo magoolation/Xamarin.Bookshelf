@@ -37,9 +37,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand ReadingBookkActionsCommand { get; }
         public ICommand ReadBookActionsCommand { get; }
 
-        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository)
+        public BookshelvesPageViewModel(BookService bookService, IBookRepository repository)
         {
-            this.bookService = bookService;
+            this.bookService = bookService.Endpoint;
             this.repository = repository;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
             ReadingBookkActionsCommand = new AsyncCommand(ReadingBookActionsAsync);

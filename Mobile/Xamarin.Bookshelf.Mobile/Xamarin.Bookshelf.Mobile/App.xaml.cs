@@ -1,21 +1,27 @@
-﻿using Xamarin.Forms;
+﻿using Xamarin.Bookshelf.Mobile.Helpers;
+using Xamarin.Forms;
 
 
 namespace Xamarin.Bookshelf.Mobile
 {
     public partial class App : Application
     {
-        public App()
+        private readonly IPlatformInitializer platformInitializer;
+
+        public App(IPlatformInitializer platformInitializer = null)
         {
+            this.platformInitializer = platformInitializer;
             InitializeComponent();
 
             var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL" };
-            Device.SetFlags(flags);
-            MainPage = new AppShell();
+            Device.SetFlags(flags);                        
         }
 
-        protected override void OnStart()
+        protected override async void OnStart()
         {
+            Startup.Init(platformInitializer);
+
+            MainPage = new AppShell();
         }
 
         protected override void OnSleep()

@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
@@ -40,9 +41,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SendCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ReviewBookPageViewModel(IBookService bookService)
+        public ReviewBookPageViewModel(BookService bookService)
         {
-            this.bookService = bookService;
+            this.bookService = bookService.Endpoint;
             SendCommand = new AsyncCommand(SendReviewAsync);
             CancelCommand = new AsyncCommand(CancelAsync);
         }

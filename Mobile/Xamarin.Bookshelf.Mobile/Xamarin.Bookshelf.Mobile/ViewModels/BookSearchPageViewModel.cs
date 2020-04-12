@@ -35,9 +35,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SearchCommand { get; }
         public ICommand DetailsCommand { get; }
 
-        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository)
+        public BookSearchPageViewModel(BookService bookService, IBookRepository repository)
         {
-            this.bookService = bookService;
+            this.bookService = bookService.Endpoint;
             this.repository = repository;
 
             SearchCommand = new AsyncCommand<string>(SearchBooksAsync);
