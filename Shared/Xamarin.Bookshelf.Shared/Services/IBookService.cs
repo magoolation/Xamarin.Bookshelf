@@ -9,7 +9,7 @@ namespace Xamarin.Bookshelf.Shared.Services
     public interface IBookService
     {
         [Get("/.auth/me")]
-        Task<AzureAppServiceAuthenticationTokens> MeAsync();
+        Task<AzureAppServiceAuthenticationToken[]> MeAsync();
         [Get("/.auth/refresh")]
         Task<HttpResponseMessage> RefreshAsync();
         [Get("/v1/books?title={title}")]

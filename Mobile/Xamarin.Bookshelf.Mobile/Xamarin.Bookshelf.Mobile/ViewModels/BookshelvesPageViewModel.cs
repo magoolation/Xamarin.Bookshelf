@@ -104,8 +104,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
 
             return Bookshelves?.Any() ?? false;
-        }
-            
+        }            
 
         public async Task LoadBooksFromServer()
         {
@@ -124,6 +123,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 Bookshelves = serverBookshelves;
             }
             catch (Exception ex)
+            
             {
                 await DisplayAlertAsync("Error", ex.Message, "OK");
             }

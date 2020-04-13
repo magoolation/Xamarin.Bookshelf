@@ -13,7 +13,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             this.authenticationManager = authenticationManager;
             this.bookService = bookService;
         }
-        
+
         public override async void OnAppearing()
         {
             base.OnAppearing();
@@ -26,7 +26,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             else
             {
-            await Shell.Current.GoToAsync("//Login");
+                await Shell.Current.GoToAsync("//Login");
             }
         }
     }

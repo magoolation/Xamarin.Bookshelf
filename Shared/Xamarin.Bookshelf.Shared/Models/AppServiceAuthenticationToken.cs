@@ -4,14 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Xamarin.Bookshelf.Shared.Models
-{
-
-    public class AzureAppServiceAuthenticationTokens
-    {
-        public AzureAppServiceAuthenticationToken[] Tokens { get; set; }
-    }
-
-    public class AzureAppServiceAuthenticationToken
+{    
+   public class AzureAppServiceAuthenticationToken
     {
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }

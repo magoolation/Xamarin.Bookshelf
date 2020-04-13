@@ -19,11 +19,14 @@ namespace Xamarin.Bookshelf.Mobile.Services
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (request.Headers.Authorization == null)
+            if (authenticationTokenManager.Current.IsAuthenticated)
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authenticationTokenManager.Current.AuthenticationToken);
+                if (request.Headers.Authorization == null)
+                {
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authenticationTokenManager.Current.AuthenticationToken);
+                }
+                request.Headers.Add("X-ZUMO-AUTH", authenticationTokenManager.Current.AuthenticationToken);
             }
-            request.Headers.Add("X-ZUMO-AUTH", authenticationTokenManager.Current.AuthenticationToken);
 
             return base.SendAsync(request, cancellationToken);
         }
