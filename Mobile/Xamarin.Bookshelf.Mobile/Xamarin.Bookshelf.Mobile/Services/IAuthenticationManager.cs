@@ -14,8 +14,8 @@ namespace Xamarin.Bookshelf.Mobile.Services
 
         void Logout();
 
-        AuthenticationToken Current { get; }
-
         Task RefreshAsync();
+
+        bool IsAuthenticated { get; }
     }
 }

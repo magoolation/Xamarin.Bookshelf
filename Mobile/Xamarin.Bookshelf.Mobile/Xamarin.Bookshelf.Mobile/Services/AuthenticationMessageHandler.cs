@@ -10,20 +10,20 @@ namespace Xamarin.Bookshelf.Mobile.Services
 {
     public class AuthenticationMessageHandler: DelegatingHandler
     {
-        private readonly IAuthenticationManager authenticationManager;
+        private readonly IAuthenticationTokenManager authenticationTokenManager;
 
-        public AuthenticationMessageHandler(IAuthenticationManager authenticationManager)
+        public AuthenticationMessageHandler(IAuthenticationTokenManager authenticationTokenManager)
         {
-            this.authenticationManager = authenticationManager;
+            this.authenticationTokenManager = authenticationTokenManager;
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request.Headers.Authorization == null)
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authenticationManager.Current.AccessToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authenticationTokenManager.Current.AuthenticationToken);
             }
-            request.Headers.Add("X-ZUMO-AUTH", authenticationManager.Current.AccessToken);
+            request.Headers.Add("X-ZUMO-AUTH", authenticationTokenManager.Current.AuthenticationToken);
 
             return base.SendAsync(request, cancellationToken);
         }

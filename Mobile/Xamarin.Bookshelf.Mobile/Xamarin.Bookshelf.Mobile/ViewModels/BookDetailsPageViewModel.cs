@@ -9,7 +9,6 @@ using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
@@ -19,14 +18,16 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     {
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
+        private readonly IAuthenticationTokenManager authenticationTokenManager;
 
         public ICommand AddToLibraryCommand { get; }
         public ICommand ReviewBookCommand { get; }
 
-        public BookDetailsPageViewModel(BookService bookService, IBookRepository repository)
+        public BookDetailsPageViewModel(BookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
         {
             this.bookService = bookService.Endpoint;
             this.repository = repository;
+            this.authenticationTokenManager = authenticationTokenManager;
 
             AddToLibraryCommand = new AsyncCommand(AddToLibraryAsync);
             ReviewBookCommand = new AsyncCommand(ReviewBookAsync);
@@ -49,12 +50,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 ReadingStatus status = selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Reading]
                     ? ReadingStatus.Reading
                     : selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Read] ? ReadingStatus.Read : ReadingStatus.WantToRead;
-                var bookshelf = new ABookshelf()
+                var bookshelf = new BookshelfItem()
                 {
                     Id = Guid.NewGuid().ToString(),
                     BookId = BookId,
                     ReadingStatus = status,
-                    UserId = "magoolation@me.com",
+                    UserId = authenticationTokenManager.Current.UserId,
                     CreatedAt = DateTimeOffset.Now
                 };
 

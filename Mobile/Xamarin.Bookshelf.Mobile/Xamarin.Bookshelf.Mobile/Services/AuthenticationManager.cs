@@ -1,61 +1,57 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Globalization;
-using System.Net;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Xamarin.Bookshelf.Mobile.Models;
+using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Essentials;
 
 namespace Xamarin.Bookshelf.Mobile.Services
 {
     public class AuthenticationManager : IAuthenticationManager
     {
-        private AuthenticationToken current;
-        public AuthenticationToken Current => current;
+        private readonly IAuthenticationTokenManager authenticationTokenManager;
+        private readonly BookService bookService;
+
+        public AuthenticationManager(IAuthenticationTokenManager authenticationTokenManager, BookService bookService)
+        {
+            this.authenticationTokenManager = authenticationTokenManager;
+            this.bookService = bookService;
+        }
+
+        public bool IsAuthenticated => this.authenticationTokenManager.Current.IsAuthenticated;
 
         public async Task LoginWithGoogle()
         {
             var result = await WebAuthenticator.AuthenticateAsync(new Uri(Constants.AUTHENTICATION_URL), new Uri(Constants.DEEP_LINK_SCHEMA));
-            await StoreTokensAsync(result);
+            authenticationTokenManager.Current.SetAuthenticationToken(result.Properties["token"]);
+            var token = await GetTokens("Google");
+            await StoreTokensAsync(token);
+
             await RefreshAsync();
         }
 
-        private static async Task StoreTokensAsync(WebAuthenticatorResult result)
+        private async Task<AzureAppServiceAuthenticationToken> GetTokens(string providerName)
         {
-            if (!string.IsNullOrWhiteSpace(result.AccessToken))
-            {
-                await SecureStorage.SetAsync(Constants.ACCESS_TOKEN, result.AccessToken); 
-            }
-            else if (!string.IsNullOrWhiteSpace(result.Properties["token"]))
-            {
-                var query = WebUtility.UrlDecode(result.Properties["token"]);
-                var json = JObject.Parse(query);
-                var token = json["authenticationToken"].ToString();
-                await SecureStorage.SetAsync(Constants.ACCESS_TOKEN, token);
-            }
+            var me = await bookService.Endpoint.MeAsync();
 
-            if (!string.IsNullOrWhiteSpace(result.RefreshToken))
-            {
-                await SecureStorage.SetAsync(Constants.REFRESH_TOKEN, result.RefreshToken); 
-            }
+            return me.Tokens.FirstOrDefault(t => t.ProviderName == providerName);
+        }
 
-            if (result.ExpiresIn.HasValue)
-            {
-                await SecureStorage.SetAsync(Constants.EXPIRES_IN, result.ExpiresIn.ToString()); 
-            }
+        private async Task StoreTokensAsync(AzureAppServiceAuthenticationToken tokens)
+        {
+            await authenticationTokenManager.Current.SetAccessToken(tokens.AccessToken);
+            await authenticationTokenManager.Current.SetIdToken(tokens.IdToken);
+            await authenticationTokenManager.Current.SetExpiresIn(tokens.ExpiresOn);
+            await authenticationTokenManager.Current.SetProviderName(tokens.ProviderName);
         }
 
         public async Task RefreshAsync()
         {
-            current = new AuthenticationToken();
-            current.AccessToken = await SecureStorage.GetAsync(Constants.ACCESS_TOKEN);
-            current.RefreshToken = await SecureStorage.GetAsync(Constants.REFRESH_TOKEN);
-            current.ExpiresIn = DateTimeOffset.Parse(await SecureStorage.GetAsync(Constants.EXPIRES_IN));
-        }        
+            await authenticationTokenManager.Current.RefreshAsync();
+        }
 
         public void Logout()
         {
-            SecureStorage.RemoveAll();
+            authenticationTokenManager.Current.RemoveAll();
         }
 
         public Task RefreshGoogleToken()
@@ -63,6 +59,4 @@ namespace Xamarin.Bookshelf.Mobile.Services
             return Task.CompletedTask;
         }
     }
-
-
 }

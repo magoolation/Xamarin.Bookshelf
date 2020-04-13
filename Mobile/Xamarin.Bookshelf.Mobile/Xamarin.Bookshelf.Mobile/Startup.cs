@@ -38,6 +38,7 @@ namespace Xamarin.Bookshelf.Mobile
         public static void ConfigureServices(HostBuilderContext context, IServiceCollection services, IPlatformInitializer platformInitializer)
         {
             // TODO WTS: Register your services, viewmodels and pages here
+            services.AddSingleton<IAuthenticationTokenManager, AuthenticationTokenManager>();
             services.AddTransient < AuthenticationMessageHandler>();
             
             services.AddHttpClient<BookService>()
@@ -47,7 +48,7 @@ namespace Xamarin.Bookshelf.Mobile
                 c.BaseAddress = new Uri("https://xamarin-bookshelf.azurewebsites.net/");
             } );
 
-            // Services
+            // Services            
             services.AddSingleton<IAuthenticationManager, AuthenticationManager>();
             services.AddSingleton<INavigationService, NavigationService>();            
             services.AddSingleton<IBookRepository, BookRepository>();
@@ -55,7 +56,6 @@ namespace Xamarin.Bookshelf.Mobile
             // ViewModels and Views
             services.AddTransient<BookshelvesPageViewModel>();
             services.AddTransient<BookSearchPageViewModel>();
-            services.AddTransient<BookDetailsPageViewModel>();
             services.AddTransient<BookDetailsPageViewModel>();
             services.AddTransient<ReviewBookPageViewModel>();
             services.AddTransient<LoginPageViewModel>();

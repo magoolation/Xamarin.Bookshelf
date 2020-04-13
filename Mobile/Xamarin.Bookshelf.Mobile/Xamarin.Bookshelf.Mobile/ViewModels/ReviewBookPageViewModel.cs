@@ -14,6 +14,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     public class ReviewBookPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
+        private readonly IAuthenticationTokenManager authenticationTokenManager;
 
         public string BookId { get; set; }
 
@@ -41,11 +42,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SendCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ReviewBookPageViewModel(BookService bookService)
+        public ReviewBookPageViewModel(BookService bookService, IAuthenticationTokenManager authenticationTokenManager)
         {
             this.bookService = bookService.Endpoint;
             SendCommand = new AsyncCommand(SendReviewAsync);
             CancelCommand = new AsyncCommand(CancelAsync);
+            this.authenticationTokenManager = authenticationTokenManager;
         }
 
         private async Task CancelAsync()
@@ -60,7 +62,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 var bookReview = new BookReview()
                 {
                     BookId = BookId,
-                    UserId = "magoolation@me.com",
+                    UserId = authenticationTokenManager.Current.UserId,
                     Rating = rating,
                     Title = reviewTitle,
                     Review = review

@@ -17,7 +17,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     {
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
-
+        private readonly IAuthenticationTokenManager authenticationTokenManager;
         private Dictionary<ReadingStatus, BookshelfItem[]> bookshelves;
         public Dictionary<ReadingStatus, BookshelfItem[]> Bookshelves
         {
@@ -37,10 +37,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand ReadingBookkActionsCommand { get; }
         public ICommand ReadBookActionsCommand { get; }
 
-        public BookshelvesPageViewModel(BookService bookService, IBookRepository repository)
+        public BookshelvesPageViewModel(BookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
         {
             this.bookService = bookService.Endpoint;
             this.repository = repository;
+            this.authenticationTokenManager = authenticationTokenManager;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
             ReadingBookkActionsCommand = new AsyncCommand(ReadingBookActionsAsync);
             ReadBookActionsCommand = new AsyncCommand(ReadBookActionsAsync);
@@ -78,13 +79,13 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             try
             {
                 IsBusy = true;
-                var bookItems = await repository.GetAllBooksAsync("magoolation@me.com");
+                var bookItems = await repository.GetAllBooksAsync(authenticationTokenManager.Current.UserId);
 
                 var bookshelves = bookItems.GroupBy(b => b.ReadingStatus,
                     b => b,
                     (status, books) => new UserBookshelf()
                     {
-                        UserId = "magoolation@me.com",
+                        UserId = authenticationTokenManager.Current.UserId,
                         ReadingStatus = status,
                         Count = bookItems.Count(),
                         Items = books.ToArray()
@@ -113,7 +114,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await bookService.GetUserBookShelvesAsync("magoolation@me.com").ConfigureAwait(false);
+                var result = await bookService.GetUserBookShelvesAsync(authenticationTokenManager.Current.UserId).ConfigureAwait(false);
                 foreach (var bookshelf in result)
                 {
                     serverBookshelves.Add(bookshelf.ReadingStatus, bookshelf.Items);

@@ -1,14 +1,17 @@
 ﻿using Refit;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Shared.Models;
-using ABookshelf = Xamarin.Bookshelf.Shared.Models.BookshelfItem;
 
 namespace Xamarin.Bookshelf.Shared.Services
 {
-    //[Headers("x-functions-key: jTLTHtsS7iWfDUqXpPfVVfRHdwKUoUnUDyV6UCUcbb7e/658sGkz3Q==")]
     public interface IBookService
     {
+        [Get("/.auth/me")]
+        Task<AzureAppServiceAuthenticationTokens> MeAsync();
+        [Get("/.auth/refresh")]
+        Task<HttpResponseMessage> RefreshAsync();
         [Get("/v1/books?title={title}")]
         Task<IEnumerable<Book>> SearchBookByTitleAsync(string title);
         [Get("/v1/books?author={author}")]
@@ -20,7 +23,7 @@ namespace Xamarin.Bookshelf.Shared.Services
             [Get("/v1/bookshelves/{userId}")]
         Task<IEnumerable<UserBookshelf>> GetUserBookShelvesAsync(string userId);
         [Post("/v1/bookshelves")]
-        Task RegisterBookAsync([Body]ABookshelf bookshelf);
+        Task RegisterBookAsync([Body]BookshelfItem bookshelf);
             [Post("/v1/reviews")]
         Task ReviewBookAsync([Body]BookReview review);
     }
