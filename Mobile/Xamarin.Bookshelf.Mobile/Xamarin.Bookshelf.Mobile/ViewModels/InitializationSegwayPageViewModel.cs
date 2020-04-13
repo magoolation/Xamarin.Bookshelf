@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Xamarin.Bookshelf.Mobile.Services;
+﻿using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
@@ -20,8 +19,6 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             base.OnAppearing();
 
             await authenticationManager.RefreshAsync();
-
-            var message = await bookService.Endpoint.MeAsync();
 
             if (authenticationManager.IsAuthenticated)
             {
