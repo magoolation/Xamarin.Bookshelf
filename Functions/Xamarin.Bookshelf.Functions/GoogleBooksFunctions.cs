@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
@@ -28,8 +29,14 @@ namespace Xamarin.Bookshelf.Functions
         [FunctionName("SearchBook")]
         public async Task<IActionResult> SearchBooks(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = ApiRoutes.API_BOOKS)] HttpRequest req,
-            ILogger log)
+            ILogger log,
+            ClaimsPrincipal user)
         {
+if (!user.Identity.IsAuthenticated)
+            {
+                return new UnauthorizedResult();
+            }
+
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string ipAddress = req.Headers["x-forwarded-for"];
@@ -90,8 +97,14 @@ namespace Xamarin.Bookshelf.Functions
         public async Task<IActionResult> GetBook(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = ApiRoutes.API_GET_BOOK_DETAILS)] HttpRequest req,
             string id,
-            ILogger log)
+            ILogger log,
+            ClaimsPrincipal user)
         {
+            if (!user.Identity.IsAuthenticated)
+            {
+                return new UnauthorizedResult();
+            }
+
             log.LogInformation("C# HTTP trigger function processed a request.");
             string ipAddress = req.Headers["x-forwarded-for"];
 

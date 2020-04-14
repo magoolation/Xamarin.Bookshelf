@@ -143,11 +143,7 @@ namespace Xamarin.Bookshelf.Functions
             ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
             SqlQuery = "select * from Reviews r where r.BookId = {bookId} order by r.UserId")] IEnumerable<BookshelfItem> reviews,
             ILogger log)
-        {
-            if (reviews == null || !reviews.Any())
-            {
-                return new NotFoundResult();
-            }
+        {            
             return new OkObjectResult(reviews);
         }
 
