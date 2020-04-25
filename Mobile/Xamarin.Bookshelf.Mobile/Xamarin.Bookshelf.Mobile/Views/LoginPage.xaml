@@ -14,11 +14,24 @@
         <StackLayout VerticalOptions="Center">
             <Button
                 BackgroundColor="#4285f4"
+                BorderColor="#4285f4"
+                BorderWidth="1"
                 Command="{Binding LoginWithGoogleCommand}"
                 CornerRadius="2"
                 HeightRequest="42"
                 HorizontalOptions="Center"
                 Text="Login with Google"
+                TextColor="White"
+                WidthRequest="148" />
+            <Button
+                BackgroundColor="Black"
+                BorderColor="Black"
+                BorderWidth="1"
+                Command="{Binding SigninWithAppleCommand}"
+                CornerRadius="2"
+                HeightRequest="42"
+                HorizontalOptions="Center"
+                Text="Sign in with Apple"
                 TextColor="White"
                 WidthRequest="148" />
         </StackLayout>

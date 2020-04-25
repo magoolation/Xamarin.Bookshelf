@@ -13,7 +13,7 @@ namespace Xamarin.Bookshelf.Mobile
             this.platformInitializer = platformInitializer;
             InitializeComponent();
 
-            var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL" };
+            var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "INDICATORVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL", "EXPANDERVIEW_EXPERIMENTAL" };
             Device.SetFlags(flags);                        
         }
 

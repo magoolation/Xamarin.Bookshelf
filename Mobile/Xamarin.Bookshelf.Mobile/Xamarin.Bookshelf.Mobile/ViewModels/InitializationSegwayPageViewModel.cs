@@ -18,7 +18,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
 
-            await authenticationManager.RefreshAsync();
+            //await authenticationManager.RefreshAsync();
 
             if (authenticationManager.IsAuthenticated)
             {

@@ -16,7 +16,7 @@ namespace Xamarin.Bookshelf.Integration.Tests
         {
             IBookService service = RestService.For<IBookService>(ApiRoutes.API_BASE_URL);
 
-            var books = await service.SearchBookByTitleAsync("mochileiro");
+            var books = await service.SearchBookByTitle("mochileiro");
 
             Assert.Equal(10, books.Count());
         }

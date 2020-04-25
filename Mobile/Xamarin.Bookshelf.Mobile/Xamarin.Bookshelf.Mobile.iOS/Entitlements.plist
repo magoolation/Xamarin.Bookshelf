@@ -7,5 +7,9 @@
 		<string>applinks:xamarin-bookshelf-auth.azurewebsites.net</string>
 		<string>applinks:www.tracinha.com.br</string>
 	</array>
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
 </dict>
 </plist>

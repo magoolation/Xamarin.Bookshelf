@@ -1,24 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.CosmosDB;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Xamarin.Bookshelf.Functions
 {

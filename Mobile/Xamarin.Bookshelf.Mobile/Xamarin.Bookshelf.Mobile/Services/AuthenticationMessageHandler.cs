@@ -21,10 +21,10 @@ namespace Xamarin.Bookshelf.Mobile.Services
         {
             if (authenticationTokenManager.Current.IsAuthenticated)
             {
-                if (request.Headers.Authorization == null)
-                {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authenticationTokenManager.Current.AuthenticationToken);
-                }
+                //    if (request.Headers.Authorization == null)
+                //    {
+                //        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authenticationTokenManager.Current.AuthenticationToken);
+                //    }
                 request.Headers.Add("X-ZUMO-AUTH", authenticationTokenManager.Current.AuthenticationToken);
             }
 

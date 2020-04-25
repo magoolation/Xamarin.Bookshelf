@@ -14,11 +14,27 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IAuthenticationManager authenticationManager;
 
         public ICommand LoginWithGoogleCommand { get; }
+        public ICommand SigninWithAppleCommand { get; }
 
         public LoginPageViewModel(IAuthenticationManager authenticationManager)
         {
             this.authenticationManager = authenticationManager;
             LoginWithGoogleCommand = new AsyncCommand(LoginWithGoogleAsync);
+            SigninWithAppleCommand = new AsyncCommand(SigninWithAppleAsync);
+        }
+
+        private async Task SigninWithAppleAsync()
+        {
+            try
+            {
+                await authenticationManager.SigninWithAppleAsync();
+
+                await Shell.Current.GoToAsync("//Main");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlertAsync("Error", ex.Message, "OK");
+            }
         }
 
         private async Task LoginWithGoogleAsync()

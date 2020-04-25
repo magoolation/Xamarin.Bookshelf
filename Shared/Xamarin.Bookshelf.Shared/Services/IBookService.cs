@@ -1,4 +1,5 @@
 ﻿using Refit;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,14 +9,16 @@ namespace Xamarin.Bookshelf.Shared.Services
 {
     public interface IBookService
     {
+        [Post("/.auth/login/Apple")]
+        Task<string> SigninWithAppleAsync([Body]AppleAuthenticationResult appleAuthenticationResult);
         [Get("/.auth/me")]
         Task<AzureAppServiceAuthenticationToken[]> MeAsync();
         [Get("/.auth/refresh")]
         Task<HttpResponseMessage> RefreshAsync();
         [Get("/v1/books?title={title}")]
-        Task<IEnumerable<Book>> SearchBookByTitleAsync(string title);
+        IObservable<IEnumerable<Book>> SearchBookByTitle(string title);
         [Get("/v1/books?author={author}")]
-        Task<IEnumerable<Book>> SearchBookByAuthorAsync(string author);
+        IObservable<IEnumerable<Book>> SearchBookByAuthor(string author);
         [Get("/v1/books/{id}")]
         Task<Book> GetBookDetailsAsync(string id);
         [Get("/v1/reviews/{bookId}")]

@@ -17,5 +17,7 @@ namespace Xamarin.Bookshelf.Mobile.Services
         Task RefreshAsync();
 
         bool IsAuthenticated { get; }
+
+        Task SigninWithAppleAsync();
     }
 }

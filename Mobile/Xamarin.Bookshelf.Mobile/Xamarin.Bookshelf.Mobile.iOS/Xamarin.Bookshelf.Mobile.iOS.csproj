@@ -144,14 +144,16 @@
     <PackageReference Include="refit">
       <Version>5.1.54</Version>
     </PackageReference>
+    <PackageReference Include="System.Reactive">
+      <Version>4.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>1.5.3</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Xamarin.Essentials\Xamarin.Essentials\Xamarin.Essentials.csproj">
-      <Project>{7820d147-9266-4a67-b317-5d5e8b7ba02a}</Project>
-      <Name>Xamarin.Essentials</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.csproj">
       <Project>{F96095E3-137E-4D86-B324-AE3BA934D825}</Project>
       <Name>Xamarin.Bookshelf.Mobile</Name>
