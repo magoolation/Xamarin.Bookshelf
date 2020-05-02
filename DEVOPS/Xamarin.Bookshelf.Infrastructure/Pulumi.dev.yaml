@@ -1,2 +1,10 @@
 config:
+  Xamarin.Bookshelf.Infrastructure:Google_Client_Id:
+    secure: AAABAH4ZfXTcddKGJZ2X/le5lFSIfjOUiIgw+LPP5g9mbdAetHO6uRWRLIRXksyNVbvzX1JYrhqJtrd49YnIzFqEd8wCZK4fKijjtpaNn67JBPtb5tD7OJ//zcqTWySChcNW7tdC7UU=
+  Xamarin.Bookshelf.Infrastructure:Google_Client_Secret:
+    secure: AAABADfGehiea5HQVaf9MXcXCKGEnHN8lOxgwqUhvnzQkn7w8Hw8YAQgi3HEE4OwSCUmjiO+KN8=
+  Xamarin.Bookshelf.Infrastructure:Google_Scopes:
+    secure: AAABAC4GZsA4JEE7xtDiRSA1hSPTiZwxJOirakj+HVCL2ARMccsCh/BvA+UAcNFvz6J7QwVWjMvniLFhnwMJ0fvrzFOUBCgDnTeNqmcG4S8sXGMkmh691816JIc5bV7kiKgcB4uox0+d+Am9IIiD2xa7l5Ko6uQmECM5h2c+iKovCJ/aATAgPPT56i58Ot+c/rzuDKsM+lAkyG0PrCzORI6fMuGZdpmc4jqZcg==
+  Xamarin.Bookshelf.Infrastructure:apiKey:
+    secure: AAABACIAmZnD0ZjD4AHWV3Q/hbDhCqDHnUnV2UVFsMAmsi6ibai0BFhZLGssiWoc0kX9lhcioQml2ySf7P6B/1iDGTuXY5k=
   azure:location: brazilsouth

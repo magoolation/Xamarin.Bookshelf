@@ -16,9 +16,9 @@ namespace Xamarin.Bookshelf.Shared.Services
         [Get("/.auth/refresh")]
         Task<HttpResponseMessage> RefreshAsync();
         [Get("/v1/books?title={title}")]
-        IObservable<IEnumerable<Book>> SearchBookByTitle(string title);
+        Task<IEnumerable<Book>> SearchBookByTitleAsync(string title);
         [Get("/v1/books?author={author}")]
-        IObservable<IEnumerable<Book>> SearchBookByAuthor(string author);
+        Task<IEnumerable<Book>> SearchBookByAuthorAsync(string author);
         [Get("/v1/books/{id}")]
         Task<Book> GetBookDetailsAsync(string id);
         [Get("/v1/reviews/{bookId}")]

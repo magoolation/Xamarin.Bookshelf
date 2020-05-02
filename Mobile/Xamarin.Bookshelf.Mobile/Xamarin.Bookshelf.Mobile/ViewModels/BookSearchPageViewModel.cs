@@ -55,12 +55,14 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             {
                 IsBusy = true;
 
-                var result = await bookService.SearchBookByTitleAsync(text).ConfigureAwait(false);
-                if (result == null)
-                {
-                    result = Enumerable.Empty<Book>();
-                }
+                var byTitle = bookService.SearchBookByTitleAsync(text);
+                var byAuthor = bookService.SearchBookByAuthorAsync(text);
 
+                await Task.WhenAll(byTitle, byAuthor).ConfigureAwait(false);
+
+                var result = (byTitle.Result ?? Enumerable.Empty<Book>())
+                    .Concat(byAuthor.Result ?? Enumerable.Empty<Book>());
+                
                 Books = new ObservableCollection<Book>(result);
             }
             catch (Exception ex)
