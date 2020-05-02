@@ -1,4 +1,6 @@
 using Pulumi;
+using Pulumi.Azure.ApiManagement.Outputs;
+using Pulumi.Azure.AppInsights;
 using Pulumi.Azure.AppService;
 using Pulumi.Azure.AppService.Inputs;
 using Pulumi.Azure.AppService.Outputs;
@@ -17,7 +19,12 @@ class TracinhaStack : Stack
         var config = new Config();
 
         // Create an Azure Resource Group
-        var resourceGroup = new ResourceGroup("tracinha-rg");
+        var resourceGroup = new ResourceGroup("tracinha-rg", new ResourceGroupArgs()
+        {
+            Name = "tracinha-rg",
+            Location = "brazilsouth",
+        });
+
         // Create an AppService Plan
         var appServicePlan = CreateAppServicePlan(resourceGroup);
 
@@ -73,6 +80,14 @@ class TracinhaStack : Stack
             PartitionKeyPath = "/bookId"
         });
 
+        // Create Application Insights
+        var appInsights = new Insights("tracinha-ins", new InsightsArgs()
+        {
+            ResourceGroupName = resourceGroup.Name,
+            Location = "brazilsouth",
+            ApplicationType = "web"
+        });
+
         // Configure AppSettings
         var appSettings = new InputMap<string>()
             {
@@ -80,7 +95,7 @@ class TracinhaStack : Stack
 { "WEBSITE_RUN_FROM_PACKAGE", codeBlobUrl },
             { "apiKey", config.Require("apiKey") },
             { "CosmosDB", cosmosAccount.Endpoint },
-            { "APPINSIGHTS_INSTRUMENTATIONKEY", "" },
+            { "APPINSIGHTS_INSTRUMENTATIONKEY", appInsights.InstrumentationKey },
 };
 
         // Create the FunctionApp
@@ -94,6 +109,7 @@ class TracinhaStack : Stack
     {
         return new FunctionApp("tracinha-functions", new FunctionAppArgs()
         {
+            Name = "tracinha-functions",
             AppServicePlanId = appServicePlan.Id,
             ResourceGroupName = resourceGroup.Name,
             StorageAccountName = storageAccount.Name,
@@ -103,7 +119,9 @@ class TracinhaStack : Stack
             AppSettings = appSettings,
             AuthSettings = new FunctionAppAuthSettingsArgs()
             {
+                AllowedExternalRedirectUrls = new string[] { "tracinha://" },
                 Enabled = true,
+                UnauthenticatedClientAction = "AllowAnonymous",
                 Google = new FunctionAppAuthSettingsGoogleArgs()
                 {
                     ClientId = config.RequireSecret("Google_Client_Id"),
@@ -138,6 +156,7 @@ class TracinhaStack : Stack
     {
         return new Pulumi.Azure.Storage.Account("tracinhast", new Pulumi.Azure.Storage.AccountArgs
         {
+            Name = "tracinhast",
             ResourceGroupName = resourceGroup.Name,
             AccountReplicationType = "LRS",
             AccountTier = "Standard"
@@ -148,7 +167,8 @@ class TracinhaStack : Stack
     {
         return new Plan("tracinha-plan", new PlanArgs()
         {
-            Kind = "Linux",
+            Name = "tracinha-plan",
+            Kind = "FunctionApp",
             ResourceGroupName = resourceGroup.Name,
             Location = "brazilsouth",
             Sku = new PlanSkuArgs()
@@ -156,7 +176,6 @@ class TracinhaStack : Stack
                 Tier = "Dynamic",
                 Size = "Y1",
             },
-            Reserved = true
         });
     }
 
