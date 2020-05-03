@@ -13,6 +13,9 @@ using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using System.Security.Claims;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 
 namespace Xamarin.Bookshelf.Functions
 {
@@ -34,8 +37,7 @@ namespace Xamarin.Bookshelf.Functions
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,
-            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
-            CreateIfNotExists = true)] out dynamic document,
+            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING)] out dynamic document,
             ILogger log,
             ClaimsPrincipal user)
         {
@@ -59,8 +61,7 @@ namespace Xamarin.Bookshelf.Functions
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,
-            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
-            CreateIfNotExists = true)] out dynamic document,
+            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING)] out dynamic document,
             ILogger log,
             ClaimsPrincipal user)
         {
@@ -79,13 +80,12 @@ namespace Xamarin.Bookshelf.Functions
         }
 
         [FunctionName("GetBookshelves")]
-        public IActionResult GetBookshelves(
+        public async Task<IActionResult> GetBookshelves(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = ApiRoutes.API_GET_USER_BOOKS)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,
-            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
-            SqlQuery = "select * from Books b where b.UserId = {userId} order by b.ReadingStatus")] IEnumerable<BookshelfItem> bookshelves,
+            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING)] IDocumentClient document,
             ILogger log,
             string userId,
             ClaimsPrincipal user)
@@ -97,6 +97,21 @@ namespace Xamarin.Bookshelf.Functions
 
             string ipAddress = req.Headers["x-forwarded-for"];
             IEnumerable<UserBookshelf> userBookshelves = Enumerable.Empty < UserBookshelf>();
+            List<BookshelfItem> bookshelves = new List<BookshelfItem>();
+
+            var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.BOOKS_COLLECTION_NAME);
+
+            var query = document.CreateDocumentQuery(uri)
+                .Where(d => d.Id == userId)
+                .AsDocumentQuery();
+
+            while (query.HasMoreResults)
+            {
+                foreach (BookshelfItem result in await query.ExecuteNextAsync())
+                {
+                    bookshelves.Add(result);
+                }
+            }
 
             if (bookshelves != null && bookshelves.Any())
             {

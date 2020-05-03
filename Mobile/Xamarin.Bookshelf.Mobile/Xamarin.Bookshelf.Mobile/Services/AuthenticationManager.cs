@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Essentials;
@@ -24,18 +27,17 @@ namespace Xamarin.Bookshelf.Mobile.Services
         public async Task LoginWithGoogle()
         {
             var result = await WebAuthenticator.AuthenticateAsync(new Uri(Constants.AUTHENTICATION_URL_GOOGLE), new Uri(Constants.DEEP_LINK_SCHEMA));
-            await authenticationTokenManager.Current.SetAuthenticationToken(ExtractToken(result.Properties["token"]));
-            var token = await GetTokens("google");
-            await StoreTokensAsync(token);
-
-            await RefreshAsync();
+            var data = ExtractToken(result.Properties["token"].ToString());
+            var authenticationToken = data.AuthenticationToken;
+            var userId = data.User.UserId;
+            await authenticationTokenManager.Current.SetAuthenticationToken(authenticationToken);
+            await authenticationTokenManager.Current.SetUserId(userId);
         }
 
-        private string ExtractToken(string json)
+        private AzureAuthenticationToken ExtractToken(string json)
         {
-            return JObject.Parse(
-                WebUtility.UrlDecode(json)
-                )["authenticationToken"].ToString();
+            return JsonConvert.DeserializeObject<AzureAuthenticationToken>(
+                WebUtility.UrlDecode(json));
         }
 
         private async Task<AzureAppServiceAuthenticationToken> GetTokens(string providerName)
@@ -47,9 +49,6 @@ namespace Xamarin.Bookshelf.Mobile.Services
 
         private async Task StoreTokensAsync(AzureAppServiceAuthenticationToken tokens)
         {
-            await authenticationTokenManager.Current.SetAccessToken(tokens.AccessToken);
-            await authenticationTokenManager.Current.SetIdToken(tokens.IdToken);
-            await authenticationTokenManager.Current.SetExpiresIn(tokens.ExpiresOn);
             await authenticationTokenManager.Current.SetProviderName(tokens.ProviderName);
             await authenticationTokenManager.Current.SetUserId(tokens.UserId);
         }
@@ -57,6 +56,13 @@ namespace Xamarin.Bookshelf.Mobile.Services
         public async Task RefreshAsync()
         {
             await authenticationTokenManager.Current.RefreshAsync();
+
+            if (!authenticationTokenManager.Current.IsAuthenticated)
+            {
+                var response = await bookService.Endpoint.RefreshAsync();
+                //await authenticationTokenManager.Current.SetExpiresIn(DateTime.UtcNow.AddHours(8));
+                await authenticationTokenManager.Current.RefreshAsync();
+            }
         }
 
         public void Logout()
@@ -83,10 +89,8 @@ namespace Xamarin.Bookshelf.Mobile.Services
             }
 
             if (result != null)
-                {
+            {
                 await authenticationTokenManager.Current.SetUserId(result.Properties["user_id"]);
-                await authenticationTokenManager.Current.SetAccessToken(result.AccessToken);
-                await authenticationTokenManager.Current.SetIdToken(result.IdToken);
 
                 var apple = new AppleAuthenticationResult()
                 {
@@ -103,4 +107,18 @@ namespace Xamarin.Bookshelf.Mobile.Services
             }
         }
     }
-} 
+
+        public class AzureAuthenticationToken
+        {
+        [JsonPropertyName("authentication_code")]
+        public string AuthenticationToken { get; set; }
+        [JsonPropertyName("user")]
+        public AzureAuthenticationTokenUser User { get; set; }
+    }
+
+    public class AzureAuthenticationTokenUser
+    {
+    [JsonPropertyName("userId")]
+    public string UserId { get; set; }
+}
+}

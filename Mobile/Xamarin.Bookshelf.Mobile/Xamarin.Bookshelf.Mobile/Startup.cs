@@ -45,7 +45,7 @@ namespace Xamarin.Bookshelf.Mobile
                 .AddHttpMessageHandler<AuthenticationMessageHandler>()
                 .ConfigureHttpClient(c =>
             {
-                c.BaseAddress = new Uri("https://xamarin-bookshelf.azurewebsites.net/");
+                c.BaseAddress = new Uri("https://tracinha-functions.azurewebsites.net/");
             } );
 
             // Services            

@@ -18,16 +18,14 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
 
-            //await authenticationManager.RefreshAsync();
+            await authenticationManager.RefreshAsync();
 
-            if (authenticationManager.IsAuthenticated)
-            {
-                await Shell.Current.GoToAsync("//Main");
-            }
-            else
+            if (!authenticationManager.IsAuthenticated)
             {
                 await Shell.Current.GoToAsync("//Login");
+                return;
             }
+            await Shell.Current.GoToAsync("//Main");
         }
     }
 }

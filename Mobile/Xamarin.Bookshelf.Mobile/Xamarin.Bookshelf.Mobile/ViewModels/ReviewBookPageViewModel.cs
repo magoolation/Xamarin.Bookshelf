@@ -52,7 +52,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.Navigation.PopModalAsync();
+            await Shell.Current.GoToAsync("..");
         }
 
         private async Task SendReviewAsync()
@@ -72,7 +72,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK");
-                    await Shell.Current.Navigation.PopModalAsync();
+                    await Shell.Current.GoToAsync("..");
                 });
             }
             catch (Exception ex)

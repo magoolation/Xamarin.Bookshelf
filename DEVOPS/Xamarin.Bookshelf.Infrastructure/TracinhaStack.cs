@@ -43,6 +43,7 @@ class TracinhaStack : Stack
         // Create a CosmosDB Account
         var cosmosAccount = new Pulumi.Azure.CosmosDB.Account("tracinha", new Pulumi.Azure.CosmosDB.AccountArgs()
         {
+            Name = "tracinha",
             GeoLocations = new AccountGeoLocationArgs()
             {
                 Location = "brazilsouth",
@@ -59,13 +60,15 @@ class TracinhaStack : Stack
 
         var database = new SqlDatabase("Tracinha", new SqlDatabaseArgs()
         {
+            Name = "Tracinha",
             ResourceGroupName = resourceGroup.Name,
             AccountName = cosmosAccount.Name,
             Throughput = 400
         });
 
-        var bookshelfCollection= new SqlContainer("Bookshelf", new SqlContainerArgs()
+        var bookshelfCollection= new SqlContainer("Books", new SqlContainerArgs()
         {
+            Name = "Books",
             ResourceGroupName = resourceGroup.Name,
             AccountName = cosmosAccount.Name,
             DatabaseName = database.Name,
@@ -74,6 +77,7 @@ class TracinhaStack : Stack
 
         var reviewContainer = new SqlContainer("Reviews", new SqlContainerArgs()
         {
+            Name = "Reviews",
             ResourceGroupName = resourceGroup.Name,
             AccountName = cosmosAccount.Name,
             DatabaseName = database.Name,
@@ -116,17 +120,18 @@ class TracinhaStack : Stack
             StorageAccountAccessKey = storageAccount.PrimaryAccessKey,
             OsType = "linux",
             Version = "~3",
-            AppSettings = appSettings,
+            AppSettings = appSettings,            
             AuthSettings = new FunctionAppAuthSettingsArgs()
             {
                 AllowedExternalRedirectUrls = new string[] { "tracinha://" },
+                TokenStoreEnabled = true,
                 Enabled = true,
                 UnauthenticatedClientAction = "AllowAnonymous",
                 Google = new FunctionAppAuthSettingsGoogleArgs()
                 {
                     ClientId = config.RequireSecret("Google_Client_Id"),
                     ClientSecret = config.RequireSecret("Google_Client_Secret"),
-                    OauthScopes = config.RequireSecret("Google_Scopes").ToString().Split(',')
+                    OauthScopes = config.RequireSecret("Google_Scopes").Apply(s => s.Split(','))
                 }
             }
         });
