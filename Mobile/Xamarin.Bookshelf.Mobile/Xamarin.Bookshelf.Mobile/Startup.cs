@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Refit;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Mobile.Helpers;
 using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Mobile.ViewModels;
+using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
 
 namespace Xamarin.Bookshelf.Mobile
@@ -31,8 +33,6 @@ namespace Xamarin.Bookshelf.Mobile
                             ConfigureServices(c, x, platformInitializer);
                         })
                         .Build();
-
-            ViewModelLocator.Init(_host.Services);
         }
 
         public static void ConfigureServices(HostBuilderContext context, IServiceCollection services, IPlatformInitializer platformInitializer)
@@ -41,7 +41,7 @@ namespace Xamarin.Bookshelf.Mobile
             services.AddSingleton<IAuthenticationTokenManager, AuthenticationTokenManager>();
             services.AddTransient < AuthenticationMessageHandler>();
             
-            services.AddHttpClient<BookService>()
+            services.AddRefitClient<IBookService>()
                 .AddHttpMessageHandler<AuthenticationMessageHandler>()
                 .ConfigureHttpClient(c =>
             {
@@ -68,7 +68,7 @@ namespace Xamarin.Bookshelf.Mobile
             platformInitializer?.ConfigureServices(context, services);            
         }
 
-        private static T GetService<T>() where T : class
+        public static T GetService<T>() where T : class
             => _host.Services.GetService<T>() as T;
     }
 }

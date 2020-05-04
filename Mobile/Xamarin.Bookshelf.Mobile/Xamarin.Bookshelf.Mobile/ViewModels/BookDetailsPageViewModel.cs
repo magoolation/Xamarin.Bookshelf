@@ -1,4 +1,6 @@
-﻿using AsyncAwaitBestPractices.MVVM;
+﻿using AsyncAwaitBestPractices;
+using AsyncAwaitBestPractices.MVVM;
+using Refit;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,9 +25,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand AddToLibraryCommand { get; }
         public ICommand ReviewBookCommand { get; }
 
-        public BookDetailsPageViewModel(BookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
+        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
         {
-            this.bookService = bookService.Endpoint;
+            this.bookService = bookService;
             this.repository = repository;
             this.authenticationTokenManager = authenticationTokenManager;
 
@@ -92,16 +94,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             set => SetProperty(ref book, value);
         }
 
-        public override async void OnAppearing()
+        public override void OnAppearing()
         {
             base.OnAppearing();
 
-            await GetBookDetailsAsync();
-        }
-
-        public override void OnDisappearing()
-        {
-            Book = null;
+            GetBookDetailsAsync().ConfigureAwait(false);
         }
 
         private async Task GetBookDetailsAsync()
@@ -109,12 +106,19 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
-                Book = result;
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
+                    Book = result;
+                });
+            }
+            catch (ApiException apiError)
+            {
+                await MainThread.InvokeOnMainThreadAsync(async () => await OnApiError(apiError));
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                await DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {

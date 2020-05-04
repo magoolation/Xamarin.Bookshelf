@@ -118,7 +118,7 @@ class TracinhaStack : Stack
             ResourceGroupName = resourceGroup.Name,
             StorageAccountName = storageAccount.Name,
             StorageAccountAccessKey = storageAccount.PrimaryAccessKey,
-            OsType = "linux",
+            //OsType = "linux",
             Version = "~3",
             AppSettings = appSettings,            
             AuthSettings = new FunctionAppAuthSettingsArgs()
@@ -185,6 +185,5 @@ class TracinhaStack : Stack
     }
 
     [Output]
-    public Output<string> ConnectionString { get; private set; }
     public Output<string> Endpoint { get; private set; }
 }

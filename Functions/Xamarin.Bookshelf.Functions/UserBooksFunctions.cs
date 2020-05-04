@@ -22,10 +22,10 @@ namespace Xamarin.Bookshelf.Functions
     public class UserBooksFunctions
     {
         private const string API_KEY = "apiKey";
-        private readonly GoogleBooksApiService googleBooksApi;
+        private readonly IGoogleBooksApi googleBooksApi;
         private readonly string apiKey;
 
-        public UserBooksFunctions(GoogleBooksApiService googleBooksApi, IConfiguration configuration)
+        public UserBooksFunctions(IGoogleBooksApi googleBooksApi, IConfiguration configuration)
         {
             this.googleBooksApi = googleBooksApi;
             this.apiKey = configuration[API_KEY];
@@ -146,7 +146,7 @@ namespace Xamarin.Bookshelf.Functions
             {
                 try
                 {
-                    var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey, ipAddress);
+                    var book = await googleBooksApi.GetBookById(bookshelf.BookId, apiKey, ipAddress);
                     bookshelf.Book = ConvertToBook(book);
                     books.Add(bookshelf);
                 }

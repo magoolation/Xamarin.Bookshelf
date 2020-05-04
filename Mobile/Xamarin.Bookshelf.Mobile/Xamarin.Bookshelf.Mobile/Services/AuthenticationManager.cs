@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Xamarin.Bookshelf.Shared.Models;
+using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Essentials;
 
 namespace Xamarin.Bookshelf.Mobile.Services
@@ -14,9 +15,9 @@ namespace Xamarin.Bookshelf.Mobile.Services
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly IAuthenticationTokenManager authenticationTokenManager;
-        private readonly BookService bookService;
+        private readonly IBookService bookService;
 
-        public AuthenticationManager(IAuthenticationTokenManager authenticationTokenManager, BookService bookService)
+        public AuthenticationManager(IAuthenticationTokenManager authenticationTokenManager, IBookService bookService)
         {
             this.authenticationTokenManager = authenticationTokenManager;
             this.bookService = bookService;
@@ -42,7 +43,7 @@ namespace Xamarin.Bookshelf.Mobile.Services
 
         private async Task<AzureAppServiceAuthenticationToken> GetTokens(string providerName)
         {
-            var me = await bookService.Endpoint.MeAsync();
+            var me = await bookService.MeAsync();
 
             return me.FirstOrDefault(t => t.ProviderName == providerName);
         }
@@ -55,23 +56,23 @@ namespace Xamarin.Bookshelf.Mobile.Services
 
         public async Task RefreshAsync()
         {
-            await authenticationTokenManager.Current.RefreshAsync();
+            await authenticationTokenManager.Current.RefreshAsync().ConfigureAwait(false);
 
-            try
-            {
-                var response = await bookService.Endpoint.RefreshAsync();
-            }
-            catch (Exception ex)
-            {
-                authenticationTokenManager.Current.SetAuthenticationToken(null);
-                authenticationTokenManager.Current.SetExpiresIn(null);
-            }
+            //try
+            //{
+            //    var response = await bookService.Endpoint.RefreshAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    authenticationTokenManager.Current.SetAuthenticationToken(null);
+            //    authenticationTokenManager.Current.SetExpiresIn(null);
+            //}
 
-            if (!authenticationTokenManager.Current.IsAuthenticated)
-            {
-                //await authenticationTokenManager.Current.SetExpiresIn(DateTime.UtcNow.AddHours(8));
-                await authenticationTokenManager.Current.RefreshAsync();
-            }
+            //if (!authenticationTokenManager.Current.IsAuthenticated)
+            //{
+            //    //await authenticationTokenManager.Current.SetExpiresIn(DateTime.UtcNow.AddHours(8));
+            //    await authenticationTokenManager.Current.RefreshAsync();
+            //}
         }
 
         public void Logout()
@@ -110,7 +111,7 @@ namespace Xamarin.Bookshelf.Mobile.Services
                     ExpiresIn = result.ExpiresIn,
                     RefreshToken = result.RefreshToken
                 };
-                var token = await bookService.Endpoint.SigninWithAppleAsync(apple);
+                var token = await bookService.SigninWithAppleAsync(apple);
 
                 await authenticationTokenManager.Current.SetAuthenticationToken(token);
             }

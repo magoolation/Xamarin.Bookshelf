@@ -17,10 +17,10 @@ namespace Xamarin.Bookshelf.Functions
     public class GoogleBooksFunctions
     {
         private const string API_KEY = "apiKey";
-        private readonly GoogleBooksApiService googleBooksApi;
+        private readonly IGoogleBooksApi googleBooksApi;
         private readonly string apiKey;
 
-        public GoogleBooksFunctions(GoogleBooksApiService googleBooksApi, IConfiguration configuration)
+        public GoogleBooksFunctions(IGoogleBooksApi googleBooksApi, IConfiguration configuration)
         {
             this.googleBooksApi = googleBooksApi;
             this.apiKey = configuration[API_KEY];
@@ -44,7 +44,7 @@ if (!user.Identity.IsAuthenticated)
             IEnumerable<Book> books = Enumerable.Empty<Book>();
             if (req.Query.TryGetValue("title", out var titles))
             {
-                var volumes = await googleBooksApi.Endpoint.SearchBookByTitleAsync(titles.First(), apiKey, ipAddress);
+                var volumes = await googleBooksApi.SearchBookByTitleAsync(titles.First(), apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
                     books = volumes.items.Select(ConvertToBook);
@@ -52,7 +52,7 @@ if (!user.Identity.IsAuthenticated)
             }
             else if (req.Query.TryGetValue("author", out var authors))
             {
-                var volumes = await googleBooksApi.Endpoint.SearchBookByAuthorAsync(authors.First(), apiKey, ipAddress);
+                var volumes = await googleBooksApi.SearchBookByAuthorAsync(authors.First(), apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
                     books = volumes.items.Select(ConvertToBook); 
@@ -110,7 +110,7 @@ if (!user.Identity.IsAuthenticated)
 
             Book book = default(Book);
 
-            Volume volume = await googleBooksApi.Endpoint.GetBookById(id, apiKey, ipAddress);
+            Volume volume = await googleBooksApi.GetBookById(id, apiKey, ipAddress);
             if (volume != null)
             {
                 book = ConvertToBook(volume);

@@ -13,6 +13,7 @@ namespace Xamarin.Bookshelf.Mobile
             this.platformInitializer = platformInitializer;
             InitializeComponent();
 
+
             var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "INDICATORVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL", "EXPANDERVIEW_EXPERIMENTAL" };
             Device.SetFlags(flags);                        
         }
@@ -20,7 +21,6 @@ namespace Xamarin.Bookshelf.Mobile
         protected override async void OnStart()
         {
             Startup.Init(platformInitializer);
-
             MainPage = new AppShell();
         }
 

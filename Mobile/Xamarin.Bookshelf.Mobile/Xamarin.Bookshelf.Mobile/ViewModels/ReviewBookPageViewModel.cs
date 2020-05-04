@@ -42,9 +42,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SendCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ReviewBookPageViewModel(BookService bookService, IAuthenticationTokenManager authenticationTokenManager)
+        public ReviewBookPageViewModel(IBookService bookService, IAuthenticationTokenManager authenticationTokenManager)
         {
-            this.bookService = bookService.Endpoint;
+            this.bookService = bookService;
             SendCommand = new AsyncCommand(SendReviewAsync);
             CancelCommand = new AsyncCommand(CancelAsync);
             this.authenticationTokenManager = authenticationTokenManager;

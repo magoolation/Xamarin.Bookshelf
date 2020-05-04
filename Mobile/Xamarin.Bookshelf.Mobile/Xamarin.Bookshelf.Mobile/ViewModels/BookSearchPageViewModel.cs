@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
+using Refit;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,7 +27,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         }
 
         private IEnumerable<BookshelfItem> wantToRead;
-        public IEnumerable<BookshelfItem>  WantToRead
+        public IEnumerable<BookshelfItem> WantToRead
         {
             get => wantToRead;
             set => SetProperty(ref wantToRead, value);
@@ -35,9 +36,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SearchCommand { get; }
         public ICommand DetailsCommand { get; }
 
-        public BookSearchPageViewModel(BookService bookService, IBookRepository repository)
+        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository)
         {
-            this.bookService = bookService.Endpoint;
+            this.bookService = bookService;
             this.repository = repository;
 
             SearchCommand = new AsyncCommand<string>(SearchBooksAsync);
@@ -62,8 +63,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
                 var result = (byTitle.Result ?? Enumerable.Empty<Book>())
                     .Concat(byAuthor.Result ?? Enumerable.Empty<Book>());
-                
+
                 Books = new ObservableCollection<Book>(result);
+            }
+            catch (ApiException apiError)
+            {
+                await OnApiError(apiError);
             }
             catch (Exception ex)
             {
@@ -90,10 +95,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
                 WantToRead = items;
             }
-            catch(Exception ex)
-                {
+            catch (Exception ex)
+            {
                 await DisplayAlertAsync("Error", ex.Message, "OK");
             }
-            }
+        }
     }
 }

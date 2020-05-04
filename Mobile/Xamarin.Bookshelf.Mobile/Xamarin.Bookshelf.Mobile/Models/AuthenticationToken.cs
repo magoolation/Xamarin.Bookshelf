@@ -70,9 +70,9 @@ namespace Xamarin.Bookshelf.Mobile.Models
 
         public async  Task RefreshAsync()
         {
-            UserId = await SecureStorage.GetAsync(Constants.USER_ID);
-            AuthenticationToken = await SecureStorage.GetAsync(Constants.AUTHENTICATION_TOKEN);
-            if (DateTimeOffset.TryParse(await SecureStorage.GetAsync(Constants.EXPIRES_IN), out var expiresIn))
+            UserId = await SecureStorage.GetAsync(Constants.USER_ID).ConfigureAwait(false);
+            AuthenticationToken = await SecureStorage.GetAsync(Constants.AUTHENTICATION_TOKEN).ConfigureAwait(false);
+            if (DateTimeOffset.TryParse(await SecureStorage.GetAsync(Constants.EXPIRES_IN).ConfigureAwait(false), out var expiresIn))
             {
                 ExpiresIn = expiresIn;
             }

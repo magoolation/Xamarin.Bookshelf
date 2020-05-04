@@ -1,7 +1,7 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
+using Refit;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -9,6 +9,7 @@ using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
@@ -37,9 +38,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand ReadingBookkActionsCommand { get; }
         public ICommand ReadBookActionsCommand { get; }
 
-        public BookshelvesPageViewModel(BookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
+        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
         {
-            this.bookService = bookService.Endpoint;
+            this.bookService = bookService;
             this.repository = repository;
             this.authenticationTokenManager = authenticationTokenManager;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
@@ -69,7 +70,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
             if (! await LoadBooksFromCache())
             {
-                await LoadBooksFromServer();
+                await LoadBooksFromServer().ConfigureAwait  (false);
             }
         }
 
@@ -121,6 +122,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 }
 
                 Bookshelves = serverBookshelves;
+            }
+            catch (ApiException apiError)
+            {
+                await MainThread.InvokeOnMainThreadAsync(async () => await OnApiError(apiError));
             }
             catch (Exception ex)
             

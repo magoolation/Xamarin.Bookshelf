@@ -1,4 +1,5 @@
 ﻿using Xamarin.Bookshelf.Mobile.Services;
+using Xamarin.Bookshelf.Shared.Services;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
@@ -6,9 +7,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     public class InitializationSegwayPageViewModel : BaseViewModel
     {
         private readonly IAuthenticationManager authenticationManager;
-        private readonly BookService bookService;
+        private readonly IBookService bookService;
 
-        public InitializationSegwayPageViewModel(IAuthenticationManager authenticationManager, BookService bookService)
+        public InitializationSegwayPageViewModel(IAuthenticationManager authenticationManager, IBookService bookService)
         {
             this.authenticationManager = authenticationManager;
             this.bookService = bookService;
@@ -18,7 +19,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
 
-            //await authenticationManager.RefreshAsync();
+            await authenticationManager.RefreshAsync().ConfigureAwait(false);
 
             if (!authenticationManager.IsAuthenticated)
             {

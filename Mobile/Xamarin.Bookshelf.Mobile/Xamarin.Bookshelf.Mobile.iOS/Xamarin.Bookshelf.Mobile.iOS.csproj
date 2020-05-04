@@ -144,6 +144,9 @@
     <PackageReference Include="refit">
       <Version>5.1.67</Version>
     </PackageReference>
+    <PackageReference Include="Refit.HttpClientFactory">
+      <Version>5.1.67</Version>
+    </PackageReference>
     <PackageReference Include="System.Reactive">
       <Version>4.4.1</Version>
     </PackageReference>
