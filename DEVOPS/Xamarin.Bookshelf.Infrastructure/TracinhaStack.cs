@@ -98,7 +98,7 @@ class TracinhaStack : Stack
 { "runtime", "dotnet" },
 { "WEBSITE_RUN_FROM_PACKAGE", codeBlobUrl },
             { "apiKey", config.Require("apiKey") },
-            { "CosmosDB", cosmosAccount.Endpoint },
+            { "CosmosDB", cosmosAccount.ConnectionStrings.Apply(cs => cs[0]) },
             { "APPINSIGHTS_INSTRUMENTATIONKEY", appInsights.InstrumentationKey },
 };
 

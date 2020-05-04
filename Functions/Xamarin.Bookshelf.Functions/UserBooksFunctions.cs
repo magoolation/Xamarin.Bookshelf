@@ -101,15 +101,23 @@ namespace Xamarin.Bookshelf.Functions
 
             var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.BOOKS_COLLECTION_NAME);
 
-            var query = document.CreateDocumentQuery(uri)
-                .Where(d => d.Id == userId)
+            var query = document.CreateDocumentQuery<BookshelfItem>(uri)
+                .Where(d => d.UserId == userId)
                 .AsDocumentQuery();
 
             while (query.HasMoreResults)
             {
-                foreach (BookshelfItem result in await query.ExecuteNextAsync())
+                try
                 {
-                    bookshelves.Add(result);
+                    foreach (BookshelfItem result in await query.ExecuteNextAsync<BookshelfItem>())
+                    {
+                        bookshelves.Add(result);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    //throw;
+                    break;
                 }
             }
 
@@ -136,9 +144,16 @@ namespace Xamarin.Bookshelf.Functions
             var books = new List<BookshelfItem>();
             foreach(var bookshelf in bookshelves)
             {
-                var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey, ipAddress);
-                bookshelf.Book = ConvertToBook(book);
-                books.Add(bookshelf);
+                try
+                {
+                    var book = await googleBooksApi.Endpoint.GetBookById(bookshelf.BookId, apiKey, ipAddress);
+                    bookshelf.Book = ConvertToBook(book);
+                    books.Add(bookshelf);
+                }
+                catch (System.Exception ex)
+                {
+                    // Add Log
+                }
             }
             return books.ToArray();
         }

@@ -57,9 +57,18 @@ namespace Xamarin.Bookshelf.Mobile.Services
         {
             await authenticationTokenManager.Current.RefreshAsync();
 
-            if (!authenticationTokenManager.Current.IsAuthenticated)
+            try
             {
                 var response = await bookService.Endpoint.RefreshAsync();
+            }
+            catch (Exception ex)
+            {
+                authenticationTokenManager.Current.SetAuthenticationToken(null);
+                authenticationTokenManager.Current.SetExpiresIn(null);
+            }
+
+            if (!authenticationTokenManager.Current.IsAuthenticated)
+            {
                 //await authenticationTokenManager.Current.SetExpiresIn(DateTime.UtcNow.AddHours(8));
                 await authenticationTokenManager.Current.RefreshAsync();
             }
