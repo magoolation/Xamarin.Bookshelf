@@ -67,11 +67,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 await repository.AddBookAsync(bookshelf);
 
 
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Success", "Book added to your Bookshelf successfully!", "OK"));
+                await DisplayAlertAsync("Success", "Book added to your Bookshelf successfully!", "OK");
             }
             catch (Exception ex)
             {
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
+                await DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {
@@ -94,11 +94,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             set => SetProperty(ref book, value);
         }
 
-        public override void OnAppearing()
+        public override async void OnAppearing()
         {
             base.OnAppearing();
 
-            GetBookDetailsAsync().ConfigureAwait(false);
+            await GetBookDetailsAsync().ConfigureAwait(false);
         }
 
         private async Task GetBookDetailsAsync()
@@ -106,15 +106,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             try
             {
                 IsBusy = true;
-                await MainThread.InvokeOnMainThreadAsync(async () =>
-                {
-                    var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
-                    Book = result;
-                });
+                var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
+                Book = result;
             }
             catch (ApiException apiError)
             {
-                await MainThread.InvokeOnMainThreadAsync(async () => await OnApiError(apiError));
+                await OnApiError(apiError);
             }
             catch (Exception ex)
             {

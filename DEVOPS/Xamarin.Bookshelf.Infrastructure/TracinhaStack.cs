@@ -11,6 +11,8 @@ using Pulumi.Azure.Monitoring.Outputs;
 using Pulumi.Azure.Network.Outputs;
 using Pulumi.Azure.Storage;
 using System;
+using System.IO;
+using System.Linq;
 
 class TracinhaStack : Stack
 {
@@ -139,11 +141,12 @@ class TracinhaStack : Stack
 
     private Blob CreateBlob(Pulumi.Azure.Storage.Account storageAccount, Container container)
     {
+        var root = System.Environment.GetEnvironmentVariable("ARTIFACTS_WORKSPACE");
         return new Blob("zip", new BlobArgs()
         {
             StorageAccountName = storageAccount.Name,
             StorageContainerName = container.Name,
-            Source = new FileArchive(@"..\Artifacts\Functions"),
+            Source = new FileArchive(Path.Combine(root, "Functions")),
             Type = "Block"
         });
     }
