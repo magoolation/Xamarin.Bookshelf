@@ -1,9 +1,10 @@
-name: .NET Core
+name: pull-request Validation
 
 on: [pull_request]
 
 jobs:
-  build:
+  Functions:
+    name: Build Azure Functions
 
     runs-on: ubuntu-latest
 
@@ -27,9 +28,9 @@ jobs:
         name: functions
         path: 'Functions/Xamarin.Bookshelf.Functions/bin/Release/netcoreapp3.1/publish'
 
-  preview:
-    name: Pulumi Preview
-    needs: Build
+  Infra:
+    name: Preview infrastructure changes
+    needs: Functions
 
     runs-on: ubuntu-latest
 
@@ -55,3 +56,26 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           PULUMI_CI: pr
+  Android:
+    name: Build Android project
+
+    runs-on: macos-latest
+    
+    steps:
+
+    - uses: actions/checkout@v1
+      
+    - name: Build Android
+      run: msbuild /restore /m /t:rebuild /p:Configuration=Debug Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.Android\Xamarin.Bookshelf.Mobile.Android.csproj
+  iOS:
+    name: Build iOS Project
+
+
+    runs-on: macos-latest
+    
+    steps:
+
+    - uses: actions/checkout@v1
+      
+    - name: Build iOS
+      run: msbuild /restore /m /t:rebuild /p:Configuration=Debug /p:Platform=iPhoneSimulator Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.iOS\Xamarin.Bookshelf.Mobile.iOS.csproj
