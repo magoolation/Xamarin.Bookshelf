@@ -3,6 +3,16 @@ name: pull-request Validation
 on: [pull_request]
 
 jobs:
+  Tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses:actions/checkout@v2
+
+    - name: Run Unit Tests
+      run: dotnet test Tests/Xamarin.Bookshelf.Unit.Tests -v n
+
   Functions:
     name: Build Azure Functions
 
