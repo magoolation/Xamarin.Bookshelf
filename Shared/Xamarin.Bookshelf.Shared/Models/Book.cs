@@ -1,4 +1,7 @@
-﻿namespace Xamarin.Bookshelf.Shared.Models
+﻿using System;
+using System.Data;
+
+namespace Xamarin.Bookshelf.Shared.Models
 {
     public class Book
     {
@@ -9,7 +12,7 @@
         public string Summary { get; set; }
         public double Rating { get; set; }
         public decimal? Price { get; set; }
-        public string Publisher { get; set; }
+        public string Publisher { get; set; }        
         public int PageCount { get; set; }
         public int RatingCount { get; set; }
         public string PublishedDate { get; set; }
