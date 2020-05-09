@@ -16,6 +16,9 @@ using System.Security.Claims;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
+using Xamarin.Bookshelf.Core.Models;
+using Microsoft.Azure.Documents.SystemFunctions;
+using System;
 
 namespace Xamarin.Bookshelf.Functions
 {
@@ -48,9 +51,16 @@ namespace Xamarin.Bookshelf.Functions
             }
 
             var response = new StreamReader(req.Body).ReadToEnd();
-            dynamic review = JsonConvert.DeserializeObject<BookReview>(response);
+            BookReviewRegistration review = JsonConvert.DeserializeObject<BookReviewRegistration>(response);
 
-            document = review;
+            document = new BookReview()
+            {
+                UserId = user.Identity.Name,
+                BookId =review.BookId,
+                Title = review.Title,
+                Rating = review.Rating,
+                Review = review.Review
+                };
 
             return new OkResult();
         }
@@ -72,9 +82,16 @@ namespace Xamarin.Bookshelf.Functions
             }
 
             var response = new StreamReader(req.Body).ReadToEnd();
-            dynamic bookshelf = JsonConvert.DeserializeObject<BookshelfItem>(response);
+            BookRegistration bookshelf = JsonConvert.DeserializeObject<BookRegistration>(response);
 
-            document = bookshelf;
+            document = new BookshelfItem()
+            {
+                UserId = user.Identity.Name,
+                BookId = bookshelf.Id,
+                CreatedAt = DateTime.UtcNow,
+                ReadingPosition = bookshelf.ReadingPosition,
+                ReadingStatus = bookshelf.ReadingStatus
+            };
 
             return new OkResult();
         }
@@ -93,6 +110,11 @@ namespace Xamarin.Bookshelf.Functions
             if (!user.Identity.IsAuthenticated)
             {
                 return new UnauthorizedResult();
+            }
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                userId = user.Identity.Name;
             }
 
             string ipAddress = req.Headers["x-forwarded-for"];
@@ -131,31 +153,34 @@ namespace Xamarin.Bookshelf.Functions
                     ReadingStatus = status,
                     UserId = userId,
                     Count = books.Count(),
-                    Items = ConvertToBoksehlfItems(books, ipAddress).GetAwaiter().GetResult()
+                    Items = books.Select(b => new BookshelfItemDetails()
+                    {
+                        BookId = b.BookId
+                    }).ToArray()
                 });
             }
-
 
             return new OkObjectResult(userBookshelves);
         }
 
-        private async Task<BookshelfItem[]> ConvertToBoksehlfItems(IEnumerable<BookshelfItem> bookshelves, string ipAddress)
+        private async Task GetBookshelfItemsDetails(IEnumerable<BookshelfItemDetails> bookshelves, string ipAddress)
         {
-            var books = new List<BookshelfItem>();
             foreach(var bookshelf in bookshelves)
             {
                 try
                 {
                     var book = await googleBooksApi.GetBookById(bookshelf.BookId, apiKey, ipAddress);
-                    bookshelf.Book = ConvertToBook(book);
-                    books.Add(bookshelf);
+                    bookshelf.Title = book.volumeInfo.title;
+                    bookshelf.SubTitle = book.volumeInfo.subtitle;
+                bookshelf.Summary = book.volumeInfo.description;
+                bookshelf.Authors = book.volumeInfo.authors;
+                    bookshelf.PageCount = book.volumeInfo.pageCount;
                 }
                 catch (System.Exception ex)
                 {
                     // Add Log
                 }
             }
-            return books.ToArray();
         }
 
         [FunctionName("GetReviews")]
@@ -184,7 +209,7 @@ namespace Xamarin.Bookshelf.Functions
                 PublishedDate = volume.volumeInfo.publishedDate,
                 Categories = volume.volumeInfo.categories,
                 MainCategory = volume.volumeInfo.mainCategory,
-                Language = volume.volumeInfo.language,
+               Language = volume.volumeInfo.language,
                 PageCount = volume.volumeInfo.pageCount,
                 Price = (decimal?)volume.saleInfo.listPrice?.amount,
                 Rating = volume.volumeInfo.averageRating,

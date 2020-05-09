@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using Xamarin.Bookshelf.Shared.Models;
 
-namespace Xamarin.Bookshelf.Shared.Models
+namespace Xamarin.Bookshelf.Core.Models
 {
     public class BookshelfItem
     {

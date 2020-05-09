@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Xamarin.Bookshelf.Shared.Models
+namespace Xamarin.Bookshelf.Core.Models
 {
     public class BookReview
     {

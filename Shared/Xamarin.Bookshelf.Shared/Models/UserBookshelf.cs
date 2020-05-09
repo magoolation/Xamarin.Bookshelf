@@ -12,6 +12,6 @@ namespace Xamarin.Bookshelf.Shared.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public ReadingStatus ReadingStatus { get; set; }
         public int Count { get; set; }
-        public BookshelfItem[] Items { get; set; }
+        public BookshelfItemDetails[] Items { get; set; }
     }
 }

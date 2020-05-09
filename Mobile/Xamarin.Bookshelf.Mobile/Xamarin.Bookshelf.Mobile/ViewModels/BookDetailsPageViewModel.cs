@@ -52,19 +52,16 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 ReadingStatus status = selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Reading]
                     ? ReadingStatus.Reading
                     : selected == EnumDescriptions.ReadingStatuses[ReadingStatus.Read] ? ReadingStatus.Read : ReadingStatus.WantToRead;
-                var bookshelf = new BookshelfItem()
+                var bookshelf = new BookRegistration()
                 {
                     Id = Guid.NewGuid().ToString(),
                     BookId = BookId,
                     ReadingStatus = status,
-                    UserId = authenticationTokenManager.Current.UserId,
-                    CreatedAt = DateTimeOffset.Now
                 };
 
                 await bookService.RegisterBookAsync(bookshelf).ConfigureAwait(false);
 
-                bookshelf.Book = Book;
-                await repository.AddBookAsync(bookshelf);
+                await repository.AddBookAsync(book);
 
 
                 await DisplayAlertAsync("Success", "Book added to your Bookshelf successfully!", "OK");
@@ -87,8 +84,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public string BookId { get; set; }
         public string BookItemId { get; set; }
 
-        private Book book;
-        public Book Book
+        private BookshelfItemDetails book;
+        public BookshelfItemDetails Book
         {
             get => book;
             set => SetProperty(ref book, value);
@@ -107,7 +104,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             {
                 IsBusy = true;
                 var result = await bookService.GetBookDetailsAsync(BookId).ConfigureAwait(false);
-                Book = result;
+                Book = ConvertToBookshelfItemDetails(result);
             }
             catch (ApiException apiError)
             {
@@ -121,6 +118,19 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private BookshelfItemDetails ConvertToBookshelfItemDetails(BookDetails result)
+        {
+            return new BookshelfItemDetails()
+            {
+                BookId = result.BookId,
+                Title = result.Title,
+                SubTitle = result.SubTitle,
+                Summary = result.Summary,
+                PageCount = result.PageCount,
+                Authors = result.Authors
+            };
         }
     }
 }

@@ -59,10 +59,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             try
             {
-                var bookReview = new BookReview()
+                var bookReview = new BookReviewRegistration()
                 {
                     BookId = BookId,
-                    UserId = authenticationTokenManager.Current.UserId,
                     Rating = rating,
                     Title = reviewTitle,
                     Review = review

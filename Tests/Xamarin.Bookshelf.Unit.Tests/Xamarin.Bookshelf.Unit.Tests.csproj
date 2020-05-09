@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Xamarin.Bookshelf.Core\Xamarin.Bookshelf.Core.csproj" />
     <ProjectReference Include="..\..\Shared\Xamarin.Bookshelf.Shared\Xamarin.Bookshelf.Shared.csproj" />
   </ItemGroup>
 

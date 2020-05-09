@@ -16,35 +16,35 @@ namespace Xamarin.Bookshelf.Mobile.Services
         private const string BOOKSHELVES_COLLECTION = "Bookshelves";
 
         private readonly ILiteDatabase db;
-        private readonly ILiteCollection<BookshelfItem> bookshelvesCollection;
+        private readonly ILiteCollection<BookshelfItemDetails> bookshelvesCollection;
 
         public BookRepository()
         {
             db = new LiteDatabase(Path.Combine(FileSystem.CacheDirectory, DB_NAME));
-            bookshelvesCollection = db.GetCollection<BookshelfItem>(BOOKSHELVES_COLLECTION);
+            bookshelvesCollection = db.GetCollection<BookshelfItemDetails>(BOOKSHELVES_COLLECTION);
         }
 
-        public Task<BookshelfItem> GetByIdAsync(string id)
+        public Task<BookshelfItemDetails> GetByIdAsync(string id)
         {
             return bookshelvesCollection.FindByIdAsync(id);
         }
 
-        public Task UpdateBookItemsAsync(BookshelfItem[] items)
+        public Task UpdateBookItemsAsync(BookshelfItemDetails[] items)
         {
             return bookshelvesCollection.UpsertAsync(items);
         }
 
-        public Task<IEnumerable<BookshelfItem>> GetAllBooksAsync(string userId)
+        public Task<IEnumerable<BookshelfItemDetails>> GetAllBooksAsync()
         {
-            return bookshelvesCollection.Query().Where(c => c.UserId == userId).ToListAsync();
+            return bookshelvesCollection.Query().ToListAsync();
         }
 
-        public Task AddBookAsync(BookshelfItem bookshelfItem)
+        public Task AddBookAsync(BookshelfItemDetails bookshelfItem)
         {
             return bookshelvesCollection.InsertAsync(bookshelfItem);
         }
 
-        public async Task<IEnumerable<BookshelfItem>> GetBooksByBookshelf(ReadingStatus status)
+        public async Task<IEnumerable<BookshelfItemDetails>> GetBooksByBookshelf(ReadingStatus status)
         {
             return bookshelvesCollection.FindAll().Where(c => c.ReadingStatus == status);
         }
