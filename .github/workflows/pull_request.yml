@@ -76,7 +76,8 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: Build Android
-      run: msbuild /restore /m /t:rebuild /p:Configuration=Debug Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.Android\Xamarin.Bookshelf.Mobile.Android.csproj
+      run: msbuild /restore /m /t:rebuild /p:Configuration=Debug Mobile/Xamarin.Bookshelf.Mobile/Xamarin.Bookshelf.Mobile.Android/Xamarin.Bookshelf.Mobile.Android.csproj
+
   iOS:
     name: Build iOS Project
 
@@ -88,4 +89,4 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: Build iOS
-      run: msbuild /restore /m /t:rebuild /p:Configuration=Debug /p:Platform=iPhoneSimulator Mobile\Xamarin.Bookshelf.Mobile\Xamarin.Bookshelf.Mobile.iOS\Xamarin.Bookshelf.Mobile.iOS.csproj
+      run: msbuild /restore /m /t:rebuild /p:Configuration=Debug /p:Platform=iPhoneSimulator Mobile/Xamarin.Bookshelf.Mobile/Xamarin.Bookshelf.Mobile.iOS/Xamarin.Bookshelf.Mobile.iOS.csproj
