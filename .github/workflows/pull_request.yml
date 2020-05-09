@@ -52,13 +52,13 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: functions
-          path: './Artifacts/Functions'
+          path: './DEVOPS/Artifacts/Functions'
 
       - uses: docker://pulumi/actions
         with:
           args: preview
         env:
-          ARTIFACTS_WORKSPACE: './Artifacts'
+          ARTIFACTS_WORKSPACE: '../Artifacts'
           PULUMI_ROOT: './DEVOPS/Xamarin.Bookshelf.Infrastructure'
           ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
