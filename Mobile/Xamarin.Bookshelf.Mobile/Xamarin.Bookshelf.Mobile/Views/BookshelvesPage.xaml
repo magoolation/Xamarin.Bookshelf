@@ -50,12 +50,12 @@
                         SnapPointsType="Mandatory" />
                 </CarouselView.ItemsLayout>
                 <CarouselView.ItemTemplate>
-                    <DataTemplate x:DataType="models:BookshelfItem">
+                    <DataTemplate x:DataType="models:BookshelfItemDetails">
                         <Image
                             Aspect="AspectFit"
-                            AutomationProperties.Name="{Binding Book.Title}"
+                            AutomationProperties.Name="{Binding Title}"
                             HeightRequest="128"
-                            Source="{Binding Book.ThumbnailUrl}"
+                            Source="{Binding ThumbnailUrl}"
                             WidthRequest="128">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
@@ -78,11 +78,11 @@
                         VerticalItemSpacing="10" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:BookshelfItem">
+                    <DataTemplate x:DataType="models:BookshelfItemDetails">
                         <Image
-                            AutomationProperties.Name="{Binding Book.Title}"
+                            AutomationProperties.Name="{Binding Title}"
                             HeightRequest="128"
-                            Source="{Binding Book.ThumbnailUrl}"
+                            Source="{Binding ThumbnailUrl}"
                             WidthRequest="128">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
