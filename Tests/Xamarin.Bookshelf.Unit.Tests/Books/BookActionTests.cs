@@ -2,6 +2,7 @@
 using FluentAssertions.Common;
 using System;
 using System.ComponentModel;
+using Xamarin.Bookshelf.Core.Models;
 using Xamarin.Bookshelf.Shared.Models;
 using Xunit;
 

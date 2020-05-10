@@ -19,8 +19,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
-        private Dictionary<ReadingStatus, BookshelfItem[]> bookshelves;
-        public Dictionary<ReadingStatus, BookshelfItem[]> Bookshelves
+        private Dictionary<ReadingStatus, BookshelfItemDetails[]> bookshelves;
+        public Dictionary<ReadingStatus, BookshelfItemDetails[]> Bookshelves
         {
             get => bookshelves;
             set
@@ -31,8 +31,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-        public BookshelfItem[] Reading => bookshelves[ReadingStatus.Reading];
-        public BookshelfItem[] Read => bookshelves[ReadingStatus.Read];
+        public BookshelfItemDetails[] Reading => bookshelves[ReadingStatus.Reading];
+        public BookshelfItemDetails[] Read => bookshelves[ReadingStatus.Read];
 
         public ICommand ViewDetailsCommand { get; }
         public ICommand ReadingBookkActionsCommand { get; }
@@ -76,11 +76,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         public async Task<bool> LoadBooksFromCache()
         {
-            var localBookshelves = new Dictionary<ReadingStatus, BookshelfItem[]>();
+            var localBookshelves = new Dictionary<ReadingStatus, BookshelfItemDetails[]>();
             try
             {
                 IsBusy = true;
-                var bookItems = await repository.GetAllBooksAsync(authenticationTokenManager.Current.UserId);
+                var bookItems = await repository.GetAllBooksAsync();
 
                 var bookshelves = bookItems.GroupBy(b => b.ReadingStatus,
                     b => b,
@@ -109,7 +109,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         public async Task LoadBooksFromServer()
         {
-            var serverBookshelves = new Dictionary<ReadingStatus, BookshelfItem[]>();
+            var serverBookshelves = new Dictionary<ReadingStatus, BookshelfItemDetails[]>();
 
             try
             {

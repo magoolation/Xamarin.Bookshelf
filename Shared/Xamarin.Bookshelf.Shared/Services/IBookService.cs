@@ -16,18 +16,18 @@ namespace Xamarin.Bookshelf.Shared.Services
         [Get("/.auth/refresh")]
         Task<HttpResponseMessage> RefreshAsync();
         [Get("/v1/books?title={title}")]
-        Task<IEnumerable<Book>> SearchBookByTitleAsync(string title);
+        Task<IEnumerable<BookSummary>> SearchBookByTitleAsync(string title);
         [Get("/v1/books?author={author}")]
-        Task<IEnumerable<Book>> SearchBookByAuthorAsync(string author);
+        Task<IEnumerable<BookSummary>> SearchBookByAuthorAsync(string author);
         [Get("/v1/books/{id}")]
-        Task<Book> GetBookDetailsAsync(string id);
+        Task<BookDetails> GetBookDetailsAsync(string id);
         [Get("/v1/reviews/{bookId}")]
-        Task<IEnumerable<BookReview>> GetBookReviewsAsync(string bookId);
+        Task<IEnumerable<BookshelfItemDetails>> GetBookshelfItemAsync(string bookId);
             [Get("/v1/bookshelves/{userId}")]
         Task<IEnumerable<UserBookshelf>> GetUserBookShelvesAsync(string userId);
         [Post("/v1/bookshelves")]
-        Task RegisterBookAsync([Body]BookshelfItem bookshelf);
+        Task RegisterBookAsync([Body]BookRegistration registration);
             [Post("/v1/reviews")]
-        Task ReviewBookAsync([Body]BookReview review);
+        Task ReviewBookAsync([Body]BookReviewRegistration review);
     }
 }

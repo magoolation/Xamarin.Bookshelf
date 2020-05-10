@@ -19,15 +19,15 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
 
-        private ObservableCollection<Book> books = new ObservableCollection<Book>(Enumerable.Empty<Book>());
-        public ObservableCollection<Book> Books
+        private ObservableCollection<BookSummary> books = new ObservableCollection<BookSummary>(Enumerable.Empty<BookSummary>());
+        public ObservableCollection<BookSummary> Books
         {
             get => books;
             set => SetProperty(ref books, value);
         }
 
-        private IEnumerable<BookshelfItem> wantToRead;
-        public IEnumerable<BookshelfItem> WantToRead
+        private IEnumerable<BookshelfItemDetails> wantToRead;
+        public IEnumerable<BookshelfItemDetails> WantToRead
         {
             get => wantToRead;
             set => SetProperty(ref wantToRead, value);
@@ -61,10 +61,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
                 await Task.WhenAll(byTitle, byAuthor).ConfigureAwait(false);
 
-                var result = (byTitle.Result ?? Enumerable.Empty<Book>())
-                    .Concat(byAuthor.Result ?? Enumerable.Empty<Book>());
+                var result = (byTitle.Result ?? Enumerable.Empty<BookSummary>())
+                    .Concat(byAuthor.Result ?? Enumerable.Empty<BookSummary>());
 
-                Books = new ObservableCollection<Book>(result);
+                Books = new ObservableCollection<BookSummary>(result);
             }
             catch (ApiException apiError)
             {
@@ -86,7 +86,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
             try
             {
-                var items = Enumerable.Empty<BookshelfItem>();
+                var items = Enumerable.Empty<BookshelfItemDetails>();
                 var cached = await repository.GetBooksByBookshelf(ReadingStatus.WantToRead);
                 if (cached != null && cached.Any())
                 {

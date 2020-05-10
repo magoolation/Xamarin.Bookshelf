@@ -4,10 +4,12 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Xamarin.Bookshelf.Core.Models;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
@@ -41,13 +43,13 @@ if (!user.Identity.IsAuthenticated)
 
             string ipAddress = req.Headers["x-forwarded-for"];
 
-            IEnumerable<Book> books = Enumerable.Empty<Book>();
+            IEnumerable<BookSummary> books = Enumerable.Empty<BookSummary>();
             if (req.Query.TryGetValue("title", out var titles))
             {
                 var volumes = await googleBooksApi.SearchBookByTitleAsync(titles.First(), apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
-                    books = volumes.items.Select(ConvertToBook);
+                    books = volumes.items.Select(b => ConvertToBookSummary(b));
                 }
             }
             else if (req.Query.TryGetValue("author", out var authors))
@@ -55,7 +57,7 @@ if (!user.Identity.IsAuthenticated)
                 var volumes = await googleBooksApi.SearchBookByAuthorAsync(authors.First(), apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
-                    books = volumes.items.Select(ConvertToBook); 
+                    books = volumes.items.Select(b => ConvertToBookSummary(b));
                 }
             }
             else
@@ -66,9 +68,30 @@ if (!user.Identity.IsAuthenticated)
             return new OkObjectResult(books);
         }
 
-        private Book ConvertToBook(Volume volume)
+        private BookSummary ConvertToBookSummary(Volume volume)
         {
-            return new Book()
+            return new BookSummary()
+            {
+                BookId = volume.id,
+                Title = volume.volumeInfo.title,
+                SubTitle = volume.volumeInfo.subtitle,
+                Authors = volume.volumeInfo.authors,
+                Publisher = volume.volumeInfo.publisher,
+                PublishedDate = volume.volumeInfo.publishedDate,                
+               PageCount = volume.volumeInfo.pageCount,
+                ThumbnailUrl = volume.volumeInfo.imageLinks?.thumbnail,
+                SmallThumbnailUrl = volume.volumeInfo.imageLinks?.smallThumbnail,
+                SmallUrl = volume.volumeInfo.imageLinks?.small,
+                MediumUrl = volume.volumeInfo.imageLinks?.medium,
+                LargeUrl = volume.volumeInfo.imageLinks?.large,
+                ExtraLargeUrl = volume.volumeInfo.imageLinks?.extraLarge,
+            };
+
+        }
+
+        private BookDetails ConvertToBookDetails(Volume volume)
+        {
+            return new BookDetails()
             {
                 BookId = volume.id,
                 Title = volume.volumeInfo.title,
@@ -81,7 +104,6 @@ if (!user.Identity.IsAuthenticated)
                 MainCategory = volume.volumeInfo.mainCategory,
                 Language = volume.volumeInfo.language,
                 PageCount = volume.volumeInfo.pageCount,
-                Price = (decimal?)volume.saleInfo.listPrice?.amount,
                 Rating = volume.volumeInfo.averageRating,
                 RatingCount = volume.volumeInfo.ratingsCount,
                 ThumbnailUrl = volume.volumeInfo.imageLinks?.thumbnail,
@@ -108,12 +130,12 @@ if (!user.Identity.IsAuthenticated)
             log.LogInformation("C# HTTP trigger function processed a request.");
             string ipAddress = req.Headers["x-forwarded-for"];
 
-            Book book = default(Book);
+            BookDetails book = default(BookDetails);
 
             Volume volume = await googleBooksApi.GetBookById(id, apiKey, ipAddress);
             if (volume != null)
             {
-                book = ConvertToBook(volume);
+                book = ConvertToBookDetails(volume);
             }
 
             return new OkObjectResult(book);
