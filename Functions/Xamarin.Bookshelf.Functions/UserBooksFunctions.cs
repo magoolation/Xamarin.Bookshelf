@@ -19,6 +19,7 @@ using Microsoft.Azure.Documents.Linq;
 using Xamarin.Bookshelf.Core.Models;
 using Microsoft.Azure.Documents.SystemFunctions;
 using System;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Xamarin.Bookshelf.Functions
 {
@@ -56,10 +57,11 @@ namespace Xamarin.Bookshelf.Functions
             document = new BookReview()
             {
                 UserId = user.Identity.Name,
-                BookId =review.BookId,
+                BookId = review.BookId,
                 Title = review.Title,
                 Rating = review.Rating,
-                Review = review.Review
+                Review = review.Review,
+                CreatedAt = DateTimeOffset.UtcNow
                 };
 
             return new OkResult();
@@ -183,16 +185,47 @@ namespace Xamarin.Bookshelf.Functions
             }
         }
 
-        [FunctionName("GetReviews")]
-        public IActionResult GetReviews(
+        [FunctionName("GetBookReviews")]
+        public async Task<IActionResult> GetReviewsAsync(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = ApiRoutes.API_GET_BOOK_REVIEWS)] HttpRequest req,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,
-            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING,
-            SqlQuery = "select * from Reviews r where r.BookId = {bookId} order by r.UserId")] IEnumerable<BookshelfItem> reviews,
-            ILogger log)
+            ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING)]DocumentClient client,
+            ILogger log,
+            string bookId,
+            ClaimsPrincipal user)
         {            
+            if (!user.Identity.IsAuthenticated)
+            {
+                return new UnauthorizedResult();
+            }
+
+            List<UserBookReview> reviews = new List<UserBookReview>();
+
+            var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.REVIEWS_COLLECTION_NAME);
+            var query = client.CreateDocumentQuery<BookReview>(uri)
+                .Where(r => r.BookId == bookId)
+                .AsDocumentQuery();
+
+            while (query.HasMoreResults)
+            {
+                foreach(var result in await query.ExecuteNextAsync())
+                {
+                    var review = new UserBookReview()
+                    {
+                        BookId = result.BookId,
+                        UserId = result.UserId,
+                        Title = result.Title,
+                        Review = result.Review,
+                        Rating = result.Rating,
+                        CreatedAt = result.CreatedAt
+                    };
+                    reviews.Add(review);
+                }
+            }
+
+
             return new OkObjectResult(reviews);
         }
 
