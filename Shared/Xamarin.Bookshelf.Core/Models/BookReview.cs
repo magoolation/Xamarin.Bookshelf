@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Xamarin.Bookshelf.Core.Models
 {
@@ -11,5 +12,6 @@ namespace Xamarin.Bookshelf.Core.Models
         public double Rating { get; set; }
         public string Title { get; set; }
         public string Review { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }
