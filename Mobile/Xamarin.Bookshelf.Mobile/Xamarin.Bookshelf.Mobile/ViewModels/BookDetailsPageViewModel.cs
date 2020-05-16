@@ -1,5 +1,4 @@
-﻿using AsyncAwaitBestPractices;
-using AsyncAwaitBestPractices.MVVM;
+﻿using AsyncAwaitBestPractices.MVVM;
 using Refit;
 using System;
 using System.Linq;
@@ -9,13 +8,11 @@ using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
-    [QueryProperty("BookId", "bookId")]
-    [QueryProperty("BookshelfItemId", "bookshelfItemId")]
+    [QueryProperty(nameof(BookId), nameof(bookId))]
     public class BookDetailsPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
@@ -81,8 +78,18 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             await Shell.Current.GoToAsync($"ReviewBook?bookId={BookId}");
         }
 
-        public string BookId { get; set; }
-        public string BookItemId { get; set; }
+        private string bookId;
+        public string BookId
+        {
+            get => bookId;
+            set
+            {
+                if (value != null && value != bookId)
+                {
+                    bookId = value;
+                }
+            }
+        }
 
         private BookshelfItemDetails book;
         public BookshelfItemDetails Book
@@ -95,7 +102,10 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             base.OnAppearing();
 
-            await GetBookDetailsAsync().ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(BookId))
+            {
+                await GetBookDetailsAsync();
+            }
         }
 
         private async Task GetBookDetailsAsync()

@@ -1,4 +1,6 @@
-﻿namespace Xamarin.Bookshelf.Shared.Models
+﻿using System;
+
+namespace Xamarin.Bookshelf.Shared.Models
 {
     public class BookshelfItemDetails
     {
@@ -23,5 +25,7 @@
         public string LargeUrl { get; set; }
         public string ExtraLargeUrl { get; set; }
         public ReadingStatus ReadingStatus { get; set; }
+        public double ReadingPosition { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
     }
 }

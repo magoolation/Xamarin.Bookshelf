@@ -1,0 +1,9 @@
+POST http://localhost:7071/v1/reviews
+content-type: application/json
+
+{
+	"bookId": "RhqJWjZ_6o4C",
+	"title": "Title",
+	"review": "Review",
+	"rating": 0.75
+}

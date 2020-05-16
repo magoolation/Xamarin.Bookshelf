@@ -74,7 +74,7 @@ class TracinhaStack : Stack
             ResourceGroupName = resourceGroup.Name,
             AccountName = cosmosAccount.Name,
             DatabaseName = database.Name,
-            PartitionKeyPath = "/userId"
+            PartitionKeyPath = "/UserId"
         });
 
         var reviewContainer = new SqlContainer("Reviews", new SqlContainerArgs()
@@ -83,7 +83,7 @@ class TracinhaStack : Stack
             ResourceGroupName = resourceGroup.Name,
             AccountName = cosmosAccount.Name,
             DatabaseName = database.Name,
-            PartitionKeyPath = "/bookId"
+            PartitionKeyPath = "/BookId"
         });
 
         // Create Application Insights

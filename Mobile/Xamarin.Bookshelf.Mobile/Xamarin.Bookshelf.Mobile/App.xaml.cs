@@ -18,7 +18,7 @@ namespace Xamarin.Bookshelf.Mobile
             Device.SetFlags(flags);                        
         }
 
-        protected override async void OnStart()
+        protected override void OnStart()
         {
             Startup.Init(platformInitializer);
             MainPage = new AppShell();

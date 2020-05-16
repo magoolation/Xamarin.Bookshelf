@@ -1,0 +1,8 @@
+POST http://localhost:7071/v1/me/bookshelves HTTP/1.1
+content-type: application/json
+
+{
+        "bookId": "RhqJWjZ_6o4C",
+        "readingPosition": 0.35,
+	"readingStatus": "Reading"
+}
