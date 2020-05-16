@@ -7,7 +7,7 @@ namespace Xamarin.Bookshelf.Core.Models
 {
     public class BookshelfItem
     {
-        [JsonProperty("id")]
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string UserId { get; set; }
         public string BookId { get; set; }
@@ -25,7 +25,6 @@ namespace Xamarin.Bookshelf.Core.Models
         }
 
         public double ReadingPosition { get; set; }
-        public Book Book {get; set; }
 
         public void FinishReading()
         {

@@ -21,14 +21,14 @@ namespace Xamarin.Bookshelf.Shared.Services
         Task<IEnumerable<BookSummary>> SearchBookByAuthorAsync(string author);
         [Get("/v1/books/{id}")]
         Task<BookDetails> GetBookDetailsAsync(string id);
-        [Get("/v1/reviews/{bookId}")]
-        Task<IEnumerable<BookshelfItemDetails>> GetBookshelfItemAsync(string bookId);
+        [Get("/v1/me/bookshelves/{id}")]
+        Task<BookshelfItemDetails> GetBookshelfItemAsync(string id);
         [Get("/v1/reviews/{bookId}")]
         Task<IEnumerable<UserBookReview>> GetBookReviewsAsync(string bookId);
         [Get("/v1/bookshelves/{userId}")]
         Task<IEnumerable<UserBookshelf>> GetUserBookShelvesAsync(string userId);
-        [Post("/v1/bookshelves")]
-        Task RegisterBookAsync([Body]BookRegistration registration);
+        [Post("/v1/me/bookshelves")]
+        Task<string> RegisterBookAsync([Body]BookRegistration registration);
             [Post("/v1/reviews")]
         Task ReviewBookAsync([Body]BookReviewRegistration review);
     }

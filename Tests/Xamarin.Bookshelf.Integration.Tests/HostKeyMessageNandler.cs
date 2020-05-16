@@ -9,7 +9,7 @@ namespace Xamarin.Bookshelf.Integration.Tests
         {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var token = "code=dHsuvALvmQ6SvStZ9rLRa68Oe6qVLQ5UmPkV5DfPDfTMTRiAma1yXA==";
+            var token = Environment.GetEnvironmentVariable("INTEGRATION_TESTS_API_KEY");
             var builder = new UriBuilder(request.RequestUri);
 
             if (string.IsNullOrWhiteSpace(builder.Query))

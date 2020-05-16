@@ -10,13 +10,25 @@ using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
-    [QueryProperty("BookId", "bookId")]
+    [QueryProperty(nameof(BookId), nameof(bookId))]
     public class ReviewBookPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
 
-        public string BookId { get; set; }
+        private string bookId;
+
+        public string BookId
+        {
+            get => bookId;
+            set
+            {
+                if (value != null && value != bookId)
+                {
+                    bookId = value;
+            }
+            }
+        }
 
         private string reviewTitle; //R:18 G:140 B:250 
         public string ReviewTitle
@@ -52,7 +64,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync($"..?bookId={BookId}");
         }
 
         private async Task SendReviewAsync()
@@ -68,15 +80,15 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 };
 
                 await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
-                MainThread.BeginInvokeOnMainThread(async () =>
+                await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    await Shell.Current.DisplayAlert("Success", "Your review was received successfully. Thank you!", "OK");
+                    await DisplayAlertAsync("Success", "Your review was received successfully. Thank you!", "OK");
                     await Shell.Current.GoToAsync("..");
                 });
             }
             catch (Exception ex)
             {
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.DisplayAlert("Error", ex.Message, "OK"));
+                await DisplayAlertAsync("Error", ex.Message, "OK");
             }
         }
 

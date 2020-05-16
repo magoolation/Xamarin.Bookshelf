@@ -9,8 +9,8 @@
         public const string API_SEARCH_BOOKS_BY_AUTOR = API_BOOKS + "?author={author}";
         public const string API_GET_BOOK_DETAILS = API_BOOKS + "/{id}";
         public const string API_REVIEWS = "v1/reviews";
-        public const string API_BOOKSHELVES = "v1/bookshelves";
-        public const string API_GET_USER_BOOKS = API_BOOKSHELVES + "/{userId}/";
+        public const string API_USER_BOOKSHELVES = "v1/me/bookshelves";
+        public const string API_GET_USER_BOOK = API_USER_BOOKSHELVES + "/{id}";
         public const string API_GET_BOOK_REVIEWS = API_REVIEWS + "/{bookId}/";
     }
 }

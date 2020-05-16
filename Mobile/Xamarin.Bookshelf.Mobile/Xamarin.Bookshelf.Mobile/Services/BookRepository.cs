@@ -44,9 +44,9 @@ namespace Xamarin.Bookshelf.Mobile.Services
             return bookshelvesCollection.InsertAsync(bookshelfItem);
         }
 
-        public async Task<IEnumerable<BookshelfItemDetails>> GetBooksByBookshelf(ReadingStatus status)
+        public Task<IEnumerable<BookshelfItemDetails>> GetBooksByBookshelf(ReadingStatus status)
         {
-            return bookshelvesCollection.FindAll().Where(c => c.ReadingStatus == status);
+            return Task.FromResult(bookshelvesCollection.FindAll().Where(c => c.ReadingStatus == status));
         }
     }
 }
