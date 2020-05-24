@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Xamarin.Bookshelf.Functions
+﻿namespace Xamarin.Bookshelf.Functions
 {
     public class Constants
     {
