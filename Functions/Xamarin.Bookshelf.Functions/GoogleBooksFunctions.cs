@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Xamarin.Bookshelf.Core.Models;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
@@ -19,13 +17,13 @@ namespace Xamarin.Bookshelf.Functions
     public class GoogleBooksFunctions
     {
         private const string API_KEY = "apiKey";
-        private readonly IGoogleBooksApi googleBooksApi;
-        private readonly string apiKey;
+        private readonly IGoogleBooksApi _googleBooksApi;
+        private readonly string _apiKey;
 
         public GoogleBooksFunctions(IGoogleBooksApi googleBooksApi, IConfiguration configuration)
         {
-            this.googleBooksApi = googleBooksApi;
-            this.apiKey = configuration[API_KEY];
+            _googleBooksApi = googleBooksApi;
+            _apiKey = configuration[API_KEY];
         }
 
         [FunctionName("SearchBook")]
@@ -34,7 +32,7 @@ namespace Xamarin.Bookshelf.Functions
             ILogger log,
             ClaimsPrincipal user)
         {
-if (!user.Identity.IsAuthenticated)
+            if (!user.Identity.IsAuthenticated)
             {
                 return new UnauthorizedResult();
             }
@@ -46,7 +44,7 @@ if (!user.Identity.IsAuthenticated)
             IEnumerable<BookSummary> books = Enumerable.Empty<BookSummary>();
             if (req.Query.TryGetValue("title", out var titles))
             {
-                var volumes = await googleBooksApi.SearchBookByTitleAsync(titles.First(), apiKey, ipAddress);
+                var volumes = await _googleBooksApi.SearchBookByTitleAsync(titles.First(), _apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
                     books = volumes.items.Select(b => ConvertToBookSummary(b));
@@ -54,7 +52,7 @@ if (!user.Identity.IsAuthenticated)
             }
             else if (req.Query.TryGetValue("author", out var authors))
             {
-                var volumes = await googleBooksApi.SearchBookByAuthorAsync(authors.First(), apiKey, ipAddress);
+                var volumes = await _googleBooksApi.SearchBookByAuthorAsync(authors.First(), _apiKey, ipAddress);
                 if (volumes != null && volumes.totalItems > 0)
                 {
                     books = volumes.items.Select(b => ConvertToBookSummary(b));
@@ -77,8 +75,8 @@ if (!user.Identity.IsAuthenticated)
                 SubTitle = volume.volumeInfo.subtitle,
                 Authors = volume.volumeInfo.authors,
                 Publisher = volume.volumeInfo.publisher,
-                PublishedDate = volume.volumeInfo.publishedDate,                
-               PageCount = volume.volumeInfo.pageCount,
+                PublishedDate = volume.volumeInfo.publishedDate,
+                PageCount = volume.volumeInfo.pageCount,
                 ThumbnailUrl = volume.volumeInfo.imageLinks?.thumbnail,
                 SmallThumbnailUrl = volume.volumeInfo.imageLinks?.smallThumbnail,
                 SmallUrl = volume.volumeInfo.imageLinks?.small,
@@ -108,7 +106,7 @@ if (!user.Identity.IsAuthenticated)
                 RatingCount = volume.volumeInfo.ratingsCount,
                 ThumbnailUrl = volume.volumeInfo.imageLinks?.thumbnail,
                 SmallThumbnailUrl = volume.volumeInfo.imageLinks?.smallThumbnail,
-                SmallUrl   = volume.volumeInfo.imageLinks?.small,
+                SmallUrl = volume.volumeInfo.imageLinks?.small,
                 MediumUrl = volume.volumeInfo.imageLinks?.medium,
                 LargeUrl = volume.volumeInfo.imageLinks?.large,
                 ExtraLargeUrl = volume.volumeInfo.imageLinks?.extraLarge,
@@ -132,7 +130,7 @@ if (!user.Identity.IsAuthenticated)
 
             BookDetails book = default(BookDetails);
 
-            Volume volume = await googleBooksApi.GetBookById(id, apiKey, ipAddress);
+            Volume volume = await _googleBooksApi.GetBookById(id, _apiKey, ipAddress);
             if (volume != null)
             {
                 book = ConvertToBookDetails(volume);

@@ -1,27 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Xamarin.Bookshelf.Core.Models;
 using Xamarin.Bookshelf.Functions.GoogleBooks;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
-using System.Security.Claims;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Client;
-using Microsoft.Azure.Documents.Linq;
-using Xamarin.Bookshelf.Core.Models;
-using System;
-using Microsoft.Azure.Documents.SystemFunctions;
-using System.Runtime.CompilerServices;
-using Microsoft.Extensions.Options;
-using System.Data.SqlTypes;
 
 namespace Xamarin.Bookshelf.Functions
 {
@@ -29,13 +25,13 @@ namespace Xamarin.Bookshelf.Functions
     {
         private const string ADMIN_USER = "Integration Tests";
         private const string API_KEY = "apiKey";
-        private readonly IGoogleBooksApi googleBooksApi;
-        private readonly string apiKey;
+        private readonly IGoogleBooksApi _googleBooksApi;
+        private readonly string _apiKey;
 
         public UserBooksFunctions(IGoogleBooksApi googleBooksApi, IConfiguration configuration)
         {
-            this.googleBooksApi = googleBooksApi;
-            this.apiKey = configuration[API_KEY];
+            _googleBooksApi = googleBooksApi;
+            _apiKey = configuration[API_KEY];
         }
 
         [FunctionName("ReviewBook")]
@@ -69,7 +65,7 @@ namespace Xamarin.Bookshelf.Functions
             var document = new BookReview()
             {
                 Id = id,
-                UserId = user.Identity.Name ?? ADMIN_USER,
+                UserId = user.GetUserId() ?? ADMIN_USER,
                 BookId = review.BookId,
                 Title = review.Title,
                 Rating = review.Rating,
@@ -82,9 +78,9 @@ namespace Xamarin.Bookshelf.Functions
                 PartitionKey = new PartitionKey(document.BookId)
             };
 
-        var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.REVIEWS_COLLECTION_NAME);
+            var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.REVIEWS_COLLECTION_NAME);
 
-            await client.CreateDocumentAsync(uri, document, options, true);
+            _ = await client.CreateDocumentAsync(uri, document, options, true);
 
             log.LogInformation("ReviewBook function finished successfully.");
 
@@ -121,7 +117,7 @@ namespace Xamarin.Bookshelf.Functions
             var document = new BookshelfItem()
             {
                 Id = id,
-                UserId = user.Identity.Name ?? ADMIN_USER,
+                UserId = user.GetUserId() ?? ADMIN_USER,
                 BookId = bookshelf.BookId,
                 CreatedAt = DateTime.UtcNow,
                 ReadingPosition = bookshelf.ReadingPosition,
@@ -131,10 +127,10 @@ namespace Xamarin.Bookshelf.Functions
             var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.BOOKS_COLLECTION_NAME);
             var options = new RequestOptions()
             {
-                PartitionKey = new PartitionKey(user.Identity.Name ?? ADMIN_USER)
+                PartitionKey = new PartitionKey(user.GetUserId() ?? ADMIN_USER)
             };
 
-            await client.CreateDocumentAsync(uri, document, options, true);
+            _ = await client.CreateDocumentAsync(uri, document, options, true);
 
             log.LogInformation("RegiterBook function finished successfully");
 
@@ -160,7 +156,7 @@ namespace Xamarin.Bookshelf.Functions
 
             var options = new FeedOptions()
             {
-                PartitionKey = new PartitionKey(user.Identity.Name ?? ADMIN_USER)
+                PartitionKey = new PartitionKey(user.GetUserId() ?? ADMIN_USER)
             };
 
             var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.BOOKS_COLLECTION_NAME);
@@ -180,7 +176,7 @@ namespace Xamarin.Bookshelf.Functions
 
             log.LogInformation("Populating the book data");
 
-            await PopulateBookshelfItemDetails(ipAddress, bookshelf);
+            await PopulateBookshelfItemDetails(ipAddress, bookshelf, log);
 
             log.LogInformation("GetBookshelfItem finished successfully");
 
@@ -194,7 +190,8 @@ namespace Xamarin.Bookshelf.Functions
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.BOOKS_COLLECTION_NAME,
             ConnectionStringSetting = Constants.CONNECTION_STRING_SETTING)] IDocumentClient document,
-            ClaimsPrincipal user)
+            ClaimsPrincipal user,
+            ILogger log)
         {
             if (!user.Identity.IsAuthenticated)
             {
@@ -208,7 +205,7 @@ namespace Xamarin.Bookshelf.Functions
             var uri = UriFactory.CreateDocumentCollectionUri(Constants.DATABASE_NAME, Constants.BOOKS_COLLECTION_NAME);
             var options = new FeedOptions()
             {
-                PartitionKey = new PartitionKey(user.Identity.Name ?? ADMIN_USER)
+                PartitionKey = new PartitionKey(user.GetUserId() ?? ADMIN_USER)
             };
 
             var query = document.CreateDocumentQuery<BookshelfItem>(uri, options)
@@ -224,9 +221,9 @@ namespace Xamarin.Bookshelf.Functions
                         bookshelves.Add(result);
                     }
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    //throw;
+                    log.LogError(ex.Message);
                     break;
                 }
             }
@@ -239,7 +236,7 @@ namespace Xamarin.Bookshelf.Functions
                 (status, books) => new UserBookshelf()
                 {
                     ReadingStatus = status,
-                    UserId = user.Identity.Name ?? ADMIN_USER,
+                    UserId = user.GetUserId() ?? ADMIN_USER,
                     Count = books.Count(),
                     Items = books.Select(b => new BookshelfItemDetails()
                     {
@@ -251,39 +248,39 @@ namespace Xamarin.Bookshelf.Functions
                 });
             }
 
-            await GetBookshelfItemsDetails(userBookshelves.SelectMany(b => b.Items), ipAddress);
+            await GetBookshelfItemsDetails(userBookshelves.SelectMany(b => b.Items), ipAddress, log);
 
             return new OkObjectResult(userBookshelves);
         }
 
-        private async Task GetBookshelfItemsDetails(IEnumerable<BookshelfItemDetails> bookshelves, string ipAddress)
+        private async Task GetBookshelfItemsDetails(IEnumerable<BookshelfItemDetails> bookshelves, string ipAddress, ILogger log)
         {
             foreach (var bookshelf in bookshelves)
             {
-                await PopulateBookshelfItemDetails(ipAddress, bookshelf);
+                await PopulateBookshelfItemDetails(ipAddress, bookshelf, log);
             }
         }
 
-        private async Task PopulateBookshelfItemDetails(string ipAddress, BookshelfItemDetails bookshelf)
+        private async Task PopulateBookshelfItemDetails(string ipAddress, BookshelfItemDetails bookshelf, ILogger log)
         {
             try
             {
-                var book = await googleBooksApi.GetBookById(bookshelf.BookId, apiKey, ipAddress);
+                var book = await _googleBooksApi.GetBookById(bookshelf.BookId, _apiKey, ipAddress);
                 bookshelf.Title = book.volumeInfo.title;
                 bookshelf.SubTitle = book.volumeInfo.subtitle;
                 bookshelf.Summary = book.volumeInfo.description;
                 bookshelf.Authors = book.volumeInfo.authors;
                 bookshelf.PageCount = book.volumeInfo.pageCount;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                // Add Log
+                log.LogError(ex.Message);
             }
         }
 
         [FunctionName("GetBookReviews")]
         public async Task<IActionResult> GetReviewsAsync(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = ApiRoutes.API_GET_BOOK_REVIEWS)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = ApiRoutes.API_GET_BOOK_REVIEWS)] HttpRequest _,
             [CosmosDB(
             databaseName: Constants.DATABASE_NAME,
             collectionName: Constants.REVIEWS_COLLECTION_NAME,
@@ -329,6 +326,7 @@ namespace Xamarin.Bookshelf.Functions
                 }
                 catch (Exception ex)
                 {
+                    log.LogError(ex.Message);
                     break;
                 }
             }

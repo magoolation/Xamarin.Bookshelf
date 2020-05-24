@@ -13,8 +13,8 @@ namespace Xamarin.Bookshelf.Functions
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services
-                .AddRefitClient<IGoogleBooksApi>() 
+            _ = builder.Services
+                .AddRefitClient<IGoogleBooksApi>()
                  .ConfigureHttpClient(c =>
                 {
                     c.BaseAddress = new Uri(BASE_URL);
