@@ -5,7 +5,7 @@ using Xamarin.Forms.Xaml;
 namespace Xamarin.Bookshelf.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class InitializationSegwayPage : ContentPage
+    public partial class InitializationSegwayPage 
     {
         public InitializationSegwayPage()
         {

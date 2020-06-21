@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<tiny:ViewBase
     x:Class="Xamarin.Bookshelf.Mobile.Views.ReviewBookPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tiny="clr-namespace:TinyMvvm.Forms;assembly=TinyMvvm.Forms"
     xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
     xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
     xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
     ios:Page.UseSafeArea="true"
     x:DataType="vm:ReviewBookPageViewModel"
-    BindingContext="{Binding ReviewBookPageViewModel, Source={x:StaticResource vmLocator}}"
+    x:TypeArguments="vm:ReviewBookPageViewModel"
     Shell.PresentationMode="ModalAnimated"
     mc:Ignorable="d">
     <ContentPage.Content>
@@ -61,4 +62,4 @@
             </StackLayout>
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+</tiny:ViewBase>

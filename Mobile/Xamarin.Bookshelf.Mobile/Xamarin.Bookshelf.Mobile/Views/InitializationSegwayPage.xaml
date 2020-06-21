@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<tiny:ViewBase
     x:Class="Xamarin.Bookshelf.Mobile.Views.InitializationSegwayPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:tiny="clr-namespace:TinyMvvm.Forms;assembly=TinyMvvm.Forms"
     xmlns:local="clr-namespace:Xamarin.Bookshelf.Mobile"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
     x:DataType="vm:InitializationSegwayPageViewModel"
     BackgroundColor="{x:StaticResource NavigationPrimary}"
-    BindingContext="{Binding InitializationSegwayPageViewModel, Source={StaticResource vmLocator}}"
+    x:TypeArguments="vm:InitializationSegwayPageViewModel"
     Shell.NavBarIsVisible="False"
     mc:Ignorable="d">
     <ContentPage.Resources>
@@ -40,4 +41,4 @@
                 VerticalOptions="Center" />
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</tiny:ViewBase>

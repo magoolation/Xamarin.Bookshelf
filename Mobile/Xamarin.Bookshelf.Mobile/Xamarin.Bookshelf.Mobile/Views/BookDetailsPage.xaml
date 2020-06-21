@@ -1,13 +1,14 @@
-﻿<ContentPage
+﻿<tiny:ViewBase
     x:Class="Xamarin.Bookshelf.Mobile.Views.BookDetailsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shared="clr-namespace:Xamarin.Bookshelf.Shared;assembly=Xamarin.Bookshelf.Shared"
+    xmlns:tiny="clr-namespace:TinyMvvm.Forms;assembly=TinyMvvm.Forms"
     xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
     x:DataType="vm:BookDetailsPageViewModel"
-    BindingContext="{Binding BookDetailsPageViewModel, Source={x:StaticResource vmLocator}}"
+    x:TypeArguments="vm:BookDetailsPageViewModel"
     mc:Ignorable="d">
     <ContentPage.Content>
         <ScrollView Margin="5">
@@ -109,4 +110,4 @@
             </Grid>
         </ScrollView>
     </ContentPage.Content>
-</ContentPage>
+</tiny:ViewBase>

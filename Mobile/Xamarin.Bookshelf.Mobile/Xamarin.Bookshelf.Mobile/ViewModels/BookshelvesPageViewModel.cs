@@ -25,9 +25,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             get => bookshelves;
             set
             {
-                SetProperty(ref bookshelves, value);
-                OnPropertyChanged("Reading");
-                OnPropertyChanged("Read");
+                Set(ref bookshelves, value);
+                RaisePropertyChanged("Reading");
+                RaisePropertyChanged("Read");
             }
         }
 
@@ -61,12 +61,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task ViewDetailsAsync(string bookId)
         {
-            await Shell.Current.GoToAsync($"Details?bookId={bookId}");
+            await Navigation.NavigateToAsync($"Details?bookId={bookId}");
         }
 
-        public override async void OnAppearing()
+        public override async Task Initialize()
         {
-            base.OnAppearing();
+            await base.Initialize();
 
             if (! await LoadBooksFromCache())
             {

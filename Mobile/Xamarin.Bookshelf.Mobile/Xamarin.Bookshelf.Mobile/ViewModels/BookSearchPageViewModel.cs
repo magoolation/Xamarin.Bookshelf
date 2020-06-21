@@ -23,14 +23,14 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ObservableCollection<BookSummary> Books
         {
             get => books;
-            set => SetProperty(ref books, value);
+            set => Set(ref books, value);
         }
 
         private IEnumerable<BookshelfItemDetails> wantToRead;
         public IEnumerable<BookshelfItemDetails> WantToRead
         {
             get => wantToRead;
-            set => SetProperty(ref wantToRead, value);
+            set => Set(ref wantToRead, value);
         }
 
         public ICommand SearchCommand { get; }
@@ -47,7 +47,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task ViewDetailsAsync(string bookId)
         {
-            await Shell.Current.GoToAsync($"Details?bookId={bookId}");
+            await Navigation.NavigateToAsync($"Details?bookId={bookId}");
         }
 
         private async Task SearchBooksAsync(string text)
@@ -80,9 +80,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-        public override async void OnAppearing()
+        public override async Task Initialize()
         {
-            base.OnAppearing();
+            await base.Initialize();
 
             try
             {
