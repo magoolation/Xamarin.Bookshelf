@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<tiny:ViewBase
     x:Class="Xamarin.Bookshelf.Mobile.Views.ProfilePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:tiny="clr-namespace:TinyMvvm.Forms;assembly=TinyMvvm.Forms"
+    xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
+    mc:Ignorable="d"
+    x:DataType="vm:ProfilePageViewModel"
+    x:TypeArguments="vm:ProfilePageViewModel">
     <ContentPage.Content>
         <Grid>
             <Button
@@ -14,4 +18,5 @@
                 VerticalOptions="CenterAndExpand" />
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+
+</tiny:ViewBase>

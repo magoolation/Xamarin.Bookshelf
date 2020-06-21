@@ -75,7 +75,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task ReviewBookAsync()
         {
-            await Shell.Current.GoToAsync($"ReviewBook?bookId={BookId}");
+            await Navigation.NavigateToAsync($"ReviewBook?bookId={BookId}");
         }
 
         private string bookId;
@@ -95,12 +95,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public BookshelfItemDetails Book
         {
             get => book;
-            set => SetProperty(ref book, value);
+            set => Set(ref book, value);
         }
 
-        public override async void OnAppearing()
+        public override async Task Initialize()
         {
-            base.OnAppearing();
+            await base.Initialize();
 
             if (!string.IsNullOrWhiteSpace(BookId))
             {

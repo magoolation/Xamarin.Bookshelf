@@ -34,21 +34,21 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public string ReviewTitle
         {
             get => reviewTitle;
-            set => SetProperty(ref reviewTitle, value);
+            set => Set(ref reviewTitle, value);
         }
 
         private string review;
         public string Review
         {
             get => review;
-            set => SetProperty(ref review, value);
+            set => Set(ref review, value);
         }
 
         private double rating;
         public double Rating
         {
             get => rating;
-            set => SetProperty(ref rating, value);
+            set => Set(ref rating, value);
         }
 
         public ICommand SendCommand { get; }
@@ -64,7 +64,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
         private async Task CancelAsync()
         {
-            await Shell.Current.GoToAsync($"..?bookId={BookId}");
+            await Navigation.NavigateToAsync($"..?bookId={BookId}");
         }
 
         private async Task SendReviewAsync()
@@ -92,9 +92,9 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
         }
 
-        public override void OnAppearing()
+        public override async Task Initialize()
         {
-            base.OnAppearing();
+            await base.Initialize();
             ReviewTitle = string.Empty;
             Review = string.Empty;
             Rating = 0;

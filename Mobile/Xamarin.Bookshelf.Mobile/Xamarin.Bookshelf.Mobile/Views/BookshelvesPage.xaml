@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+<tiny:ViewBase
     x:Class="Xamarin.Bookshelf.Mobile.Views.BookshelvesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tiny="clr-namespace:TinyMvvm.Forms;assembly=TinyMvvm.Forms"
     xmlns:models="clr-namespace:Xamarin.Bookshelf.Shared.Models;assembly=Xamarin.Bookshelf.Shared"
     xmlns:vm="clr-namespace:Xamarin.Bookshelf.Mobile.ViewModels"
     x:DataType="vm:BookshelvesPageViewModel"
-    BindingContext="{Binding BookshelvesPageViewModel, Source={StaticResource vmLocator}}"
+    x:TypeArguments="vm:BookshelvesPageViewModel"
     mc:Ignorable="d">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -99,4 +100,4 @@
                 IsVisible="{Binding IsBusy}" />
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+</tiny:ViewBase>

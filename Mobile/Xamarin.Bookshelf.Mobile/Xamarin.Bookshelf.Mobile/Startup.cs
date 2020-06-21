@@ -54,7 +54,6 @@ namespace Xamarin.Bookshelf.Mobile
 
             // Services            
             services.AddSingleton<IAuthenticationManager, AuthenticationManager>();
-            services.AddSingleton<INavigationService, NavigationService>();            
             services.AddSingleton<IBookRepository, BookRepository>();
 
             // ViewModels and Views

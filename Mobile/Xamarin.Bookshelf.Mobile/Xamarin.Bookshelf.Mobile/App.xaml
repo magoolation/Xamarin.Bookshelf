@@ -7,7 +7,6 @@
              x:Class="Xamarin.Bookshelf.Mobile.App">
     <Application.Resources>
         <ResourceDictionary>
-            <mobile:ViewModelLocator x:Key="vmLocator" />
             <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesome5FreeRegular">
                 <On Platform="iOS" Value="FontAwesome5Free-Regular"/>
                 <On Platform="Android" Value="fa-regular-400.ttf#Regular"/>

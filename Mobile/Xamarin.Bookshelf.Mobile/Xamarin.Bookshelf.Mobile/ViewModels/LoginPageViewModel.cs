@@ -29,7 +29,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             {
                 await authenticationManager.SigninWithAppleAsync();
 
-                await Shell.Current.GoToAsync("//Main");
+                await Navigation.NavigateToAsync("//Main");
             }
             catch (Exception ex)
             {
@@ -43,7 +43,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             {
                 await authenticationManager.LoginWithGoogle();
 
-                MainThread.BeginInvokeOnMainThread(async () => await Shell.Current.GoToAsync("//Main"));
+                MainThread.BeginInvokeOnMainThread(async () => await Navigation.NavigateToAsync("//Main"));
             }
             catch (Exception ex)
             {

@@ -1,6 +1,6 @@
-﻿using Xamarin.Bookshelf.Mobile.Services;
+﻿using System.Threading.Tasks;
+using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared.Services;
-using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
@@ -15,18 +15,20 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             this.bookService = bookService;
         }
 
-        public override async void OnAppearing()
+        public override async Task Initialize()
         {
-            base.OnAppearing();
+            await base.Initialize();
 
-            await authenticationManager.RefreshAsync().ConfigureAwait(false);
+            //await authenticationManager.RefreshAsync().ConfigureAwait(false);
 
             if (!authenticationManager.IsAuthenticated)
             {
-                await Shell.Current.GoToAsync("//Login");
-                return;
+                await Navigation.NavigateToAsync("//Login");
             }
-            await Shell.Current.GoToAsync("//Main");
+            else
+            {
+                await Navigation.NavigateToAsync("//Main");
+            }
         }
     }
 }
