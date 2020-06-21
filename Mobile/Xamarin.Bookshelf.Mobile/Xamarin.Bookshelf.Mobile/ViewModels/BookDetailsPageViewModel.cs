@@ -1,4 +1,5 @@
 ﻿using AsyncAwaitBestPractices.MVVM;
+using LiteDB;
 using Refit;
 using System;
 using System.Linq;
@@ -12,7 +13,6 @@ using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
-    [QueryProperty(nameof(BookId), nameof(bookId))]
     public class BookDetailsPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
@@ -101,6 +101,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public override async Task Initialize()
         {
             await base.Initialize();
+
+            BookId = QueryParameters[nameof(bookId)];
 
             if (!string.IsNullOrWhiteSpace(BookId))
             {

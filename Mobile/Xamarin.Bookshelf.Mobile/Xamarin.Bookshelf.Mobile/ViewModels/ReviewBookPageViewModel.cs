@@ -10,7 +10,6 @@ using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
-    [QueryProperty(nameof(BookId), nameof(bookId))]
     public class ReviewBookPageViewModel : BaseViewModel
     {
         private readonly IBookService bookService;
@@ -95,6 +94,8 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public override async Task Initialize()
         {
             await base.Initialize();
+
+            BookId = QueryParameters[nameof(bookId)];
             ReviewTitle = string.Empty;
             Review = string.Empty;
             Rating = 0;
