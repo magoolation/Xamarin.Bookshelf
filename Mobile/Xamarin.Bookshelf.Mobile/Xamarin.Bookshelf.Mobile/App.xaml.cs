@@ -1,4 +1,5 @@
-﻿using Xamarin.Bookshelf.Mobile.Helpers;
+﻿using TinyMvvm.IoC;
+using Xamarin.Bookshelf.Mobile.Helpers;
 using Xamarin.Forms;
 
 
@@ -13,14 +14,20 @@ namespace Xamarin.Bookshelf.Mobile
             this.platformInitializer = platformInitializer;
             InitializeComponent();
 
-
-            var flags = new string[] { "CAROUSSELVIEW_EXPERIMENTAL", "INDICATORVIEW_EXPERIMENTAL", "SWIPEVIEW_EXPERIMENTAL", "EXPANDERVIEW_EXPERIMENTAL" };
-            Device.SetFlags(flags);                        
+            var flags = new string[]
+            {
+                "CAROUSSELVIEW_EXPERIMENTAL",
+                "INDICATORVIEW_EXPERIMENTAL",
+                "SWIPEVIEW_EXPERIMENTAL", "EXPANDERVIEW_EXPERIMENTAL"
+            };
+            Device.SetFlags(flags);
         }
 
         protected override void OnStart()
         {
             Startup.Init(platformInitializer);
+            Resolver.SetResolver(new MicrosoftDependencyResolver(Startup.ServiceProvider));
+            TinyMvvm.Forms.TinyMvvm.Initialize();
             MainPage = new AppShell();
         }
 

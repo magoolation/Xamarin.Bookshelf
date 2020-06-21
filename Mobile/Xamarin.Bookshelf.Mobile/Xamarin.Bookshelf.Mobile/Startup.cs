@@ -5,6 +5,8 @@ using Refit;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using TinyNavigationHelper;
+using TinyNavigationHelper.Forms;
 using Xamarin.Bookshelf.Mobile.Helpers;
 using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Mobile.ViewModels;
@@ -16,6 +18,8 @@ namespace Xamarin.Bookshelf.Mobile
     public static class Startup
     {
         private static IHost _host;
+
+        public static IServiceProvider ServiceProvider => _host.Services;
 
         public static void Init(IPlatformInitializer platformInitializer)
         {
@@ -61,12 +65,25 @@ namespace Xamarin.Bookshelf.Mobile
             services.AddTransient<LoginPageViewModel>();
             services.AddTransient<InitializationSegwayPageViewModel>();
 
+            ConfigureNavigation(services);
+
             // Configuration
             //services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
 
             // Platform specific configuration
             platformInitializer?.ConfigureServices(context, services);            
         }
+
+        private static void ConfigureNavigation(IServiceCollection services)
+        {
+            var navigationHelper = new ShellNavigationHelper();
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            navigationHelper.RegisterViewsInAssembly(currentAssembly);
+
+            services.AddSingleton<INavigationHelper>(navigationHelper);
+
+        }
+
 
         public static T GetService<T>() where T : class
             => _host.Services.GetService<T>() as T;
