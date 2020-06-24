@@ -68,10 +68,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             await base.Initialize();
 
-            if (! await LoadBooksFromCache())
-            {
-                await LoadBooksFromServer().ConfigureAwait  (false);
-            }
+            await Task.WhenAny(LoadBooksFromCache(), LoadBooksFromServer()).ConfigureAwait(false);
         }
 
         public async Task<bool> LoadBooksFromCache()
@@ -105,7 +102,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
 
             return Bookshelves?.Any() ?? false;
-        }            
+        }
 
         public async Task LoadBooksFromServer()
         {
@@ -114,7 +111,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             try
             {
                 IsBusy = true;
-                var result = await bookService.GetUserBookShelvesAsync(authenticationTokenManager.Current.UserId).ConfigureAwait(false);
+                var result = await bookService.GetMyBookShelvesAsync().ConfigureAwait(false);
                 foreach (var bookshelf in result)
                 {
                     serverBookshelves.Add(bookshelf.ReadingStatus, bookshelf.Items);
@@ -128,7 +125,6 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 await MainThread.InvokeOnMainThreadAsync(async () => await OnApiError(apiError));
             }
             catch (Exception ex)
-            
             {
                 await DisplayAlertAsync("Error", ex.Message, "OK");
             }

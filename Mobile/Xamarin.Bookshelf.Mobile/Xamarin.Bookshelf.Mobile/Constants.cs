@@ -3,7 +3,7 @@
     public class Constants
     {
         public const string AUTHENTICATION_BASE_URL = "https://tracinha-functions.azurewebsites.net/.auth/login/";
-        public const string AUTHENTICATION_URL_GOOGLE = AUTHENTICATION_BASE_URL + "google?post_login_redirect_uri=tracinha://&session_mode=token&access_type=offline";
+        public const string AUTHENTICATION_URL_GOOGLE = AUTHENTICATION_BASE_URL + "google?post_login_redirect_uri=tracinha%3a%2f%2f&session_mode=token&access_type=offline";
         public const string AUTHENTICATION_URL_APPLE = AUTHENTICATION_BASE_URL + "Apple";
             public const string DEEP_LINK_SCHEMA = "tracinha://";
 

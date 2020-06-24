@@ -31,8 +31,11 @@ namespace Xamarin.Bookshelf.Mobile.Services
             var data = ExtractToken(result.Properties["token"].ToString());
             var authenticationToken = data.AuthenticationToken;
             var userId = data.User.UserId;
-            await authenticationTokenManager.Current.SetAuthenticationToken(authenticationToken);
-            await authenticationTokenManager.Current.SetUserId(userId);
+            await Task.WhenAll(
+                authenticationTokenManager.Current.SetAuthenticationToken(authenticationToken),
+            authenticationTokenManager.Current.SetExpiresIn(DateTimeOffset.UtcNow.AddHours(8)),
+            authenticationTokenManager.Current.SetUserId(userId)
+            );
         }
 
         private AzureAuthenticationToken ExtractToken(string json)
@@ -102,8 +105,8 @@ namespace Xamarin.Bookshelf.Mobile.Services
         }
     }
 
-        public class AzureAuthenticationToken
-        {
+    public class AzureAuthenticationToken
+    {
         [JsonPropertyName("authentication_code")]
         public string AuthenticationToken { get; set; }
         [JsonPropertyName("user")]
@@ -112,7 +115,7 @@ namespace Xamarin.Bookshelf.Mobile.Services
 
     public class AzureAuthenticationTokenUser
     {
-    [JsonPropertyName("userId")]
-    public string UserId { get; set; }
-}
+        [JsonPropertyName("userId")]
+        public string UserId { get; set; }
+    }
 }

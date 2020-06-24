@@ -24,40 +24,29 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
+        <Grid Margin="20" RowDefinitions="0.02*,0.10*,0.02*,0.82*">
             <Label
                 Grid.Row="0"
                 Style="{x:StaticResource TitleLabel}"
                 Text="Currently Reading" />
 
             <CarouselView
-                Grid.Row="1"
-                HeightRequest="128"
+                Grid.Row="1"                
                 HorizontalScrollBarVisibility="Never"
-                ItemsSource="{Binding Reading}"
-                PeekAreaInsets="0, 0, 128, 0">
+                ItemsSource="{Binding Reading}">
                 <CarouselView.ItemsLayout>
                     <LinearItemsLayout
                         ItemSpacing="10"
                         Orientation="Horizontal"
-                        SnapPointsAlignment="Start"
+                        SnapPointsAlignment="Center"
                         SnapPointsType="Mandatory" />
                 </CarouselView.ItemsLayout>
                 <CarouselView.ItemTemplate>
                     <DataTemplate x:DataType="models:BookshelfItemDetails">
                         <Image
                             Aspect="AspectFit"
-                            AutomationProperties.Name="{Binding Title}"
-                            HeightRequest="128"
-                            Source="{Binding ThumbnailUrl}"
-                            WidthRequest="128">
+                            AutomationProperties.Name="{Binding Title}"                            
+                            Source="{Binding ThumbnailUrl}">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BookshelvesPageViewModel}}, Path=ViewDetailsCommand}" CommandParameter="{Binding BookId}" />
                             </Image.GestureRecognizers>

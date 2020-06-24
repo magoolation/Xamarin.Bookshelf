@@ -19,7 +19,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         {
             await base.Initialize();
 
-            //await authenticationManager.RefreshAsync().ConfigureAwait(false);
+            await authenticationManager.RefreshAsync().ConfigureAwait(false);
 
             if (!authenticationManager.IsAuthenticated)
             {
