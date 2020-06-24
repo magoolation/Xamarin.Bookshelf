@@ -18,16 +18,18 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookRepository repository;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
         private readonly IDialogService _dialogService;
+        private readonly IErrorHandlingService _errorHandlingService;
 
         public ICommand AddToLibraryCommand { get; }
         public ICommand ReviewBookCommand { get; }
 
-        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService)
+        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService, IErrorHandlingService errorHandlingService)
         {
             this.bookService = bookService;
             this.repository = repository;
             this.authenticationTokenManager = authenticationTokenManager;
             _dialogService = dialogService;
+            _errorHandlingService = errorHandlingService;
             AddToLibraryCommand = new AsyncCommand(AddToLibraryAsync);
             ReviewBookCommand = new AsyncCommand(ReviewBookAsync);
         }
@@ -119,11 +121,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (ApiException apiError)
             {
-                await OnApiError(apiError);
+                await _errorHandlingService.HandleApiExceptionAsync(apiError);
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {

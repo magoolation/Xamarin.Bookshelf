@@ -20,6 +20,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookRepository repository;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
         private readonly IDialogService _dialogService;
+        private readonly IErrorHandlingService _errorHandlingService;
         private Dictionary<ReadingStatus, BookshelfItemDetails[]> bookshelves;
         public Dictionary<ReadingStatus, BookshelfItemDetails[]> Bookshelves
         {
@@ -39,12 +40,13 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand ReadingBookkActionsCommand { get; }
         public ICommand ReadBookActionsCommand { get; }
 
-        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService)
+        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService, IErrorHandlingService errorHandlingService)
         {
             this.bookService = bookService;
             this.repository = repository;
             this.authenticationTokenManager = authenticationTokenManager;
             _dialogService = dialogService;
+            _errorHandlingService = errorHandlingService;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
             ReadingBookkActionsCommand = new AsyncCommand(ReadingBookActionsAsync);
             ReadBookActionsCommand = new AsyncCommand(ReadBookActionsAsync);
@@ -124,7 +126,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (ApiException apiError)
             {
-                await MainThread.InvokeOnMainThreadAsync(async () => await OnApiError(apiError));
+                await _errorHandlingService.HandleApiExceptionAsync(apiError);
             }
             catch (Exception ex)
             {

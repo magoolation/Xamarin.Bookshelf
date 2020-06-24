@@ -17,6 +17,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
         private readonly IDialogService _dialogService;
+        private readonly IErrorHandlingService _errorHandlingService;
         private ObservableCollection<BookSummary> books = new ObservableCollection<BookSummary>(Enumerable.Empty<BookSummary>());
         public ObservableCollection<BookSummary> Books
         {
@@ -34,11 +35,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SearchCommand { get; }
         public ICommand DetailsCommand { get; }
 
-        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository, IDialogService dialogService)
+        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository, IDialogService dialogService, IErrorHandlingService errorHandlingService)
         {
             this.bookService = bookService;
             this.repository = repository;
             _dialogService = dialogService;
+            _errorHandlingService = errorHandlingService;
             SearchCommand = new AsyncCommand<string>(SearchBooksAsync);
             DetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
         }
@@ -66,7 +68,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (ApiException apiError)
             {
-                await OnApiError(apiError);
+                await _errorHandlingService.HandleApiExceptionAsync(apiError);
             }
             catch (Exception ex)
             {
