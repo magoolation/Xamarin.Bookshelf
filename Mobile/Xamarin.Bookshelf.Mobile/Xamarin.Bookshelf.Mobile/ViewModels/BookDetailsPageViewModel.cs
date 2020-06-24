@@ -9,7 +9,6 @@ using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
-using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
@@ -18,23 +17,24 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
+        private readonly IDialogService _dialogService;
 
         public ICommand AddToLibraryCommand { get; }
         public ICommand ReviewBookCommand { get; }
 
-        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
+        public BookDetailsPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService)
         {
             this.bookService = bookService;
             this.repository = repository;
             this.authenticationTokenManager = authenticationTokenManager;
-
+            _dialogService = dialogService;
             AddToLibraryCommand = new AsyncCommand(AddToLibraryAsync);
             ReviewBookCommand = new AsyncCommand(ReviewBookAsync);
         }
 
         private async Task AddToLibraryAsync()
         {
-            string result = await Shell.Current.DisplayActionSheet("Select a Bookshelf", "Cancel", null, EnumDescriptions.ReadingStatuses.Values.ToArray());
+            string result = await _dialogService.DisplayActionSheet("Select a Bookshelf", "Cancel", null, EnumDescriptions.ReadingStatuses.Values.ToArray());
             if (!string.IsNullOrWhiteSpace(result) && result != "Cancel")
             {
                 await RegisterBookAsync(result);
@@ -60,12 +60,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
 
                 await repository.AddBookAsync(book);
 
-
-                await DisplayAlertAsync("Success", "Book added to your Bookshelf successfully!", "OK");
+                await _dialogService.DisplayAlertAsync("Success", "Book added to your Bookshelf successfully!", "OK");
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {

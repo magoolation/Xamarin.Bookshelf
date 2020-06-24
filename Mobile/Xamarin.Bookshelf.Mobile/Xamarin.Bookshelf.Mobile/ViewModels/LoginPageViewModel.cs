@@ -12,13 +12,15 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     public class LoginPageViewModel : BaseViewModel
     {
         private readonly IAuthenticationManager authenticationManager;
+        private readonly IDialogService _dialogService;
 
         public ICommand LoginWithGoogleCommand { get; }
         public ICommand SigninWithAppleCommand { get; }
 
-        public LoginPageViewModel(IAuthenticationManager authenticationManager)
+        public LoginPageViewModel(IAuthenticationManager authenticationManager, IDialogService dialogService)
         {
             this.authenticationManager = authenticationManager;
+            _dialogService = dialogService;
             LoginWithGoogleCommand = new AsyncCommand(LoginWithGoogleAsync);
             SigninWithAppleCommand = new AsyncCommand(SigninWithAppleAsync);
         }
@@ -33,7 +35,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
         }
 
@@ -47,7 +49,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
         }
     }

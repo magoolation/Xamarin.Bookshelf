@@ -14,7 +14,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     {
         private readonly IBookService bookService;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
-
+        private readonly IDialogService _dialogService;
         private string bookId;
 
         public string BookId
@@ -53,12 +53,13 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SendCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ReviewBookPageViewModel(IBookService bookService, IAuthenticationTokenManager authenticationTokenManager)
+        public ReviewBookPageViewModel(IBookService bookService, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService)
         {
             this.bookService = bookService;
             SendCommand = new AsyncCommand(SendReviewAsync);
             CancelCommand = new AsyncCommand(CancelAsync);
             this.authenticationTokenManager = authenticationTokenManager;
+            _dialogService = dialogService;
         }
 
         private async Task CancelAsync()
@@ -81,13 +82,13 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
                 await bookService.ReviewBookAsync(bookReview).ConfigureAwait(false);
                 await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    await DisplayAlertAsync("Success", "Your review was received successfully. Thank you!", "OK");
+                    await _dialogService.DisplayAlertAsync("Success", "Your review was received successfully. Thank you!", "OK");
                     await Shell.Current.GoToAsync("..");
                 });
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
         }
 

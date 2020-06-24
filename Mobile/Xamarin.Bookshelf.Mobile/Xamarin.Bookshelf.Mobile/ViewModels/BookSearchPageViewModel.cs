@@ -9,8 +9,6 @@ using System.Windows.Input;
 using Xamarin.Bookshelf.Mobile.Services;
 using Xamarin.Bookshelf.Shared.Models;
 using Xamarin.Bookshelf.Shared.Services;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace Xamarin.Bookshelf.Mobile.ViewModels
 {
@@ -18,7 +16,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
     {
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
-
+        private readonly IDialogService _dialogService;
         private ObservableCollection<BookSummary> books = new ObservableCollection<BookSummary>(Enumerable.Empty<BookSummary>());
         public ObservableCollection<BookSummary> Books
         {
@@ -36,11 +34,11 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand SearchCommand { get; }
         public ICommand DetailsCommand { get; }
 
-        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository)
+        public BookSearchPageViewModel(IBookService bookService, IBookRepository repository, IDialogService dialogService)
         {
             this.bookService = bookService;
             this.repository = repository;
-
+            _dialogService = dialogService;
             SearchCommand = new AsyncCommand<string>(SearchBooksAsync);
             DetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
         }
@@ -72,7 +70,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {
@@ -97,7 +95,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
         }
     }

@@ -19,6 +19,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         private readonly IBookService bookService;
         private readonly IBookRepository repository;
         private readonly IAuthenticationTokenManager authenticationTokenManager;
+        private readonly IDialogService _dialogService;
         private Dictionary<ReadingStatus, BookshelfItemDetails[]> bookshelves;
         public Dictionary<ReadingStatus, BookshelfItemDetails[]> Bookshelves
         {
@@ -38,11 +39,12 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
         public ICommand ReadingBookkActionsCommand { get; }
         public ICommand ReadBookActionsCommand { get; }
 
-        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager)
+        public BookshelvesPageViewModel(IBookService bookService, IBookRepository repository, IAuthenticationTokenManager authenticationTokenManager, IDialogService dialogService)
         {
             this.bookService = bookService;
             this.repository = repository;
             this.authenticationTokenManager = authenticationTokenManager;
+            _dialogService = dialogService;
             ViewDetailsCommand = new AsyncCommand<string>(ViewDetailsAsync);
             ReadingBookkActionsCommand = new AsyncCommand(ReadingBookActionsAsync);
             ReadBookActionsCommand = new AsyncCommand(ReadBookActionsAsync);
@@ -126,7 +128,7 @@ namespace Xamarin.Bookshelf.Mobile.ViewModels
             }
             catch (Exception ex)
             {
-                await DisplayAlertAsync("Error", ex.Message, "OK");
+                await _dialogService.DisplayAlertAsync("Error", ex.Message, "OK");
             }
             finally
             {

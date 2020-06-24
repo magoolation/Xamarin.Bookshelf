@@ -42,6 +42,7 @@ namespace Xamarin.Bookshelf.Mobile
         public static void ConfigureServices(HostBuilderContext context, IServiceCollection services, IPlatformInitializer platformInitializer)
         {
             // TODO WTS: Register your services, viewmodels and pages here
+            services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<IAuthenticationTokenManager, AuthenticationTokenManager>();
             services.AddTransient < AuthenticationMessageHandler>();
             
