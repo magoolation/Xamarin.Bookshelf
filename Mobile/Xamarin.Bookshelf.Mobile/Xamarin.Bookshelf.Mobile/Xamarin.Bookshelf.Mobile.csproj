@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="AsyncAwaitBestPractices" Version="4.1.1" />
     <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.1" />
-    <PackageReference Include="LiteDB" Version="5.0.8" />
+    <PackageReference Include="LiteDB" Version="5.0.13" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.5" />
     <PackageReference Include="refit" Version="5.1.67" />
